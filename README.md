@@ -1,2 +1,2 @@
 # sustock_shop
-供应商商城系统
+SUSTOCK商城系统
