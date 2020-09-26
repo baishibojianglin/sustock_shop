@@ -1,2 +1,2 @@
 # sustock_shop
-SUSTOCK商城系统1
+SUSTOCK商城系统
