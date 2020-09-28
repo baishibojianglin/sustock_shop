@@ -2,7 +2,7 @@
 	<div class="login loginbg">
 		<el-row>
 		  <el-col :span="24" class="title font2">
-			  店通传媒管理系统
+			  SUSTOCK商城管理系统
 		  </el-col>
 		  <el-col :span="24">
 		  	  <div class="content">
