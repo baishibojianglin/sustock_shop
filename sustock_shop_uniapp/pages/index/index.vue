@@ -4,6 +4,7 @@
 		<text class="intro">详见：</text>
 		<uni-link :href="href" :text="href"></uni-link>
 	</view>
+	
 </template>
 
 <script>
