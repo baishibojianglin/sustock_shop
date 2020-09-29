@@ -9,7 +9,7 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-return [
+/*return [
     '__pattern__' => [
         'name' => '\w+',
     ],
@@ -18,4 +18,12 @@ return [
         ':name' => ['index/hello', ['method' => 'post']],
     ],
 
-];
+];*/
+
+
+use think\Route;
+
+/* 后台管理系统路由 s */
+// 商家
+Route::resource('admin/shop_seller', 'admin/ShopSeller');
+/* 后台管理系统路由 e */
