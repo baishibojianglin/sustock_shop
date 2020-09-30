@@ -8,15 +8,16 @@
 
 namespace app\common\model;
 
+
 /**
- * ÉÌ¼ÒÄ£ĞÍÀà
+ * å•†å®¶æ¨¡å‹ç±»
  * Class ShopSeller
  * @package app\common\model
  */
 class ShopSeller extends Base
 {
     /**
-     * »ñÈ¡ÉÌ¼ÒÁĞ±íÊı¾İ£¨»ùÓÚpaginate()×Ô¶¯»¯·ÖÒ³£©
+     * è·å–å•†å®¶åˆ—è¡¨æ•°æ®ï¼ˆåŸºäºpaginate()è‡ªåŠ¨åŒ–åˆ†é¡µï¼‰
      * @param array $map
      * @param int $size
      * @return \think\Paginator
@@ -34,8 +35,27 @@ class ShopSeller extends Base
         return $result;
     }
 
+    /*
+     *  å•†å®¶æ–°å¢
+     */
+    public function addShopSeller($data)
+    {
+        $result=$this->insert($data);
+
+        return $result;
+    }
+
+    /*
+     * å•†å®¶ä¿®æ”¹
+     * */
+    public function updShopSeller($seller_id,$data){
+        $result=$this->where("seller_id",$seller_id)->update($data) === false ? 0 : true;
+
+        return $result;
+    }
+
     /**
-     * Í¨ÓÃ»¯»ñÈ¡²ÎÊıµÄÊı¾İ×Ö¶Î
+     * é€šç”¨åŒ–è·å–å‚æ•°çš„æ•°æ®å­—æ®µ
      * @return array
      */
     private function _getListField()
