@@ -8,7 +8,6 @@
 
 namespace app\common\model;
 
-
 /**
  * 商家模型类
  * Class ShopSeller
@@ -49,7 +48,7 @@ class ShopSeller extends Base
      * 商家修改
      * */
     public function updShopSeller($seller_id,$data){
-        $result=$this->where("seller_id",$seller_id)->update($data) === false ? 0 : true;
+        $result=$this->where("seller_id",$seller_id)->update($data);
 
         return $result;
     }
