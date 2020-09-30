@@ -8,6 +8,8 @@
 
 namespace app\admin\controller;
 
+use app\common\lib\exception\ApiException;
+
 /**
  * admin模块商家管理控制器类
  * Class ShopSeller
@@ -24,9 +26,6 @@ class ShopSeller extends AuthBase
         if (request()->isGet()) {
             // 传入的数据
             $param = input('param.');
-            if (isset($param['size'])) { // 每页条数
-                $param['size'] = intval($param['size']);
-            }
 
             // 查询条件
             $map = [];
@@ -38,7 +37,8 @@ class ShopSeller extends AuthBase
             try {
                 $data = model('ShopSeller')->getShopSeller($map, (int)$this->size);
             } catch (\Exception $e) {
-                return show(config('code.error'), '网络忙，请重试' . $e->getMessage(), '', 500); // $e->getMessage()
+                //return show(config('code.error'), '网络忙，请重试' . $e->getMessage(), '', 500); // $e->getMessage()
+                throw new ApiException('网络忙，请重试' . $e->getMessage(), 500, config('code.error')); // $e->getMessage()
             }
 
             return show(config('code.success'), 'OK', $data);
