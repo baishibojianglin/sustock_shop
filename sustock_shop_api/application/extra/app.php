@@ -8,7 +8,7 @@
 
 // APP客户端配置
 return [
-    'password_pre_salt' => '#sustock_shop_media_2020', // 密码加密盐
+    'password_pre_salt' => '#sustock_shop_2020', // 密码加密盐
     'aeskey' => '63c1e23f192033ceec6f883639591b76', // aes密钥，服务端和客户端必须保持一致 MD5('#sustock_shop_media_2020')
     'apptypes' => ['android', 'ios', 'devtools', 'other'],
     'version' => 1, // 大版本号
