@@ -200,4 +200,8 @@ class ShopSeller extends AuthBase
             }
         }
     }
+
+    /*
+     * 
+     * */
 }

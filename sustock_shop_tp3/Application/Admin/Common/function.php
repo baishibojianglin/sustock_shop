@@ -34,7 +34,7 @@ function getAdminInfo($admin_id){
 
 function tpversion()
 {
-    
+
 }
 
 /**
@@ -115,9 +115,9 @@ function getAllMenu(){
             array('name'=>'网站设置','act'=>'index','control'=>'System'),
             array('name'=>'自定义导航','act'=>'navigationList','control'=>'System'),
             array('name'=>'区域管理','act'=>'region','control'=>'Tools'),
-			array('name'=>'文章分类','act'=>'categoryList','control'=>'article'),
-			array('name'=>'文章管理','act'=>'articleList','control'=>'article'),
-			array('name'=>'评论管理','act'=>'index','control'=>'Comment'),
+            array('name'=>'文章分类','act'=>'categoryList','control'=>'article'),
+            array('name'=>'文章管理','act'=>'articleList','control'=>'article'),
+            array('name'=>'评论管理','act'=>'index','control'=>'Comment'),
             //array('name'=>'权限资源列表','act'=>'right_list','control'=>'System'),
         )),
         'access' => array('name' => '权限管理', 'icon'=>'fa-sitemap', 'sub_menu' => array(
@@ -143,11 +143,11 @@ function getAllMenu(){
         'order' => array('name' => '订单管理', 'icon'=>'fa-money', 'sub_menu' => array(
             array('name' => '订单列表', 'act'=>'index', 'control'=>'Order'),
             array('name' => '发货单', 'act'=>'delivery_list', 'control'=>'Order'),
-           // array('name' => '快递单', 'act'=>'express_list', 'control'=>'Order'),
+            // array('name' => '快递单', 'act'=>'express_list', 'control'=>'Order'),
             //array('name' => '退货单', 'act'=>'return_list', 'control'=>'Order'),
             array('name' => '订单日志', 'act'=>'order_log', 'control'=>'Order'),
             array('name' => '商品评论','act'=>'index','control'=>'Comment'),
-		    //array('name' => '商品咨询','act'=>'ask_list','control'=>'Comment'),
+            //array('name' => '商品咨询','act'=>'ask_list','control'=>'Comment'),
 
         )),
         'Store' => array('name' => '店铺管理', 'icon'=>'fa-shopping-cart', 'sub_menu' => array(
@@ -171,21 +171,28 @@ function getAllMenu(){
 
 
 
-        /* *
-
+        /*
         'distribut' => array('name' => '分销管理', 'icon'=>'fa-cubes', 'sub_menu' => array(
                 array('name' => '分销商列表', 'act'=>'distributor_list', 'control'=>'Distribut'),
                 array('name' => '分销关系', 'act'=>'tree', 'control'=>'Distribut'),
-//					array('name' => '提现申请', 'act'=>'withdrawals', 'control'=>'Distribut'),
+				array('name' => '提现申请', 'act'=>'withdrawals', 'control'=>'Distribut'),
                 array('name' => '分成日志', 'act'=>'rebate_log', 'control'=>'Distribut'),
         )),
-*/
+        */
+
+        'wechat' => array('name' => '微信管理', 'icon'=>'fa-weixin', 'sub_menu' => array(
+            array('name' => '公众号管理', 'act'=>'index', 'control'=>'Wechat'),
+            array('name' => '微信菜单管理', 'act'=>'menu', 'control'=>'Wechat'),
+            array('name' => '文本回复', 'act'=>'text', 'control'=>'Wechat'),
+            array('name' => '图文回复', 'act'=>'img', 'control'=>'Wechat'),
+        )),
+
         'tools' => array('name' => '插件工具', 'icon'=>'fa-plug', 'sub_menu' => array(
 
             array('name' => '数据备份', 'act'=>'index', 'control'=>'Tools'),
             array('name' => '数据还原', 'act'=>'restore', 'control'=>'Tools'),
             array('name'=>'支付/物流','act'=>'index','control'=>'plugin'),
-            array('name'=>'微信设置','act'=>'index','control'=>'Wechat'),
+
         )),
         'finance' => array('name' => '财务统计', 'icon'=>'fa-credit-card', 'sub_menu' => array(
             array('name' => '商家提现申请', 'act'=>'store_withdrawals', 'control'=>'Finance'),
