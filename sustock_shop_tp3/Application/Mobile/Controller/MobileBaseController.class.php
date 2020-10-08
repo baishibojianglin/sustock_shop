@@ -35,15 +35,15 @@ class MobileBaseController extends Controller {
             if(is_array($this->weixin_config) && $this->weixin_config['wait_access'] == 1){
                 $wxuser = $this->GetOpenid(); //授权获取openid以及微信用户信息
                 session('subscribe', $wxuser['subscribe']);// 当前这个用户是否关注了微信公众号
-                //微信自动登录                             
+                //微信自动登录
                 $logic = new UsersLogic();
-                $data = $logic->thirdLogin($wxuser);                                
-                
+                $data = $logic->thirdLogin($wxuser);
+
                 if($data['status'] == 1){
                     session('user',$data['result']);
                     setcookie('user_id',$data['result']['user_id'],null,'/');
                     setcookie('is_distribut',$data['result']['is_distribut'],null,'/');
-                    setcookie('uname',$data['result']['nickname'],null,'/');                    
+                    setcookie('uname',$data['result']['nickname'],null,'/');
                     // 登录后将购物车的商品的 user_id 改为当前登录的id
                     M('cart')->where("session_id = '{$this->session_id}'")->save(array('user_id'=>$data['result']['user_id']));
                 }
