@@ -12,7 +12,7 @@ return array(
     /*
      * RBAC认证配置信息
      */
-    'MODULE_ALLOW_LIST' => array('Dinners','DShops','Seller','Admin','Api',"Mobile","Home","WXAPI"),//,'Api','Index'
+    'MODULE_ALLOW_LIST' => array('Index','Dinners','DShops','Seller','Admin','Api',"Mobile","Home","WXAPI"),//,'Api',
     'SESSION_AUTO_START'        => true,
     'USER_AUTH_ON'              => true,
     'USER_AUTH_TYPE'            => 1,         // 默认认证类型 1 登录认证 2 实时认证
@@ -111,7 +111,7 @@ return array(
         退货按钮（联系客服）  所有退换货操作， 都需要人工介入   不支持在线退换货
      */
     
-    'DEFAULT_MODULE'        =>  'Mobile',  // 默认模块
+    'DEFAULT_MODULE'        =>  'Home',  // 默认模块
     'DEFAULT_CONTROLLER'    =>  'Index', // 默认控制器名称
     'DEFAULT_ACTION'        =>  'Index', // 默认操作名称
 
