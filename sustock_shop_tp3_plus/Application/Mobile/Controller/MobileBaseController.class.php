@@ -20,16 +20,16 @@ class MobileBaseController extends Controller {
     /*
      * 初始化操作
      */
-    public function _initialize() {       
+    public function _initialize() {
         $this->session_id = session_id(); // 当前的 session_id       
         define('SESSION_ID',$this->session_id); //将当前的session_id保存为常量，供其它方法调用
-        // 判断当前用户是否手机                
+        // 判断当前用户是否手机
         if(isMobile())
             cookie('is_mobile','1',3600); 
         else 
             cookie('is_mobile','1',3600);                 
         //微信浏览器
-        if(strstr($_SERVER['HTTP_USER_AGENT'],'MicroMessenger') && empty($_SESSION['openid'])){
+        if(strstr($_SERVER['HTTP_USER_AGENT'],'MicroMessenger') /*&& empty($_SESSION['openid'])*/){
             $this->weixin_config = M('wx_user')->find(); //获取微信配置
             $this->assign('wechat_config', $this->weixin_config); 
             if(is_array($this->weixin_config) && $this->weixin_config['wait_access'] == 1){
