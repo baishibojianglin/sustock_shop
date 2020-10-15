@@ -37,7 +37,7 @@ class PaymentController extends BaseController {
         //获取通知的数据
         $xml = $GLOBALS['HTTP_RAW_POST_DATA'];               
         // 导入具体的支付类文件                
-        include_once  "plugins/payment/{$this->pay_code}/{$this->pay_code}.class.php"; // D:\wamp\www\svn_tpshop\www\plugins\payment\alipay\alipayPayment.class.php                       
+        include_once  "plugins/payment/{$this->pay_code}/{$this->pay_code}.class.php"; // D:\wamp\www\svn_tpshop\www\plugins\payment\alipay\alipayPayment.class.php
         $code = '\\'.$this->pay_code; // \alipay
         $this->payment = new $code();
     }
@@ -144,5 +144,6 @@ class PaymentController extends BaseController {
              $this->display('success');   
          else
              $this->display('error');   
-    }                
+    }
+
 }

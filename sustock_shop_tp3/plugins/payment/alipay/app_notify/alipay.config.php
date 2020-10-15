@@ -20,7 +20,7 @@
  
 //↓↓↓↓↓↓↓↓↓↓请在这里配置您的基本信息↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 //合作身份者id，以2088开头的16位纯数字
-$alipay_config['partner']		= '2088021715417505';
+$alipay_config['partner']		= '2088731692480574';
 
 //商户的私钥（后缀是.pen）文件相对路径
 //$alipay_config['private_key_path']	= dirname(__FILE__).'/key/rsa_private_key.pem';
@@ -35,7 +35,7 @@ $alipay_config['ali_public_key_path']= dirname(__FILE__).'/key/alipay_public_key
 
 
 //签名方式 不需修改
-$alipay_config['sign_type']    = strtoupper('RSA');
+$alipay_config['sign_type']    = strtoupper('RSA2');
 
 //字符编码格式 目前支持 gbk 或 utf-8
 $alipay_config['input_charset']= strtolower('utf-8');
