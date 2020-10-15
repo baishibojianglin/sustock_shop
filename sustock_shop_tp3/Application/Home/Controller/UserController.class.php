@@ -1141,9 +1141,13 @@ class UserController extends BaseController {
         $this->display(); 
     }  
 
+    /*
+     * 账户余额
+     * */
 
     public  function recharge(){
     	if(IS_POST){
+
    			$user = session('user');
    			$data['user_id'] = $this->user_id;
    			$data['nickname'] = $user['nickname'];
@@ -1152,14 +1156,14 @@ class UserController extends BaseController {
    			$data['ctime'] = time();
     		$order_id = M('recharge')->add($data);
     		if($order_id){
-    			$url = U('Home/Payment/getPay',array('pay_radio'=>$_REQUEST['pay_radio'],'order_id'=>$order_id));
+    			$url = U('Home/Alipay/rechargepay',array('pay_radio'=>$_REQUEST['pay_radio'],'order_id'=>$order_id));
     			redirect($url);
     		}else{
     			$this->error('提交失败,参数有误!');
     		}
     	}
 	   	$paymentList = M('Plugin')->where("`type`='payment' and code!='cod' and status = 1 and scene in(0,2)")->select();
-	   	$paymentList = convert_arr_key($paymentList, 'code');	   	
+	   	$paymentList = convert_arr_key($paymentList, 'code');
 	   	foreach($paymentList as $key => $val)
 	   	{
 	   		$val['config_value'] = unserialize($val['config_value']);
@@ -1172,14 +1176,14 @@ class UserController extends BaseController {
 	   	$this->assign('paymentList',$paymentList);
 	   	$this->assign('bank_img',$bank_img);
 	   	$this->assign('bankCodeList',$bankCodeList);
-	   	
+
 	   	$count = M('recharge')->where(array('user_id'=>$this->user_id))->count();
 	   	$Page = new Page($count,10);
 	   	$show = $Page->show();
 	   	$recharge_list = M('recharge')->where(array('user_id'=>$this->user_id))->limit($Page->firstRow.','.$Page->listRows)->select();
 	   	$this->assign('page',$show);
 	   	$this->assign('recharge_list',$recharge_list);//充值记录
-	   	
+
 	   	$count2 = M('account_log')->where(array('user_id'=>$this->user_id,'user_money'=>array('gt',0)))->count();
 	   	$Page2 = new Page($count2,10);
 	   	$consume_list = M('account_log')->where(array('user_id'=>$this->user_id,'user_money'=>array('gt',0)))->limit($Page2->firstRow.','.$Page2->listRows)->select();
