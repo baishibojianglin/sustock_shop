@@ -159,4 +159,11 @@ return array(
         //支付宝公钥,查看地址：https://openhome.alipay.com/platform/keyManage.htm 对应APPID下的支付宝公钥。
         'alipay_public_key' => "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjEY6WlZ1v0XCoYIOzhHyDYQuh9VNrSsH+V7yTP1TTduLFlPGF85PtN73U01MOvchXyoPDaKoYhG3azrPMB/I1l3ghiUIgejIRiE5yhYe+98nGd8Iwcj8yEXuOOAA/VRcWF6X3rzbTInmn6zTE7sZ7yOLSNVBub05rYEK6EX4QB263duVu9c0bFqTXe7IY4eXZNCvfCmOuyBNLvc3xtvy+xmicxM+yJS66c3SVEx1GwTiOYIPO3u1Xdy4sl90leyAJ9bdiGCeROLiibeFDylh3kTGql086wJlt+TqUjDuDxsz3Zd7VYasg4ecvndKQMYhy5q6uH/xBcJfniSbbPSDbQIDAQAB"
     ),
+    'alipaymobile' =>array(
+        //异步通知地址
+        'notify_url' => "http://dt.dilinsat.com/index.php/Mobile/AlipayMobile/notifyUrl",
+
+        //同步跳转
+        'return_url' => "http://dt.dilinsat.com/index.php/Mobile/AlipayMobile/returnUrl"
+    ),
 );

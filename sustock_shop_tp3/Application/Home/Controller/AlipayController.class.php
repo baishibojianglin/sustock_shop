@@ -99,57 +99,6 @@ class AlipayController extends BaseController
     }
 
     /*
-     * 余额充值
-     * */
-
-    public function rechargepay(){
-
-        $config=C('alipay');
-
-        $order_id = I('order_id'); // 订单id
-        // 修改充值订单的支付方式
-        $payment_arr = M('Plugin')->where("`type` = 'payment'")->getField("code,name");
-        M('recharge')->where("order_id = $order_id")->save(array('pay_code'=>$this->pay_code,'pay_name'=>$payment_arr[$this->pay_code]));
-        $order = M('recharge')->where("order_id = $order_id")->find();
-        if($order['pay_status'] == 1){
-            $this->error('此订单，已完成支付!');
-        }
-
-        //商户订单号，商户网站订单系统中唯一订单号，必填
-        $out_trade_no = trim($order['order_sn']);
-
-        //订单名称，必填
-        $subject = trim('店通商城');
-
-        //付款金额，必填
-        $total_amount = trim($order['account']);
-
-        //商品描述，可空
-        $body = trim('');
-
-        //构造参数
-        $payRequestBuilder = new \AlipayTradePagePayContentBuilder();
-        $payRequestBuilder->setBody($body);
-        $payRequestBuilder->setSubject($subject);
-        $payRequestBuilder->setTotalAmount($total_amount);
-        $payRequestBuilder->setOutTradeNo($out_trade_no);
-
-        $aop = new \AlipayTradeService($config);
-
-        /**
-         * pagePay 电脑网站支付请求
-         * @param $builder 业务参数，使用buildmodel中的对象生成。
-         * @param $return_url 同步跳转地址，公网可以访问
-         * @param $notify_url 异步通知地址，公网可以访问
-         * @return $response 支付宝返回的信息
-         */
-        $response = $aop->pagePay($payRequestBuilder,$config['return_url'],$config['notify_url']);
-
-        //输出表单
-        var_dump($response);
-    }
-
-    /*
      * 异步回调
      * */
     public function notifyUrl(){

@@ -141,7 +141,7 @@
                     <div class="monettu">
                         <div class="fop-main">
                             <div class="m-tagbox m-multi-tag">
-                                <a href="javascript:void(0)" rel="0.01" class="tag-item">￥50.00<i class="t-check tptig"></i></a>
+                                <a href="javascript:void(0)" rel="50" class="tag-item">￥50.00<i class="t-check tptig"></i></a>
 
                                 <a href="javascript:void(0)" rel="100" class="tag-item">￥100.00<i class="t-check"></i></a>
 
@@ -251,7 +251,6 @@
             $(this).find('.define-input').show().focus();
             $(this).find('.define-input').blur(function(){
                 var ce = $(this).val();
-                ce = ce.replace(/\D|^0/g,'')
 
                 $(this).parent('.tag-define').siblings('.tag-item').each(function(){
                     var a_text = $(this).text();
@@ -261,15 +260,23 @@
                         $('.define-input').val('');
                     }
                 });
+
                 if(ce == ''){
                     $(this).prev('.define-label').show();
                     $(this).hide();
                 }else{
-                    // remark[{$goods_list.goods_id}][rank]
-                    // $(this).parent('.tag-define').prev('.tag-item').after('<input type="hidden" name="remark['+goods_id+'][tag][]" value="'+ce+'"/><a href="javascript:void(0)" class="tag-item">'+'￥'+ ce +'<i class="t-check"></i></a>');
-                    // $(this).prev('.define-label').show();
-                    // $(this).hide();
-                    // $(this).val('');
+
+                    var reg = /^\+?[1-9]\d*$/; //正则验证
+                    if(!reg.test(ce)){
+                        alert("请输入大于零的整数");
+                        $(this).prev('.define-label').show();
+                        $(this).hide();
+                        $(this).val('');
+                        return false;
+                    }
+                    $(this).parent('.tag-define').siblings().find('.t-check').removeClass('tptig');
+                    $(this).parent('.tag-define').prev('.tag-item').after('<a href="javascript:void(0)" rel="'+ce+'" class="tag-item">'+'￥'+ ce +'.00<i class="t-check tptig"></i></a>');
+                    $(this).parent('.tag-define').hide();
 
                 }
             })
@@ -285,6 +292,7 @@
     
     function recharge_submit(){
     	var input_val = parseInt($('#input_val').val());
+
     	if(input_val>0){
     		$('#add_money').val(input_val);
     	}
