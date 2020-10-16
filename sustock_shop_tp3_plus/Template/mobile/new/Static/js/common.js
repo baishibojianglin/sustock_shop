@@ -7,8 +7,7 @@
  * layer弹窗插件请参考http://layer.layui.com/mobile/
  */
 function AjaxAddCart(goods_id,num,to_catr)
-{                                            
-	
+{
     //如果有商品规格 说明是商品详情页提交
     if($("#buy_goods_form").length > 0){        
         $.ajax({
@@ -18,7 +17,7 @@ function AjaxAddCart(goods_id,num,to_catr)
 			dataType:'json',
             success: function(data){	
 				// 加入购物车后再跳转到 购物车页面
-            	
+                
 			    if(data.status < 0)
 				{
 					layer.open({content: data.msg,time: 1});
@@ -26,16 +25,22 @@ function AjaxAddCart(goods_id,num,to_catr)
 				}
 			    cart_num = parseInt($('#tp_cart_info').html())+parseInt($('#number').val());
 			    $('#tp_cart_info').html(cart_num)
-			    layer.open({
-			        content: '添加成功！',
-			        btn: ['再逛逛', '去购物车'],
-			        shadeClose: false,
-			        yes: function(){
-			            layer.closeAll();
-			        }, no: function(){
-			        	location.href = "/index.php?m=Mobile&c=Cart&a=cart";
-			        }
-			    });
+
+                if(to_catr == 1)  //直接购买
+                {
+                    location.href = "/index.php?m=Mobile&c=Cart&a=cart";
+                } else {
+                    layer.open({
+                        content: '添加成功！',
+                        btn: ['再逛逛', '去购物车'],
+                        shadeClose: false,
+                        yes: function(){
+                            layer.closeAll();
+                        }, no: function(){
+                            location.href = "/index.php?m=Mobile&c=Cart&a=cart";
+                        }
+                    });
+                }
             }
         });     
     }else{ //否则可能是商品列表页 、收藏页商品点击加入购物车
