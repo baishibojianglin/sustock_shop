@@ -141,7 +141,7 @@
                     <div class="monettu">
                         <div class="fop-main">
                             <div class="m-tagbox m-multi-tag">
-                                <a href="javascript:void(0)" rel="50" class="tag-item">￥50.00<i class="t-check tptig"></i></a>
+                                <a href="javascript:void(0)" rel="0.01" class="tag-item">￥50.00<i class="t-check tptig"></i></a>
 
                                 <a href="javascript:void(0)" rel="100" class="tag-item">￥100.00<i class="t-check"></i></a>
 
@@ -252,7 +252,7 @@
             $(this).find('.define-input').blur(function(){
                 var ce = $(this).val();
                 ce = ce.replace(/\D|^0/g,'')
-                           
+
                 $(this).parent('.tag-define').siblings('.tag-item').each(function(){
                     var a_text = $(this).text();
                     if(ce == a_text && ce != ''){
@@ -265,16 +265,23 @@
                     $(this).prev('.define-label').show();
                     $(this).hide();
                 }else{
-                    //remark[{$goods_list.goods_id}][rank]
-                    //$(this).parent('.tag-define').prev('.tag-item').after('<input type="hidden" name="remark['+goods_id+'][tag][]" value="'+ce+'"/><a href="javascript:void(0)" class="tag-item">'+'￥'+ ce +'<i class="t-check"></i></a>');
-                    //$(this).prev('.define-label').show();
-                    //$(this).hide();
-                    //$(this).val('');
+                    // remark[{$goods_list.goods_id}][rank]
+                    // $(this).parent('.tag-define').prev('.tag-item').after('<input type="hidden" name="remark['+goods_id+'][tag][]" value="'+ce+'"/><a href="javascript:void(0)" class="tag-item">'+'￥'+ ce +'<i class="t-check"></i></a>');
+                    // $(this).prev('.define-label').show();
+                    // $(this).hide();
+                    // $(this).val('');
+
                 }
             })
-        });       
+        });
+
+
     });
-    
+
+    function change_pay(obj)
+    {
+        $(obj).parent().siblings('input[name="pay_radio"]').trigger('click');
+    }
     
     function recharge_submit(){
     	var input_val = parseInt($('#input_val').val());
