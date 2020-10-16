@@ -146,6 +146,8 @@ class GoodsController extends MobileBaseController {
      * 商品详情页
      */
     public function goodsInfo(){
+        $first_leader = I('get.first_leader');
+        $this->assign('first_leader', $first_leader);
         C('TOKEN_ON',true);        
         $goodsLogic = new \Home\Logic\GoodsLogic();
         $goods_id = I("get.id");

@@ -21,18 +21,19 @@ use Think\Model\RelationModel;
  */
 class CartLogic extends RelationModel
 {
-
-    
     /**
      * 加入购物车方法
-     * @param type $goods_id  商品id
-     * @param type $goods_num   商品数量
-     * @param type $goods_spec  选择规格 
-     * @param type $user_id 用户id
+     * @param type $goods_id 商品id
+     * @param type $goods_num 商品数量
+     * @param type $goods_spec 选择规格
+     * @param $session_id
+     * @param type|int $user_id 用户id
+     * @param int $first_leader 商品推荐人id
+     * @return array
+     * @throws \think\Exception
      */
-    function addCart($goods_id,$goods_num,$goods_spec,$session_id,$user_id = 0)
-    {       
-        
+    function addCart($goods_id,$goods_num,$goods_spec,$session_id,$user_id = 0, $first_leader)
+    {
         $goods = M('Goods')->where("goods_id = $goods_id")->find(); // 找出这个商品        
         $specGoodsPriceList = M('SpecGoodsPrice')->where("goods_id = $goods_id")->getField("key,key_name,price,store_count,sku"); // 获取商品对应的规格价钱 库存 条码
 
@@ -89,7 +90,11 @@ class CartLogic extends RelationModel
             $where .= " and (session_id = '$session_id' or user_id = $user_id) ";
         else
             $where .= " and  session_id = '$session_id' ";
-        
+
+        if (isset($first_leader) && $first_leader) { // 商品推荐人id
+            $where .= " and first_leader = $first_leader";
+        }
+
         $catr_goods = M('Cart')->where($where)->find(); // 查找购物车是否已经存在该商品
         $price = $spec_price ? $spec_price : $goods['shop_price']; // 如果商品规格没有指定价格则用商品原始价格
         
@@ -119,15 +124,17 @@ class CartLogic extends RelationModel
                     'prom_type'       => $goods['prom_type'],   // 0 普通订单,1 限时抢购, 2 团购 , 3 促销优惠
                     'prom_id'         => $goods['prom_id'],   // 活动id
                     'store_id'        => $goods['store_id'],   // 店铺id
-        );                
+                    'first_leader'    => $first_leader ? $first_leader : 0, // 商品推荐人id
+        );
 
        // 如果商品购物车已经存在 
        if($catr_goods) 
        {            
            // 如果购物车的已有数量加上 这次要购买的数量  大于  库存输  则不再增加数量
             if(($catr_goods['goods_num'] + $goods_num) > $goods['store_count'])
-                $goods_num = 0;           
-            $result = M('Cart')->where("id =".$catr_goods[id])->save(  array("goods_num"=> ($catr_goods['goods_num'] + $goods_num)) ); // 数量相加        
+                $goods_num = 0;
+           $first_leader = ($catr_goods['first_leader'] == 0 && $first_leader != false) ? $first_leader : $catr_goods['first_leader']; // 商品推荐人id
+            $result = M('Cart')->where("id =".$catr_goods[id])->save(  array("goods_num" => ($catr_goods['goods_num'] + $goods_num), 'first_leader' => $first_leader) ); // 数量相加
             $cart_count = cart_goods_num($user_id,$session_id); // 查找购物车数量 
             setcookie('cn',$cart_count,null,'/');
             return array('status'=>1,'msg'=>'成功加入购物车','result'=>$cart_count);

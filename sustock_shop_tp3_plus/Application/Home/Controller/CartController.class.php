@@ -48,13 +48,12 @@ class CartController extends BaseController {
      */
     function ajaxAddCart()
     {
-        
         $goods_id = I("goods_id"); // 商品id
         $goods_num = I("goods_num");// 商品数量
-        $goods_spec = I("goods_spec"); // 商品规格      
-
+        $goods_spec = I("goods_spec"); // 商品规格
+        $first_leader = I("first_leader"); // 商品推荐人ID
         
-        $result = $this->cartLogic->addCart($goods_id, $goods_num, $goods_spec,$this->session_id,$this->user_id); // 将商品加入购物车                     
+        $result = $this->cartLogic->addCart($goods_id, $goods_num, $goods_spec,$this->session_id,$this->user_id, $first_leader); // 将商品加入购物车
         exit(json_encode($result));
     }
     

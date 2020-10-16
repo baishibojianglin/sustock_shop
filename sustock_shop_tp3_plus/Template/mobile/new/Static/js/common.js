@@ -6,14 +6,14 @@
  * @to_catr 加入购物车后再跳转到 购物车页面 默认不跳转 1 为跳转
  * layer弹窗插件请参考http://layer.layui.com/mobile/
  */
-function AjaxAddCart(goods_id,num,to_catr)
+function AjaxAddCart(goods_id,num,to_catr, first_leader)
 {
     //如果有商品规格 说明是商品详情页提交
     if($("#buy_goods_form").length > 0){        
         $.ajax({
             type : "POST",
             url:"/index.php?m=Home&c=Cart&a=ajaxAddCart",
-            data : $('#buy_goods_form').serialize(),// 你的formid 搜索表单 序列化提交                        
+            data : $('#buy_goods_form').serialize() + '&first_leader=' + first_leader,// 你的formid 搜索表单 序列化提交
 			dataType:'json',
             success: function(data){	
 				// 加入购物车后再跳转到 购物车页面
