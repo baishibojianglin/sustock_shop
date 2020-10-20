@@ -8,6 +8,7 @@ namespace Mobile\Controller;
 use Boris\Config;
 include_once './ThinkPHP/Library/Vendor/AlipayMobile/wappay/service/AlipayTradeService.php';
 include_once './ThinkPHP/Library/Vendor/AlipayMobile/wappay/buildermodel/AlipayTradeWapPayContentBuilder.php';
+include_once './plugins/payment/weixin/weixin.class.php';
 
 class AlipayMobileController extends MobileBaseController
 {
@@ -64,6 +65,17 @@ class AlipayMobileController extends MobileBaseController
             $this->error('此订单，已完成支付!');
         }
 
+        //微信JS支付
+        $pay_radio = $_REQUEST['pay_radio'];
+        $config_value = parse_url_param($pay_radio);
+        if($this->pay_code == 'weixin' && $_SESSION['openid'] && strstr($_SERVER['HTTP_USER_AGENT'],'MicroMessenger')){
+            // 引入微信支付类文件
+            $weixin= new \weixin();
+            $code_str = $weixin->getJSAPI($order,$config_value);
+            exit($code_str);
+        }
+
+        /*提交支付宝支付 start*/
         //商户订单号，商户网站订单系统中唯一订单号，必填
         $out_trade_no = trim($order['order_sn']);
 
@@ -92,6 +104,18 @@ class AlipayMobileController extends MobileBaseController
         $result=$payResponse->wapPay($payRequestBuilder,$config['return_url'],$config['notify_url']);
 
         return ;
+        /*提交支付宝支付 end*/
+    }
+
+    /*
+     * 微信回调
+     * */
+    public function notifyUrlWx(){
+        require_once("./plugins/payment/weixin/example/notify.php");
+        $notify = new \PayNotifyCallBack();
+        $notify->Handle(false);
+        exit();
+
     }
 
     /*

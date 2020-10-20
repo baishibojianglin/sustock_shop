@@ -47,7 +47,7 @@ class weixin extends RelationModel
      */
     function get_code($order, $config_value)
     {       
-            $notify_url = SITE_URL.'/index.php/Home/Payment/notifyUrl/pay_code/weixin'; // 接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。
+            $notify_url = SITE_URL.'/index.php/Mobile/AlipayMobile/notifyUrlWx'; // 接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。
             //$notify_url = C('site_url').U('Home/Payment/notifyUrl',array('pay_code'=>'weixin')); // 接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。
             //$notify_url = C('site_url')."/index.php?m=Home&c=Payment&a=notifyUrl&pay_code=weixin";
             $input = new WxPayUnifiedOrder();
@@ -90,6 +90,8 @@ class weixin extends RelationModel
     		$go_url = U('Mobile/User/order_detail',array('id'=>$order['order_id']));
     		$back_url = U('Mobile/Cart/cart4',array('order_id'=>$order['order_id']));
     	}
+
+
         //①、获取用户openid
         $tools = new JsApiPay();
         //$openId = $tools->GetOpenid();
@@ -103,13 +105,13 @@ class weixin extends RelationModel
         $input->SetTime_start(date("YmdHis"));
         $input->SetTime_expire(date("YmdHis", time() + 600));
         $input->SetGoods_tag("tp_wx_pay");
-        $input->SetNotify_url(SITE_URL.'/index.php/Home/Payment/notifyUrl/pay_code/weixin');
+        $input->SetNotify_url(SITE_URL.'/index.php/Mobile/AlipayMobile/notifyUrlWx');
         $input->SetTrade_type("JSAPI");
         $input->SetOpenid($openId);
         $order2 = WxPayApi::unifiedOrder($input);
-        //echo '<font color="#f00"><b>统一下单支付单信息</b></font><br/>';
-        //printf_info($order);exit;  
+
         $jsApiParameters = $tools->GetJsApiParameters($order2);
+
         $html = <<<EOF
 	<script type="text/javascript">
 	//调用微信JS api 支付
@@ -120,13 +122,15 @@ class weixin extends RelationModel
 			function(res){
 				//WeixinJSBridge.log(res.err_msg);
 				 if(res.err_msg == "get_brand_wcpay_request:ok") {
+				     // alert(res.err_code+res.err_desc+res.err_msg);
 				    location.href='$go_url';
 				 }else{
-				 	alert(res.err_code+res.err_desc+res.err_msg);
+				 	// alert(res.err_code+res.err_desc+res.err_msg);
 				    location.href='$back_url';
 				 }
 			}
 		);
+		
 	}
 
 	function callpay()
@@ -141,9 +145,12 @@ class weixin extends RelationModel
 		}else{
 		    jsApiCall();
 		}
+		
 	}
 	callpay();
+	
 	</script>
+
 EOF;
         
     return $html;

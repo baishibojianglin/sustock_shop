@@ -13,6 +13,7 @@ include_once './ThinkPHP/Library/Vendor/Alipay/pagepay/buildermodel/AlipayTradeP
 
 class AlipayController extends BaseController
 {
+
     public $pay_code; //  具体的支付code
 
     /**
@@ -64,6 +65,7 @@ class AlipayController extends BaseController
             $this->error('此订单，已完成支付!');
         }
 
+        /*提交支付宝支付 start*/
         //商户订单号，商户网站订单系统中唯一订单号，必填
         $out_trade_no = trim($order['order_sn']);
 
@@ -96,6 +98,7 @@ class AlipayController extends BaseController
 
         //输出表单
         var_dump($response);
+        /*提交支付宝支付 end*/
     }
 
     /*
