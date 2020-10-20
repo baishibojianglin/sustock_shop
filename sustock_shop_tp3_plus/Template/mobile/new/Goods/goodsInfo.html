@@ -123,12 +123,10 @@ if(parseInt(is_distribut) == 1 && parseInt(user_id) > 0)
         }
         return(false);
     }
-    var _href = window.location.href;
-    var _search = window.location.search;
-    alert(_href);
-    alert(_search);
+    /*var _href = window.location.href;alert(_href);
+    var _search = window.location.search;alert(_search);
     var _first_leader = getQueryVariable('first_leader'); // 调用
-    alert(_first_leader);
+    alert(_first_leader);*/
 </script>           
 <script type="text/javascript" src="http://v3.jiathis.com/code_mini/jia.js" charset="utf-8"></script>
 <!-- JiaThis Button END -->          
@@ -378,8 +376,8 @@ function goTop(){
     <li><a href="javascript:collect_goods({$goods.goods_id})" id="favorite_add"><em class="goods_nav3"></em><span>收藏</span></a></li>
   </ul>
   <dl>
-    <dd class="flow"><a class="button active_button" href="javascript:void(0);" onClick="AjaxAddCart({$goods.goods_id},1,0);">加入购物车</a> </dd>
-    <dd class="goumai"><a style="display:block;" href="javascript:void(0);"  onclick="AjaxAddCart({$goods.goods_id},1,1);">立即购买</a> </dd>
+    <dd class="flow"><a class="button active_button" href="javascript:void(0);" onClick="AjaxAddCart({$goods.goods_id},1,0, getQueryVariable('first_leader'));">加入购物车</a> </dd><!--或使用getCookie('first_leader')$_GET['first_leader']-->
+    <dd class="goumai"><a style="display:block;" href="javascript:void(0);"  onclick="AjaxAddCart({$goods.goods_id},1,1, getQueryVariable('first_leader'));">立即购买</a> </dd>
   </dl>
 </div>
 <script type="text/javascript">
