@@ -275,7 +275,8 @@ class CartController extends BaseController {
             }
         }
          
-        $paymentList = M('Plugin')->where("`type`='payment' and status = 1 and  scene in(0,2)")->select();                        
+//        $paymentList = M('Plugin')->where("`type`='payment' and status = 1 and  scene in(0,2)")->select();
+        $paymentList = M('Plugin')->where("`type`='payment' and status = 1 and  scene = 2")->select();
         $paymentList = convert_arr_key($paymentList, 'code');
         
         foreach($paymentList as $key => $val)

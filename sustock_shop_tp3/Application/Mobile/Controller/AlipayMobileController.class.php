@@ -9,6 +9,11 @@ use Boris\Config;
 include_once './ThinkPHP/Library/Vendor/AlipayMobile/wappay/service/AlipayTradeService.php';
 include_once './ThinkPHP/Library/Vendor/AlipayMobile/wappay/buildermodel/AlipayTradeWapPayContentBuilder.php';
 include_once './plugins/payment/weixin/weixin.class.php';
+include_once './plugins/payment/weixin/example/notify.php';
+
+//初始化日志
+$logHandler= new \CLogFileHandler("./logs/".date('Y-m-d').'.log');
+$log = \Log::Init($logHandler, 15);
 
 class AlipayMobileController extends MobileBaseController
 {
@@ -71,7 +76,7 @@ class AlipayMobileController extends MobileBaseController
         if($this->pay_code == 'weixin' && $_SESSION['openid'] && strstr($_SERVER['HTTP_USER_AGENT'],'MicroMessenger')){
             // 引入微信支付类文件
             $weixin= new \weixin();
-            $code_str = $weixin->getJSAPI($order,$config_value);
+            $code_str = $weixin->getJSAPI($order);
             exit($code_str);
         }
 
@@ -111,7 +116,8 @@ class AlipayMobileController extends MobileBaseController
      * 微信回调
      * */
     public function notifyUrlWx(){
-        require_once("./plugins/payment/weixin/example/notify.php");
+
+//        \Log::DEBUG("begin notify");
         $notify = new \PayNotifyCallBack();
         $notify->Handle(false);
         exit();

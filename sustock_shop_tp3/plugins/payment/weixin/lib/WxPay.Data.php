@@ -83,7 +83,8 @@ class WxPayDataBase
         //将XML转为array
         //禁止引用外部xml实体
         libxml_disable_entity_loader(true);
-        $this->values = json_decode(json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)), true);		
+        $this->values = json_decode(json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
+
 		return $this->values;
 	}
 	
@@ -110,16 +111,21 @@ class WxPayDataBase
 	 */
 	public function MakeSign()
 	{
+
 		//签名步骤一：按字典序排序参数
 		ksort($this->values);
 		$string = $this->ToUrlParams();
+
 		//签名步骤二：在string后加入KEY
 		$string = $string . "&key=".WxPayConfig::$key;
+
 		//签名步骤三：MD5加密
 		$string = md5($string);
 		//签名步骤四：所有字符转为大写
 		$result = strtoupper($string);
+
 		return $result;
+
 	}
 	
 	/**
@@ -200,15 +206,20 @@ class WxPayResults extends WxPayDataBase
      * @throws WxPayException
      */
 	public static function Init($xml)
-	{	
+	{
+
 		$obj = new self();
 		$obj->FromXml($xml);
+
+
 		//fix bug 2015-06-29
 		if($obj->values['return_code'] != 'SUCCESS'){
 			 return $obj->GetValues();
 		}
 		$obj->CheckSign();
+
         return $obj->GetValues();
+
 	}
 }
 

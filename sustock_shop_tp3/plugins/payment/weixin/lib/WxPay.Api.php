@@ -410,8 +410,10 @@ class WxPayApi
  	 */
 	public static function notify($callback, &$msg)
 	{
-		//获取通知的数据
-		$xml = $GLOBALS['HTTP_RAW_POST_DATA'];
+
+        //获取通知的数据
+        $xml = isset($GLOBALS['HTTP_RAW_POST_DATA']) ? $GLOBALS['HTTP_RAW_POST_DATA'] : file_get_contents("php://input");
+
 		//如果返回成功则验证签名
 		try {
 			$result = WxPayResults::Init($xml);
@@ -419,7 +421,7 @@ class WxPayApi
 			$msg = $e->errorMessage();
 			return false;
 		}
-		
+
 		return call_user_func($callback, $result);
 	}
 	

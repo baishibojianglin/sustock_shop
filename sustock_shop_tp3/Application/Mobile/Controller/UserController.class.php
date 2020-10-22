@@ -82,31 +82,10 @@ class UserController extends MobileBaseController
         session_destroy();
         setcookie('cn', '', time() - 3600, '/');
         setcookie('user_id', '', time() - 3600, '/');
-        //$this->success("退出成功",U('Mobile/Index/index'));
-        header("Location:" . U('Mobile/Index/index'));
+        $this->success("退出成功",U('Mobile/Index/index'));
+//        header("Location:" . U('Mobile/Index/index'));
     }
 
-    /*
-     * 账户资金
-     */
-    public function account()
-    {
-        $user = session('user');
-        //获取账户资金记录
-        $logic = new UsersLogic();
-        $data = $logic->get_account_log($this->user_id, I('get.type'));
-        $account_log = $data['result'];
-
-        $this->assign('user', $user);
-        $this->assign('account_log', $account_log);
-        $this->assign('page', $data['show']);
-
-        if ($_GET['is_ajax']) {
-            $this->display('ajax_account_list');
-            exit;
-        }
-        $this->display();
-    }
 
     public function coupon()
     {
@@ -813,11 +792,7 @@ class UserController extends MobileBaseController
     {
     	$type = I('type','all');
     	$this->assign('type',$type);
-    	if($type == 'recharge'){
-    		$count = M('recharge')->where("user_id=" . $this->user_id)->count();
-    		$Page = new Page($count, 16);
-    		$account_log = M('recharge')->where("user_id=" . $this->user_id)->order('order_id desc')->limit($Page->firstRow . ',' . $Page->listRows)->select();
-    	}else if($type == 'points'){
+    	if($type == 'points'){
     		$count = M('account_log')->where("user_id=" . $this->user_id ." and pay_points!=0 ")->count();
     		$Page = new Page($count, 16);
     		$account_log = M('account_log')->where("user_id=" . $this->user_id." and pay_points!=0 ")->order('log_id desc')->limit($Page->firstRow . ',' . $Page->listRows)->select();

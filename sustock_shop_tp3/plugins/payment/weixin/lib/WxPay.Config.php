@@ -25,7 +25,7 @@ class WxPayConfig
 	// 把常量改成静态变量
 	 public static $appid = '';
 	 public static $mchid = '';
-	 public static $key = '';
+	 public static $key = '10bc97ab9f05499c987148c50c7e831e';
 	 public static $appsecret = '';
 
 	//=======【证书路径设置】=====================================
