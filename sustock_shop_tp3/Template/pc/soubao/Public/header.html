@@ -143,14 +143,8 @@
     </div>
      
     <ul class="main-nav">
-      <li class="nav-item"><a class="menu-item <if condition=" CONTROLLER_NAME eq 'Index' ">menu-item-active"</if> target="_blank" href="/" style="overflow: visible;">首页 </a></li>
-      <tpshop sql="SELECT * FROM `__PREFIX__navigation` where is_show = 1 ORDER BY `sort` DESC" key="k" item='v'>
-       <li class="nav-item"><a  style="overflow: visible;"   href="{$v[url]}" 
-       		<?php  if($_SERVER['REQUEST_URI']==str_replace('&amp;','&',$v[url])){ echo "class='menu-item menu-item-active'";}
-       		else{ echo "class='menu-item'"; } ?>> {$v[name]} </a></li>
-      </tpshop>
-      <li class="nav-item"><a class="menu-item "  href="" style="overflow: visible;">官方网站<i class="e-hot"></i></a></li>
-    </ul>     
+
+    </ul>
     </div>
 </div>
 <div>

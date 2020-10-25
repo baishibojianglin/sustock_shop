@@ -27,6 +27,7 @@ class UploadifyController extends BaseController{
             'input' => I('input'),
             'func' => empty($func) ? 'undefined' : $func,
         );
+
         $this->assign('info',$info);
         $this->display();
     }

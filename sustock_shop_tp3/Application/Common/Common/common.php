@@ -549,22 +549,24 @@ function tpCache($config_key,$data = array()){
 /**
  * 记录帐户变动
  * @param   int     $user_id        用户id
+ * @param   float   $user_money     可用余额变动
  * @param   int     $pay_points     消费积分变动
  * @param   string  $desc    变动说明
  * @param   float   distribut_money 分佣金额
  * @return  bool
  */
-function accountLog($user_id,$pay_points = 0, $desc = '',$distribut_money = 0,$order_id = 0){
+function accountLog($user_id, $user_money = 0,$pay_points = 0, $desc = '',$distribut_money = 0,$order_id = 0){
     /* 插入帐户变动记录 */
     $account_log = array(
         'user_id'       => $user_id,
+        'user_money'    => $user_money,
         'pay_points'    => $pay_points,
         'change_time'   => time(),
         'desc'   => $desc,
         'order_id'   => $order_id
     );
     /* 更新用户信息 */
-    $sql = "UPDATE __PREFIX__users SET " .
+    $sql = "UPDATE __PREFIX__users SET user_money = user_money + $user_money," .
         " pay_points = pay_points + $pay_points, distribut_money = distribut_money + $distribut_money WHERE user_id = $user_id";
     if( D('users')->execute($sql)){
     	M('account_log')->add($account_log);
@@ -1037,10 +1039,11 @@ function get_order_promotion($order_amount , $store_id){
  * @param type $city 城市
  * @param type $district 县
  * @param type $pay_points 积分   数组
+ * @param type $user_money 余额
  * @param type $coupon_id  优惠券  数组
  * @param type $couponCode  优惠码 数组
  */ 
-function calculate_price($user_id=0,$order_goods,$shipping_code = array(),$shipping_price = array(),$province=0,$city=0,$district=0,$pay_points=0,$coupon_id = array(),$couponCode = array())
+function calculate_price($user_id=0,$order_goods,$shipping_code = array(),$shipping_price = array(),$province=0,$city=0,$district=0,$pay_points=0,$user_money=0,$coupon_id = array(),$couponCode = array())
 {    
     $cartLogic = new \Home\Logic\CartLogic();               
     $user = M('users')->where("user_id = $user_id")->find();// 找出这个用户
@@ -1050,7 +1053,9 @@ function calculate_price($user_id=0,$order_goods,$shipping_code = array(),$shipp
     
         // 判断使用积分 余额
     if($pay_points && ($pay_points > $user['pay_points']))
-        return array('status'=>-5,'msg'=>"你的账户可用积分为:".$user['pay_points'],'result'=>''); // 返回结果状态
+        return array('status'=>-5,'msg'=>"你的账户可用积分为:".$user['pay_points'],'result'=>''); // 返回结果状态                
+    if($user_money  && ($user_money > $user['user_money']))
+        return array('status'=>-6,'msg'=>"你的账户可用余额为:".$user['user_money'],'result'=>''); // 返回结果状态
     
     $goods_id_arr = get_arr_column($order_goods,'goods_id');
     $goods_arr = M('goods')->where("goods_id in(".  implode(',',$goods_id_arr).")")->getField('goods_id,weight,market_price,is_free_shipping'); // 商品id 和重量对应的键值对
@@ -1127,7 +1132,10 @@ function calculate_price($user_id=0,$order_goods,$shipping_code = array(),$shipp
         $integral_money = ($integral_money > $order_amount) ? $order_amount : $integral_money; // 假设应付 1块钱 而用户输入了 200 积分 2块钱, 那么就让 $pay_points = 1块钱 等同于强制让用户输入1块钱
         $pay_points = $integral_money * tpCache('shopping.point_rate'); //以防用户使用过多积分的情况
         $order_amount = $order_amount - $integral_money; //  积分抵消应付金额
-
+        
+       // 余额支付原理等同于积分
+       $user_money = ($user_money > $order_amount) ? $order_amount : $user_money;  
+       $order_amount = $order_amount - $user_money; //  余额支付抵应付金额
                                        
         // 计算每个商家平摊积分余额  和 余额
         $sum_store_order_amount = array_sum($store_order_amount);
@@ -1137,7 +1145,11 @@ function calculate_price($user_id=0,$order_goods,$shipping_code = array(),$shipp
             if($pay_points > 0){
                 $store_point_count[$k] = (int)($proportion * $pay_points);
                 $store_order_amount[$k] -= $store_point_count[$k] / tpCache('shopping.point_rate'); // 每个商家减去对应积分抵消的余额
-            }
+            }                            
+            if($user_money > 0){                
+                $store_balance[$k] = round($proportion * $user_money,2); // 每个商家平摊用了多少余额  保留两位小数
+                $store_order_amount[$k] -= $store_balance[$k]; // 每个商家减去余额支付抵消的
+            }  
             $store_order_amount[$k] = round($store_order_amount[$k],2);
         } 
         // 如果出现除数 除不尽的, 则最后一位加一
@@ -1155,6 +1167,7 @@ function calculate_price($user_id=0,$order_goods,$shipping_code = array(),$shipp
             'cut_fee'           => $cut_fee, // 共节约多少钱
             'anum'              => $anum, // 商品总共数量
             'integral_money'    => $integral_money,  // 积分抵消金额
+            'user_money'        => $user_money, // 使用余额
             'coupon_price'      => $coupon_price,// 优惠券抵消金额
             'order_goods'       => $order_goods, // 商品列表 多加几个字段原样返回
             'shipping_price'    => $shipping_price, // 物流费                        
@@ -1164,7 +1177,8 @@ function calculate_price($user_id=0,$order_goods,$shipping_code = array(),$shipp
             'store_shipping_price'=> $store_shipping_price, //每个商家的物流费
             'store_coupon_price'=> $store_coupon_price, //每个商家的优惠券金额        
             'store_goods_price' => $store_goods_price,//  每个店铺的商品总价            
-            'store_point_count' => $store_point_count, // 每个商家平摊使用了多少积分
+            'store_point_count' => $store_point_count, // 每个商家平摊使用了多少积分            
+            'store_balance'     => $store_balance, // 每个商家平摊用了多少余额            
         );    
     return array('status'=>1,'msg'=>"计算价钱成功",'result'=>$result); // 返回结果状态
 }

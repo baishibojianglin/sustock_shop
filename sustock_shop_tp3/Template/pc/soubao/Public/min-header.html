@@ -161,7 +161,7 @@
 <div class="m-top-nav editable" moduleId="1539926" style="position:relative;min-height:35px;">
   <div class="main-container new-year">
     <div class="main-title-wrap">
-    	<a href="javascript:" target="_blank" class="main-title">
+    	<a href="" target="_blank" class="main-title">
       		<span class="ico"><i class="il il-lt"></i><i class="il il-lc"></i><i class="il il-lb"></i>
       		<i class="il il-rt"></i><i class="il il-rc"></i><i class="il il-rb"></i></span>
       		商城商品分类
@@ -250,15 +250,7 @@
        </div>
       </div>
     </div>
-    <ul class="main-nav">
-      <li class="nav-item"><a class="menu-item <if condition=" CONTROLLER_NAME eq 'Index' ">menu-item-active"</if> target="_blank" href="/" style="overflow: visible;">首页 </a></li>
-      <tpshop sql="SELECT * FROM `__PREFIX__navigation` where is_show = 1 ORDER BY `sort` DESC" key="k" item='v'>
-       <li class="nav-item"><a  style="overflow: visible;"   href="{$v[url]}" 
-       		<?php  if($_SERVER['REQUEST_URI']==str_replace('&amp;','&',$v[url])){ echo "class='menu-item menu-item-active'";}
-       		else{ echo "class='menu-item'"; } ?>> {$v[name]} </a></li>
-      </tpshop>
-      <li class="nav-item"><a class="menu-item " href="javascript:void();" style="overflow: visible;">官方网站<i class="e-hot"></i></a></li>
-    </ul>  
+      
    </div>
 </div>
 <div>

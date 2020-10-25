@@ -140,7 +140,8 @@
       </div>
     </div>
     <div class="J_side_nav_trigger"></div>
-    <div class="module eidtModule" moduleId="1081037_main" parentModuleId ="1081037" moduleCode="cms-index-cchannel">
+
+    <div style="display: none" class="module eidtModule" moduleId="1081037_main" parentModuleId ="1081037" moduleCode="cms-index-cchannel">
       <div class="layout container mt30">
         <div class="layout-hd">
           <div class="layout-title fl">精品推荐</div>
@@ -174,21 +175,21 @@
             	   <img title="{$v[title]}" style="{$v[style]}" data-original="{$v[ad_code]}" class="img100 prod" src="{$v[ad_code]}">
                </a>
             </li>
-		  </adv>    
+		  </adv>
           <adv pid="54" limit="1" item="v">
             <li class="item">
                <a href="{$v.ad_link}" <if condition="$v['target'] eq 1">target="_blank"</if>>
             	   <img title="{$v[title]}" style="{$v[style]}" data-original="{$v[ad_code]}" class="img100 prod" src="{$v[ad_code]}">
                </a>
             </li>
-		  </adv>    
+		  </adv>
           <adv pid="55" limit="1" item="v">
             <li class="item">
                <a href="{$v.ad_link}" <if condition="$v['target'] eq 1">target="_blank"</if>>
             	   <img title="{$v[title]}" style="{$v[style]}" data-original="{$v[ad_code]}" class="img100 prod" src="{$v[ad_code]}">
                </a>
             </li>
-		  </adv>                                        
+		  </adv>
           
           </ul>
           <div class="cates-center" fnp="slide">
@@ -207,7 +208,7 @@
                            <img title="{$v[title]}" style="{$v[style]}" data-original="{$v[ad_code]}" class="img100 prod" src="{$v[ad_code]}" />
                        </a>
                     </div>
-                  </adv>  
+                  </adv>
               </li>
               <li class="panel">
 	              <adv pid="58" limit="1" item="v">
@@ -216,20 +217,20 @@
                            <img title="{$v[title]}" style="{$v[style]}" data-original="{$v[ad_code]}" class="img100 prod" src="{$v[ad_code]}" />
                        </a>
                     </div>
-                  </adv>  
+                  </adv>
 	              <adv pid="59" limit="1" item="v">
                     <div class="item">
                        <a href="{$v.ad_link}" <if condition="$v['target'] eq 1">target="_blank"</if>>
                            <img title="{$v[title]}" style="{$v[style]}" data-original="{$v[ad_code]}" class="img100 prod" src="{$v[ad_code]}" />
                        </a>
                     </div>
-                  </adv>                
+                  </adv>
               </li>
               
             </ul>
 			<ul class="slide-nav ui-switchable-nav" data-role="nav">
 				<li class="ui-switchable-trigger ui-switchable-active"><span>1</span></li>
-				<li class="ui-switchable-trigger"><span>2</span></li> 
+				<li class="ui-switchable-trigger"><span>2</span></li>
 			</ul>
             <a href="javascript:void(0);" class="ctrl ctrl-prev" data-role="prev"></a>
             <a href="javascript:void(0);" class="ctrl ctrl-next" data-role="next"></a>
@@ -248,15 +249,16 @@
                            <img title="{$v[title]}" style="{$v[style]}" data-original="{$v[ad_code]}" class="img100 prod" src="{$v[ad_code]}" />
                        </a>
                     </div>
-                  </adv>                  
+                  </adv>
           </ul>
         </div>
       </div>
-    </div> 
+    </div>
+
     <adv pid="99" limit="1" item="v">
 	    <div class="module eidtModule" parentModuleId="" moduleId="" style="min-height: 25px;">
 	      <div class="container mt30"><a href="{$v.ad_link}" <if condition="$v['target'] eq 1">target="_blank"</if> class="banner-img-single">
-	      	<img width="1188" height="80" class="prod" src="{$v[ad_code]}" title="{$v[title]}" style="{$v[style]}" data-original="{$v[ad_code]}" alt=""/></a>
+	      	<img width="1188" height="90" class="prod" src="{$v[ad_code]}" title="{$v[title]}" style="{$v[style]}" data-original="{$v[ad_code]}" alt=""/></a>
 	      </div>
 	    </div>
     </adv>    
@@ -268,7 +270,8 @@
         <div class="floor-wrapper">
           <div class="floor-left">
             <div class="menu-box">
-              <div class="menu-box-hd eidtModule" moduleId="1081777_main"><em>{$k+1}F</em>
+              <div class="menu-box-hd eidtModule" moduleId="1081777_main">
+<!--                  <em>{$k+1}F</em>-->
                 <p><a>{$vo.mobile_name}</a></p>
               </div>
               <div class="menu-box-bd eidtModule" style="overflow:hidden" moduleId="1081777_leftTopClassify">
@@ -291,7 +294,7 @@
             <div class="slide eidtModule" moduleId="1081777_leftBottomSlide" fnp="slide" k="{$k}">
               <div class="slide-container">
                 <ul data-role="content">
-                <adv pid="70+$k" limit="4" item="v" key="kk">
+                <adv pid="518481" limit="4" item="v" key="kk">
                    <li class="panel <if condition='$kk eq 0'>panel-action</if>">                   
                    <a href="{$v.ad_link}" <if condition="$v['target'] eq 1">target="_blank"</if>>
                     <img class="img100 prod" title="{$v[title]}" style="{$v[style]}" data-original="{$v[ad_code]}" src="{$v[ad_code]}">
@@ -323,7 +326,7 @@
             <div class="layout-hd switch_tab">
               <ul class="tab-nav fl" data-role="tabs">
                 <li class="item item-active" rel="goods-list"><a href="javascript:void(0);">热卖商品</a></li>
-                <li class="item" rel="pics"><a href="javascript:void(0)">精选活动</a></li>
+               
               </ul>
               <div class="cates-list eidtModule" moduleId="">
                	  <volist name="vo.hot_cate" id="ht" mod="2" key="kk">
@@ -335,15 +338,7 @@
               </div>
             </div>
             <div class="layout-bd eidtModule" style="overflow:hidden" data-role="panels">
-              <div class="pics pics-01 dn eidtModule" moduleId="1081777_selectedAd">
-	              <a class="item item-big" href="javascript:;"><img data-original="http://img17.fn-mart.com/pic/319c133a5e76dc07f7a2/Kn8Tnn7zvTCdhduMp2/5xeamROatRMR3i/CsmRq1bLsg-AQT1BAANNbU3JN2U018.png" src="" class="img100 prod"></a>
-	              <a class="item" href="javascript:;"><img data-original="http://img17.fn-mart.com/pic/a9fa133a5e011966d801/h26n22sT_2tMKludLn/1xmyeaWalaBYKR/CsmRsFbCg72AQexlAABPAlWh5uI114.jpg" src="" class="img100 img-effect prod"></a>
-	              <a class="item" href="javascript:;"><img data-original="http://img17.fn-mart.com/pic/6aec133a5e7cdca9ea81/kn62zz1zDTflhdZd3z/5iSymGZyZRnyOx/CsmRsVbLuB6ASOw2AABS7FLqBVc029.jpg" src="" class="img100 img-effect prod"></a>
-	              <a class="item nbdr" href="javascript:;"><img data-original="http://img17.fn-mart.com/pic/88b9133a5e78dc37a826/Kz6Tnn72FztdBlulUz/1ioRmyjaKat9cG/CsmRrVbLs8qALa3hAABZDDdC9rM099.jpg" src="" class="img100 img-effect prod"></a>
-	              <a class="item" href="javascript:;"><img data-original="http://img16.fn-mart.com/pic/342a133a5e79dc3e840d/K28z2212_ntdKdUluz/1YSGmyWGcGKxuY/CsmRrlbLs_6ARqJ3AAA4llKiEas704.jpg" src="" class="img100 img-effect prod"></a>
-	              <a class="item" href="javascript:;"><img data-original="http://img16.fn-mart.com/pic/e253133a5e7ddc3f6b3a/h2Hn22szD2CgKMZMtn/7imyeapanyCGu9/CsmRsFbLtB6AAcmUAABZdH4kFx8888.jpg" src="" class="img100 img-effect prod"></a>
-	              <a class="item nbdr" href="javascript:;"><img data-original="http://img16.fn-mart.com/pic/1d35133a5e861bd0cf3d/kn62zz1zDTflhdZd3z/5xoGoRUyVaWiV9/CsmRsVbNJfSACasaAAA6Ur4gNrM166.jpg" src="" class="img100 img-effect prod"></a>
-	          </div>
+             
               <div class="goods-list eidtModule" style="overflow:hidden" moduleId="1081777_hotCommodity" >
               	<foreach name="vo.hot_goods" item="vg">
 	                <dl class="item" href="" target ="_blank">
@@ -371,19 +366,9 @@
 	    </div>
 		
 		
-		
-		
-		
       </div>
     </div>
 	
-    <adv pid="100+$k" limit="1" item="v">
-	    <div class="module eidtModule" parentModuleId="" moduleId="" style="min-height: 25px;">
-	      <div class="container mt30"><a href="{$v.ad_link}" <if condition="$v['target'] eq 1">target="_blank"</if> class="banner-img-single">
-	      	<img width="1188" height="80" class="prod" src="{$v[ad_code]}" title="{$v[title]}" style="{$v[style]}" data-original="{$v[ad_code]}" alt=""/></a>
-	      </div>
-	    </div>
-    </adv>
     </foreach>
     <div class="module eidtModule" moduleId="" parentModuleId ="" moduleCode="cms-index-selection">
       <div class="layout boutique container mt30">
@@ -404,7 +389,7 @@
             <div class="comment-list" fnp="comments">
               <ul data-role="content">
                 <li class="comment">
-                  <div class="pic"><a href="javascript:;"><img data-original="http://img17.fn-mart.com/pic/2963133a5e812610dc90/B28nnn7z_2CMBgulVz/59eaSG0ahRoGkx/CsmRrlbNYtWAVtlKAAGi4lg8kLE019_400x400.jpg" class="prod selection-prod" src=""></a></div>
+                  <div class="pic"><a href="javascript:;"><img data-original="__STATIC__/images/luotuox.jpg" class="prod selection-prod" src="__STATIC__/images/luotuox.jpg"></a></div>
                   <div class="info">
                     <p class="author"><img data-original="" class="prod selection-prod" src="__STATIC__/images/80_80.gif">
                       <span>匿名用户</span>
@@ -413,7 +398,7 @@
                   </div>
                 </li>
                 <li class="comment">
-                  <div class="pic"><a href="javascript:;"><img data-original="http://img16.fn-mart.com/group1/M00/75/A7/CsnBPlXvnC2AZoSMAAFWVkDM1Po652_400x400.jpg" class="prod selection-prod" src=""></a></div>
+                  <div class="pic"><a href="javascript:;"><img data-original="__STATIC__/images/JC0.jpg" class="prod selection-prod" src="__STATIC__/images/JC0.jpg"></a></div>
                   <div class="info">
                     <p class="author"><img data-original="" class="prod selection-prod" src="__STATIC__/images/80_80.gif">
                       <span>匿名用户</span>
@@ -427,18 +412,7 @@
         </div>
       </div>
     </div>
-    <div class="module eidtModule" parentModuleId="" moduleId="" style="min-height: 25px;">
-      <div class="m-fn-plink container mt30">
-        <ul class="oh clearfix">
-          <tpshop sql="select * from __PREFIX__goods_category where is_show=1 and image !='' order by sort_order desc limit 9" item="v" key="k"> 
-	          <li>
-	            <p class="n">{$v.name}</p>
-	            <a href="{:U('Goods/goodsList',array('id'=>$v[id]))}" target="_blank" class="p"><img src="{$v.image}" alt="" title="" width="100" height="100"></a>
-	          </li>
-          </tpshop>
-        </ul>
-      </div>
-    </div>
+
     <!--  
 	<div class="J_side_nav mall-side-nav mall-side-nav-show" style="display: block; opacity: 0.95;">
 		<div class="side-wrapper">

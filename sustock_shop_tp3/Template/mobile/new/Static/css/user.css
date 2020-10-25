@@ -70,7 +70,7 @@
 .Icon10{background-position:0px 3px}
 .Icon11{background-position:0px -336px}
 .Wallet ul{ width:95%;height:40px; margin:auto; padding-top:10px; border-bottom:1px solid #eeeeee; padding-bottom:5px;}
-.Wallet ul li{ float:left; width:50%; text-align:center}
+.Wallet ul li{ float:left; width:33.33%; text-align:center}
 .Wallet ul li.sell_cost{width:50%}
 .j_million{ background-image:url(../images/w1_03.png); background-repeat:no-repeat;    background-position: 0px 3px;}
 .million_num{background-color: black;padding: 6px 4px;color: white;border-radius: 6px;}

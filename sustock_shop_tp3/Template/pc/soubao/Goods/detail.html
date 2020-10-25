@@ -401,23 +401,7 @@
               </div>
             </div>
           </div>
-          <div class="module fstore-sysdetail-qrcode">
-          	<div class="module fstore-sysdetail-qrcode">
-				<div class="module-hd"><h3>二维码</h3></div>
-				<div class="module-bd  module-bd-bdr">
-					<div class="qrcode">
-						
-                     <?php
-                     $url1='http://'.$_SERVER['HTTP_HOST'];
-                     $url2=$_SERVER['REQUEST_URI'];
-                     $url3=str_replace('Home', 'mobile',$url2);
-                     $url4=$url1.$url3;
-                     ?>
-		     <img src="http://qr.liantu.com/api.php?text=<?=$url4;?>">
-					</div>
-				</div>
-			</div>
-		  </div>
+
           <div class="module fstore-sysdetail-category-tree">
             <div class="module-hd">
               <h3>商品分类</h3>

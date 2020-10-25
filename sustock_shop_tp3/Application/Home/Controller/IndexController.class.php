@@ -80,7 +80,7 @@ class IndexController extends BaseController {
         	}
         }
         $this->assign('cateList',$cateList); 
-        $this->display();
+        $this->display('index');
     }
  
     /**

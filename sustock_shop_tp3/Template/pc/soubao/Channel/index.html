@@ -92,55 +92,7 @@
   </div>
   <div class="J_side_nav_trigger"></div>
   <div class="module editable F_dynamic" moduleid="1551308" parentmoduleid="1551308">
-    <div class="layout container mt30">
-      <div class="layout-hd">
-        <div class="layout-title fl">达人推荐</div>
-      </div>
-      <div class="recommend-goods">
-      
-       <adv limit="1" item="v" pid="'50'.$_GET[id].'2'" key="k">
-        <div class="item "> 
-         <a href="{$v.ad_link}" <if condition="$v['target'] eq 1">target="_blank"</if>> <img src="{$v[ad_code]}" title="{$v[title]}" style="{$v[style]} class="img100">
-          <div class="word">
-            <p class="up">{$v[ad_name]}</p>
-            <p class="down"></p>
-          </div>
-          </a> 
-        </div>
-       </adv>
-       <adv limit="1" item="v" pid="'50'.$_GET[id].'3'" key="k">
-        <div class="item "> 
-         <a href="{$v.ad_link}" <if condition="$v['target'] eq 1">target="_blank"</if>> <img src="{$v[ad_code]}" title="{$v[title]}" style="{$v[style]} class="img100">
-          <div class="word">
-            <p class="up">{$v[ad_name]}</p>
-            <p class="down"></p>
-          </div>
-          </a> 
-        </div>
-       </adv>
-       <adv limit="1" item="v" pid="'50'.$_GET[id].'4'" key="k">
-        <div class="item "> 
-         <a href="{$v.ad_link}" <if condition="$v['target'] eq 1">target="_blank"</if>> <img src="{$v[ad_code]}" title="{$v[title]}" style="{$v[style]} class="img100">
-          <div class="word">
-            <p class="up">{$v[ad_name]}</p>
-            <p class="down"></p>
-          </div>
-          </a> 
-        </div>
-       </adv>
-       <adv limit="1" item="v" pid="'50'.$_GET[id].'5'" key="k">
-        <div class="item last"> 
-         <a href="{$v.ad_link}" <if condition="$v['target'] eq 1">target="_blank"</if>> <img src="{$v[ad_code]}" title="{$v[title]}" style="{$v[style]} class="img100">
-          <div class="word">
-            <p class="up">{$v[ad_name]}</p>
-            <p class="down"></p>
-          </div>
-          </a> 
-        </div>
-       </adv>                     
-        
-      </div>
-    </div>
+
   </div>
   <!-- 1~6F-s -->
   <foreach name="channel_cate" item="vo" key="k">
@@ -159,7 +111,7 @@
       </div>
       <div class="floor floor-switch">
         <div class="floor-left step-slide editable ui-switchable" moduleid="1557937_left" fnp="switch-slide" data-widget-cid="widget-f060b19407b91859ce5e6716883a8148">
-          <div class="step"> <a> <img class="img100" src="http://img15.fn-mart.com/group1/M00/C5/4D/CsnBPlYp3cyAEoxdAABixlQhDXc585.jpg" data-images="http://img15.fn-mart.com/group1/M00/C5/4D/CsnBPlYp3cyAEoxdAABixlQhDXc585.jpg"> </a>
+          <div class="step"> <a> <img class="img100" src="__STATIC__/images/left.jpg" data-images=""> </a>
             <div class="nav" style="top:68px">
               <ul data-role="nav" class="nav-list ui-switchable-nav">
               	<foreach name="vo.sub_menu" item="v3" key="k">
@@ -213,7 +165,7 @@
         <ul class="slide ui-switchable-content" data-role="content" style="position: relative; width: 35791197px; left: 0px;">
         <tpshop sql="select * from `__PREFIX__goods` where cat_id2 = $vo[id] and is_on_sale = 1 order by goods_id limit 4" key="k5" item='v5'>
           <li class="item ui-switchable-clone" style="float: left;"> <a href="javascript:;"> <img class="img img100" src="{$v5.goods_id|goods_thum_images=150,150}"/> </a>
-            <div class="intro"> <a class="title" href="javascript:;">{$v5.goods_name|getSubstr=0,18}</a> <span class="price">￥<font id="201504CM170003044_1557937" class="">89</font></span> </div>
+            <div class="intro"> <a class="title" href="javascript:;">{$v5.goods_name|getSubstr=0,18}</a> <span class="price">￥<font id="201504CM170003044_1557937" class="">{$v5.shop_price}</font></span> </div>
           </li>
         </tpshop>          
         </ul>

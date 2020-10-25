@@ -58,15 +58,15 @@ $("#CancelBtn").click(function(){
 
 $(function() {
 	$('#uploadify').uploadify({
-			'auto'			  : true,
-			'method'   		  : 'post',
-			'multi'   		  : true,
+			'auto'			  : true, //自动上传
+			'method'   		  : 'post',  //方法，服务端可以用$_POST数组获取数据
+			'multi'   		  : true,  //允许同时上传多张图片
 			'swf'      		  : '__ROOT__/Public/plugins/uploadify/uploadify.swf',
        		'uploader'        : "{$info.upload}",
     		'progressData'    : 'all',
 			'queueSizeLimit'  : {$info.num},
-	        'uploadLimit'     : 5,
-			'fileSizeLimit'   : '20000KB',
+	        'uploadLimit'     : 5,  //一次最多只允许上传10张图片
+			'fileSizeLimit'   : '20000KB',  //限制上传的图片大小
 	        'fileTypeDesc' 	  : 'Image Files',
 	        'fileTypeExts'    : '*.jpeg; *.jpg; *.png; *.gif',
 			'buttonImage'     : '__ROOT__/Public/plugins/uploadify/select.png',

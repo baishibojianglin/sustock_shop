@@ -130,7 +130,7 @@ ul.catagories li:hover .catagory-detail {
   </div>
   <div id="headerall" class="wrapper clearfix"> <a href="/" title="首页" class="logohref">
     <h1 id="hd-logo" class="icon-feiniu">
-      <img src="{$tpshop_config['shop_info_store_logo']}"/>
+      <img height="60" width="160" src="{$tpshop_config['shop_info_store_logo']}"/>
     </h1>
     </a>
 <!--搜索框-->
@@ -284,17 +284,7 @@ ul.catagories li:hover .catagory-detail {
         </foreach>
       </ul>
     </div>
-    <ul class="horizontal-nav">
-      <li is_fresh="0"><a class="" href="/">
-        <span>首页</span>
-        <i class=""></i></a></li>
-      <tpshop sql="SELECT * FROM `__PREFIX__navigation` where is_show = 1 ORDER BY `sort` DESC" key="k" item='v'>
-        <li is_fresh="0"> 
-          <a <if condition="$v[is_new] eq 1">target="_blank"</if>href="{$v[url]}" >
-          <span>{$v[name]}</span>
-          <i class=""></i> </a> </li>
-      </tpshop>
-    </ul>
+
   </div>
 </nav>
 <script>

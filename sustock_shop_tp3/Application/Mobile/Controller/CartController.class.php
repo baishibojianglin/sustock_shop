@@ -162,8 +162,8 @@ class CartController extends MobileBaseController {
         $couponCode =  I("couponCode"); //  优惠券代码
         $invoice_title = I('invoice_title'); // 发票
         $pay_points =  I("pay_points",0); //  使用积分
-//        $user_money =  I("user_money",0); //  使用余额
-//        $user_money = $user_money ? $user_money : 0;
+        $user_money =  I("user_money",0); //  使用余额        
+        $user_money = $user_money ? $user_money : 0;
 
         if($this->cartLogic->cart_count($this->user_id,1) == 0 ) exit(json_encode(array('status'=>-2,'msg'=>'你的购物车没有选中商品','result'=>null))); // 返回结果状态
         if(!$address_id) exit(json_encode(array('status'=>-3,'msg'=>'请先填写收货人信息','result'=>null))); // 返回结果状态
@@ -171,14 +171,14 @@ class CartController extends MobileBaseController {
 		
 		$address = M('UserAddress')->where("address_id = $address_id")->find();
 		$order_goods = M('cart')->where("user_id = {$this->user_id} and selected = 1")->select();
-                $result = calculate_price($this->user_id,$order_goods,$shipping_code,0,$address[province],$address[city],$address[district],$pay_points,$coupon_id,$couponCode);
+                $result = calculate_price($this->user_id,$order_goods,$shipping_code,0,$address[province],$address[city],$address[district],$pay_points,$user_money,$coupon_id,$couponCode);                
 		if($result['status'] < 0)	
 			exit(json_encode($result));      	
 
                 $car_price = array(
                     'postFee'      => $result['result']['shipping_price'], // 物流费
                     'couponFee'    => $result['result']['coupon_price'], // 优惠券            
-//                    'balance'      => $result['result']['user_money'], // 使用用户余额
+                    'balance'      => $result['result']['user_money'], // 使用用户余额
                     'pointsFee'    => $result['result']['integral_money'], // 积分支付            
                     'payables'     => array_sum($result['result']['store_order_amount']), // 订单总额 减去 积分 减去余额
                     'goodsFee'     => $result['result']['goods_price'],// 总商品价格
@@ -190,7 +190,7 @@ class CartController extends MobileBaseController {
                     'store_shipping_price'=>$result['result']['store_shipping_price'],  //每个商家的物流费
                     'store_coupon_price'=>$result['result']['store_coupon_price'],  //每个商家的优惠券抵消金额
                     'store_point_count' => $result['result']['store_point_count'], // 每个商家平摊使用了多少积分            
-//                    'store_balance'=>$result['result']['store_balance'], // 每个商家平摊用了多少余额
+                    'store_balance'=>$result['result']['store_balance'], // 每个商家平摊用了多少余额
                     'store_goods_price'=>$result['result']['store_goods_price'], // 每个商家的商品总价
                 );   
                 // 提交订单        
