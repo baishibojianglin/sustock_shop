@@ -29,10 +29,10 @@ class MobileBaseController extends Controller {
         else 
             cookie('is_mobile','1',3600);                 
         //微信浏览器
-        if(strstr($_SERVER['HTTP_USER_AGENT'],'MicroMessenger') && empty($_SESSION['openid'])){
+        if(strstr($_SERVER['HTTP_USER_AGENT'],'MicroMessenger') /*&& empty($_SESSION['openid'])*/){
             $this->weixin_config = M('wx_user')->find(); //获取微信配置
             $this->assign('wechat_config', $this->weixin_config); 
-            if(is_array($this->weixin_config) && $this->weixin_config['wait_access'] == 1){
+            if(is_array($this->weixin_config) && $this->weixin_config['wait_access'] == 1 && empty($_SESSION['openid'])){
                 $wxuser = $this->GetOpenid(); //授权获取openid以及微信用户信息
                 session('subscribe', $wxuser['subscribe']);// 当前这个用户是否关注了微信公众号
                 //微信自动登录
