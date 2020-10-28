@@ -823,7 +823,7 @@ function update_pay_status($order_sn,$pay_status = 1)
 		// 找出对应的订单
 		$order = M('order')->where("order_sn = '$order_sn'")->find();
 		// 修改支付状态  已支付
-		M('order')->where("order_sn = '$order_sn'")->save(array('pay_status'=>1,'pay_time'=>time()));
+		$updatePayStatus = M('order')->where("order_sn = '$order_sn'")->save(array('pay_status'=>1,'pay_time'=>time()));
 		// 减少对应商品的库存
 		minus_stock($order['order_id']);
 		// 给他升级, 根据order表查看消费记录 给他会员等级升级 修改他的折扣 和 总金额
@@ -841,7 +841,46 @@ function update_pay_status($order_sn,$pay_status = 1)
 		M('store')->where("store_id = {$order['store_id']}")->setInc('pending_money',$order_settlement[0]['store_settlement']); // 店铺 待结算资金 累加
 		// 赠送积分
 		order_give($order);// 调用送礼物方法, 给下单这个人赠送相应的礼物
+
+        // 购买商品用户提成
+        if ($updatePayStatus) {
+            orderUserCommission($order['order_id'], $order['user_id']);
+        }
 	}
+}
+
+/**
+ * 购买商品用户提成
+ * 订单付款成功时，给商品分享者或上级用户（如果商品不是分享购买时）提成，且提成两级
+ * @param $order_id
+ * @param $user_id
+ */
+function orderUserCommission($order_id, $user_id) {
+    // 获取该笔订单商品对应的商品分享者id
+    $orderGoodsList = M('orderGoods')->where("order_id = {$order_id}")->select();
+    foreach ($orderGoodsList as $key => $value) {
+        if ($value['first_leader']) { // 如果有商品分享者，则对该分享者及上级用户提成
+            // 对商品分享者提成
+            $changeMoney1 = $value['goods_price'] * 0.5;
+            M('users')->where("user_id = {$value['first_leader']}")->setInc('user_money', $changeMoney1);
+
+            // 对商品分享者上级提成
+            $users1 = M('users')->where("user_id = {$value['first_leader']}")->find(); // 获取商品分享者上级
+            $changeMoney2 = $value['goods_price'] * 0.5;
+            M('users')->where("user_id = {$users1['first_leader']}")->setInc('user_money', $changeMoney2);
+        } else { // 如果商品不是分享购买时，对订单用户的上级及上上级提成
+            // 获取订单用户信息
+            $users2 = M('users')->where("user_id = {$user_id}")->find();
+
+            // 对订单用户上级提成
+            $changeMoney3 = $value['goods_price'] * 0.5;
+            M('users')->where("user_id = {$users2['first_leader']}")->setInc('user_money', $changeMoney3);
+
+            // 对订单用户上上级提成
+            $changeMoney4 = $value['goods_price'] * 0.5;
+            M('users')->where("user_id = {$users2['second_leader']}")->setInc('user_money', $changeMoney4);
+        }
+    }
 }
 
     /**

@@ -171,8 +171,8 @@ class CartController extends MobileBaseController {
 		
 		$address = M('UserAddress')->where("address_id = $address_id")->find();
 		$order_goods = M('cart')->where("user_id = {$this->user_id} and selected = 1")->select();
-                $result = calculate_price($this->user_id,$order_goods,$shipping_code,0,$address[province],$address[city],$address[district],$pay_points,$user_money,$coupon_id,$couponCode);                
-		file_put_contents('./cartorder.txt', json_encode($result));
+                $result = calculate_price($this->user_id,$order_goods,$shipping_code,0,$address[province],$address[city],$address[district],$pay_points,$user_money,$coupon_id,$couponCode);
+        
         if($result['status'] < 0)
 			exit(json_encode($result));      	
 

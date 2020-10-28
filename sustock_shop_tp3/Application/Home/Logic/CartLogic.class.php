@@ -90,9 +90,9 @@ class CartLogic extends RelationModel
         else
             $where .= " and  session_id = '$session_id' ";
 
-        /*if (isset($first_leader) && $first_leader) { // 商品推荐人id，注释掉既不根据商品推荐人id生成购物车
+        if (isset($first_leader) /*&& $first_leader*/) { // 商品推荐人id，添加该条件既根据商品推荐人id生成购物车商品
             $where .= " and first_leader = $first_leader";
-        }*/
+        }
 
         $catr_goods = M('Cart')->where($where)->find(); // 查找购物车是否已经存在该商品
         $price = $spec_price ? $spec_price : $goods['shop_price']; // 如果商品规格没有指定价格则用商品原始价格
@@ -132,7 +132,7 @@ class CartLogic extends RelationModel
            // 如果购物车的已有数量加上 这次要购买的数量  大于  库存输  则不再增加数量
             if(($catr_goods['goods_num'] + $goods_num) > $goods['store_count'])
                 $goods_num = 0;
-           $first_leader = ($catr_goods['first_leader'] == 0 && $first_leader != false) ? $first_leader : $catr_goods['first_leader']; // 商品推荐人id
+           $first_leader = (/*$catr_goods['first_leader'] == 0 &&*/ $first_leader != false) ? $first_leader : $catr_goods['first_leader']; // 商品推荐人id
             $result = M('Cart')->where("id =".$catr_goods[id])->save(  array("goods_num"=> ($catr_goods['goods_num'] + $goods_num), 'first_leader' => $first_leader) ); // 数量相加
             $cart_count = cart_goods_num($user_id,$session_id); // 查找购物车数量 
             setcookie('cn',$cart_count,null,'/');
@@ -314,7 +314,7 @@ function cart_freight2($shipping_code,$province,$city,$district,$weight,$store_i
         
          // 插入订单 order
         $address = M('UserAddress')->where("address_id = $address_id")->find();
-        file_put_contents('./store_order_amount.txt', json_encode($car_price['store_order_amount']));
+        
         // 循环添加订单 多少个商家添加多少个订单
         foreach($car_price['store_order_amount'] as $k => $v)
         {                           
@@ -382,10 +382,11 @@ function cart_freight2($shipping_code,$province,$city,$district,$weight,$store_i
                    $data2['store_id']           = $val['store_id']; // 店铺id
                    $data2['distribut']          = $goods['distribut']; // 三级分销金额
                    $data2['commission']         = M('goods_category')->where("id = {$goods['cat_id3']}")->getField('commission'); // 商品抽成比例
-                   $order_goods_id              = M("OrderGoods")->data($data2)->add(); 
+                   $data2['first_leader']       = $val['first_leader'] ? $val['first_leader'] : 0; // 商品推荐人id
+                   $order_goods_id              = M("OrderGoods")->data($data2)->add();
                    // 扣除商品库存  扣除库存移到 付完款后扣除
                    //M('Goods')->where("goods_id = ".$val['goods_id'])->setDec('store_count',$val['goods_num']); // 商品减少库存
-                } 
+                }
                 
                 // 如果应付金额为0  可能是余额支付 + 积分 + 优惠券 这里订单支付状态直接变成已支付 
                 if($data['order_amount'] == 0)
