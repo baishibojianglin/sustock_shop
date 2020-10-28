@@ -8,7 +8,7 @@
  */
 function AjaxAddCart(goods_id,num,to_catr, first_leader)
 {
-    alert('first_leader = ' + first_leader);
+    //alert('first_leader = ' + first_leader);
     //如果有商品规格 说明是商品详情页提交
     if($("#buy_goods_form").length > 0){        
         $.ajax({

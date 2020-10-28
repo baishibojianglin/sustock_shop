@@ -90,9 +90,9 @@ class CartLogic extends RelationModel
         else
             $where .= " and  session_id = '$session_id' ";
 
-        if (isset($first_leader) && $first_leader) { // 商品推荐人id
+        /*if (isset($first_leader) && $first_leader) { // 商品推荐人id，注释掉既不根据商品推荐人id生成购物车
             $where .= " and first_leader = $first_leader";
-        }
+        }*/
 
         $catr_goods = M('Cart')->where($where)->find(); // 查找购物车是否已经存在该商品
         $price = $spec_price ? $spec_price : $goods['shop_price']; // 如果商品规格没有指定价格则用商品原始价格
@@ -314,13 +314,13 @@ function cart_freight2($shipping_code,$province,$city,$district,$weight,$store_i
         
          // 插入订单 order
         $address = M('UserAddress')->where("address_id = $address_id")->find();
-               
+        file_put_contents('./store_order_amount.txt', json_encode($car_price['store_order_amount']));
         // 循环添加订单 多少个商家添加多少个订单
         foreach($car_price['store_order_amount'] as $k => $v)
         {                           
                 $shipping = M('Plugin')->where("code = '{$shipping_code[$k]}'")->find();
                 $order_sn = $this->get_order_sn(); // 获取生成订单号                                 
-                empty($master_order_sn) && ($master_order_sn = $this->get_order_sn()); // 住订单号
+                empty($master_order_sn) && ($master_order_sn = $this->get_order_sn()); // 主订单号
                 // 用户使用余额
                 $car_price['store_balance'][$k] = $car_price['store_balance'][$k] ? $car_price['store_balance'][$k] : 0;
                 // 用户使用积分
