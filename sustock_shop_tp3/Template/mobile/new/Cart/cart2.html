@@ -227,6 +227,8 @@
 // 获取订单价格
 function ajax_order_price()
 {
+    //alert('first_leader = ' + "{$_GET['first_leader']}");
+    alert('first_leader = ' + getCookie('first_leader'));
     $.ajax({
         type : "POST",
         url:'/index.php?m=Mobile&c=Cart&a=cart3&act=order_price&t='+Math.random(),
