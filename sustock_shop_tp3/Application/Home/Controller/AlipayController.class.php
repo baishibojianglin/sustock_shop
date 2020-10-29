@@ -10,6 +10,8 @@ namespace Home\Controller;
 use Boris\Config;
 include_once './ThinkPHP/Library/Vendor/Alipay/pagepay/service/AlipayTradeService.php';
 include_once './ThinkPHP/Library/Vendor/Alipay/pagepay/buildermodel/AlipayTradePagePayContentBuilder.php';
+include_once './ThinkPHP/Library/Vendor/Alipay/aop/AopClient.php';
+include_once './ThinkPHP/Library/Vendor/Alipay/aop/request/AlipayFundTransUniTransferRequest.php';
 
 class AlipayController extends BaseController
 {
@@ -102,7 +104,7 @@ class AlipayController extends BaseController
     }
 
     /*
-     * 异步回调
+     * 支付异步回调
      * */
     public function notifyUrl(){
 
@@ -145,7 +147,7 @@ class AlipayController extends BaseController
 
 
     /*
-     * 同步跳转
+     * 支付同步回调跳转
      * */
     public function returnUrl(){
 
@@ -203,4 +205,43 @@ class AlipayController extends BaseController
 
     }
 
+
+    /*
+     *提现（转账到支付宝账户）
+     * */
+    public function transfer($config,$data){
+        $aop = new \AopClient();  //实例化
+        $aop->gatewayUrl = $config["gatewayUrl"];
+        $aop->appId = $config["app_id"];
+        $aop->rsaPrivateKey = $config["merchant_private_key"];
+        $aop->alipayrsaPublicKey=$config["alipay_public_key"];
+        $aop->apiVersion = '1.0';
+        $aop->signType = 'RSA2';
+        $aop->postCharset='GBK';
+        $aop->format='json';
+        $request = new \AlipayFundTransUniTransferRequest ();
+        $request->setBizContent("{" .
+            "\"out_biz_no\":\"".$data['out_no']."\"," .    //商户生成订单号
+            "\"trans_amount\":".$data['money']."," .     //总金额
+            "\"product_code\":\"TRANS_ACCOUNT_NO_PWD\"," .
+            "\"biz_scene\":\"DIRECT_TRANSFER\"," .
+            "\"order_title\":\"余额提现\"," .
+            "\"payee_info\":{" .
+            "\"identity\":\"".$data['account_bank']."\"," .     //唯一标识（手机号）
+            "\"identity_type\":\"ALIPAY_LOGON_ID\"," .
+            "\"name\":\"".$data['account_name']."\"" .      //真实姓名
+            "    }," .
+            "\"remark\":\"余额提现\"," .
+            "\"business_params\":\"{\\\"sub_biz_scene\\\":\\\"REDPACKET\\\"}\"" .
+            "  }");
+        $result = $aop->execute ( $request);
+
+        $responseNode = str_replace(".", "_", $request->getApiMethodName()) . "_response";
+        $resultCode = $result->$responseNode->code;
+        if(!empty($resultCode)&&$resultCode == 10000){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

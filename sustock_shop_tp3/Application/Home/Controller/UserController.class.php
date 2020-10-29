@@ -16,6 +16,8 @@ use Home\Logic\UsersLogic;
 use Think\Page;
 use Think\Verify;
 
+include_once './Application/Home/Controller/AlipayController.class.php';
+
 class UserController extends BaseController {
 
 	public $user_id = 0;
@@ -1098,6 +1100,21 @@ class UserController extends BaseController {
         $this->assign('user',$user_info);
         $this->display();      
     }
+
+    /**
+     * 获取商户订单 out_biz_no
+     */
+    public function get_out_no()
+    {
+        // 保证不会有重复订单号存在
+        while(true){
+            $out_no = date('YmdHis').rand(1000,9999); // 订单编号
+            $out_no_count = M('withdrawals')->where("out_no = '$out_no'")->count();
+            if($out_no_count == 0)
+                break;
+        }
+        return $out_no;
+    }
     
     /**
      * 申请提现记录
@@ -1108,23 +1125,36 @@ class UserController extends BaseController {
     	{
                 $this->verifyHandle('withdrawals');                
     		$data = I('post.');
+    		$data['out_no'] = $this->get_out_no();
     		$data['user_id'] = $this->user_id;    		    		
     		$data['create_time'] = time();                
-                $distribut_min = tpCache('distribut.min'); // 最少提现额度
-                if($data['money'] < $distribut_min)
-                {
-                        $this->error('每次最少提现额度'.$distribut_min);
-                        exit;
-                }
+//                $distribut_min = tpCache('distribut.min'); // 最少提现额度
+//                if($data['money'] < $distribut_min)
+//                {
+//                        $this->error('每次最少提现额度'.$distribut_min);
+//                        exit;
+//                }
                 if($data['money'] > $this->user['user_money'])
                 {
                         $this->error("你最多可提现{$this->user['user_money']}账户余额.");
                         exit;
                 }     
                  
-    		if(M('withdrawals')->add($data)){
-    			$this->success("已提交申请");
-                        exit;
+    		if(M('withdrawals')->add($data)){   //新增一条提现记录
+    			//新增提现记录过后，再调用支付接口进行转账
+
+                $config=C('alipay');
+
+                $alipay = new AlipayController();
+                $result=$alipay ->transfer($config,$data);
+                if($result){
+                    //支付宝返回成功
+                    update_paystatus_recharge($data);
+                }else{
+                    $this->error('参数错误');
+                    exit;
+                }
+
     		}else{
     			$this->error('提交失败,联系客服!');
                         exit;

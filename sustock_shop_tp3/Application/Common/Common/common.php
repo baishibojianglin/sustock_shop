@@ -850,6 +850,28 @@ function update_pay_status($order_sn,$pay_status = 1)
 }
 
 /**
+ * 提现完成修改订单
+ * $out_no 订单号
+ * $pay_status 默认1 为已支付
+ */
+function update_paystatus_recharge($data,$paystatus = 1){
+
+    //修改状态
+    $count = M('withdrawals')->where("out_no = ".$data['out_no']." and status = 0")->count();   // 看看有没已经处理过这笔订单  支付宝返回不重复处理操作
+    if($count == 0) return false;
+    $order = M('withdrawals')->where("out_no = ".$data['out_no']."")->find();
+    M('withdrawals')->where("out_no = ".$data['out_no']."")->save(array('status'=>1));
+
+    //修改用户余额
+    $money=M('users')->where("user_id = ".$data['user_id']."")->getField("user_money");
+    $usermoney=$money - $data['money'];
+    M('users')->where("user_id = ".$data['user_id']."")->save(array('user_money'=>$usermoney));
+
+    accountLog($order['user_id'],$order['money'],0,'余额提现');
+}
+
+
+/**
  * 购买商品用户提成
  * 订单付款成功时，给商品分享者或上级用户（如果商品不是分享购买时）提成，且提成两级
  * @param $order_id
