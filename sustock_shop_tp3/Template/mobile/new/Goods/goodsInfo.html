@@ -353,12 +353,12 @@ function goTop(){
     <li><a href="javascript:collect_goods({$goods.goods_id})" id="favorite_add"><em class="goods_nav3"></em><span>收藏</span></a></li>
   </ul>
   <dl>
-    <dd class="flow"><a class="button active_button" href="javascript:void(0);" onClick="AjaxAddCart({$goods.goods_id},1,0);">加入购物车</a> </dd>
-    <dd class="goumai"><a style="display:block;" href="javascript:void(0);"  onclick="AjaxAddCart({$goods.goods_id},1,1);">立即购买</a> </dd>
+    <dd class="flow"><a class="button active_button" href="javascript:void(0);" onClick="AjaxAddCart({$goods.goods_id},1,0, {$_GET['first_leader']});">加入购物车</a> </dd>
+    <dd class="goumai"><a style="display:block;" href="javascript:void(0);"  onclick="AjaxAddCart({$goods.goods_id},1,1, {$_GET['first_leader']});">立即购买</a> </dd>
   </dl>
 </div>
 <script type="text/javascript">
-$(document).ready(function(){	
+$(document).ready(function(){
 	// 更新商品价格
 	get_goods_price();
 });
