@@ -15,7 +15,8 @@ use Mobile\Model\StoreModel;
 
 class IndexController extends MobileBaseController {
 
-    public function index(){                
+    public function index(){
+        shopkeeperOrderCommission(1, 92);
         /*
             //获取微信配置
             $wechat_list = M('wx_user')->select();

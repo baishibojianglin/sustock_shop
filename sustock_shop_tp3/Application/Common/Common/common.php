@@ -842,9 +842,10 @@ function update_pay_status($order_sn,$pay_status = 1)
 		// 赠送积分
 		order_give($order);// 调用送礼物方法, 给下单这个人赠送相应的礼物
 
-        // 购买商品用户提成
+        // 购买商品后用户与广告机店家提成
         if ($updatePayStatus) {
-            orderUserCommission($order['order_id'], $order['user_id']);
+            userOrderCommission($order['order_id'], $order['user_id']);
+            shopkeeperOrderCommission($order['goods_price'], $order['user_id']);
         }
 	}
 }
@@ -874,12 +875,12 @@ function update_paystatus_recharge($data,$paystatus = 1){
 /**
  * 购买商品用户提成
  * 订单付款成功时，给商品分享者或上级用户（如果商品不是分享购买时）提成，且提成两级
- * @param $order_id
- * @param $user_id
+ * @param $orderId
+ * @param $userId
  */
-function orderUserCommission($order_id, $user_id) {
+function userOrderCommission($orderId, $userId) {
     // 获取该笔订单商品对应的商品分享者id
-    $orderGoodsList = M('orderGoods')->where("order_id = {$order_id}")->select();
+    $orderGoodsList = M('orderGoods')->where("order_id = {$orderId}")->select();
     foreach ($orderGoodsList as $key => $value) {
         if ($value['first_leader']) { // 如果有商品分享者，则对该分享者及上级用户提成
             // 对商品分享者提成
@@ -892,7 +893,7 @@ function orderUserCommission($order_id, $user_id) {
             M('users')->where("user_id = {$users1['first_leader']}")->setInc('user_money', $changeMoney2);
         } else { // 如果商品不是分享购买时，对订单用户的上级及上上级提成
             // 获取订单用户信息
-            $users2 = M('users')->where("user_id = {$user_id}")->find();
+            $users2 = M('users')->where("user_id = {$userId}")->find();
 
             // 对订单用户上级提成
             $changeMoney3 = $value['goods_price'] * 0.5;
@@ -902,6 +903,52 @@ function orderUserCommission($order_id, $user_id) {
             $changeMoney4 = $value['goods_price'] * 0.5;
             M('users')->where("user_id = {$users2['second_leader']}")->setInc('user_money', $changeMoney4);
         }
+    }
+}
+
+/**
+ * 购买商品后media系统广告机安装店家提成
+ * @param $goodsPrice
+ * @param $userId
+ * @return string
+ */
+function shopkeeperOrderCommission($goodsPrice, $userId) {
+    // 获取订单用户信息
+    $user = M('users')->field('oauth, openid')->find($userId);
+    if ($user) {
+        // API接口地址与提交的数据
+        $url = "http://media.dilinsat.com/index.php/api/shopkeeper_order_commission";
+        $postData = array(
+            'oauth' => $user['oauth'],
+            'openid' => $user['openid'],
+            'commission_money' => $goodsPrice * 0.5
+        );
+
+        /*cURL请求 s*/
+        // 1.初始化curl（创建一个cURL资源）
+        $ch = curl_init();
+
+        // 2.设置curl的参数（设置URL和相应的选项）
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, 1); // post数据
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData); // post的变量
+
+        // 3.采集（抓取URL并把它传递给浏览器）
+        $result = curl_exec($ch);
+        $output = json_decode($result, true);
+
+        // 先判断cURL是否错误，再关闭cURL资源
+        if (curl_errno($ch)) {
+            return curl_error($ch);
+        }
+        // 4.关闭cURL资源，并且释放系统资源
+        curl_close($ch);
+        /*cURL请求 e*/
+
+        // 打印获得的数据
+        //print_r($output);
+        //var_dump($output);
     }
 }
 
