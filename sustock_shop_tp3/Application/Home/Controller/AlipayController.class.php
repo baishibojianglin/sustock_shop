@@ -10,7 +10,7 @@ namespace Home\Controller;
 use Boris\Config;
 include_once './ThinkPHP/Library/Vendor/Alipay/pagepay/service/AlipayTradeService.php';
 include_once './ThinkPHP/Library/Vendor/Alipay/pagepay/buildermodel/AlipayTradePagePayContentBuilder.php';
-include_once './ThinkPHP/Library/Vendor/Alipay/aop/AopClient.php';
+include_once './ThinkPHP/Library/Vendor/Alipay/aop/transfer/AopClient.php';
 include_once './ThinkPHP/Library/Vendor/Alipay/aop/request/AlipayFundTransUniTransferRequest.php';
 
 class AlipayController extends BaseController
@@ -217,7 +217,7 @@ class AlipayController extends BaseController
         $aop->alipayrsaPublicKey=$config["alipay_public_key"];
         $aop->apiVersion = '1.0';
         $aop->signType = 'RSA2';
-        $aop->postCharset='GBK';
+        $aop->postCharset='UTF-8';
         $aop->format='json';
         $request = new \AlipayFundTransUniTransferRequest ();
         $request->setBizContent("{" .
@@ -235,6 +235,7 @@ class AlipayController extends BaseController
             "\"business_params\":\"{\\\"sub_biz_scene\\\":\\\"REDPACKET\\\"}\"" .
             "  }");
         $result = $aop->execute ( $request);
+         file_put_contents('./Result.txt',$result);
 
         $responseNode = str_replace(".", "_", $request->getApiMethodName()) . "_response";
         $resultCode = $result->$responseNode->code;

@@ -851,24 +851,34 @@ function update_pay_status($order_sn,$pay_status = 1)
 }
 
 /**
- * 提现完成修改订单
+ * 提现完成修改余额
  * $out_no 订单号
  * $pay_status 默认1 为已支付
  */
 function update_paystatus_recharge($data,$paystatus = 1){
 
-    //修改状态
-    $count = M('withdrawals')->where("out_no = ".$data['out_no']." and status = 0")->count();   // 看看有没已经处理过这笔订单  支付宝返回不重复处理操作
-    if($count == 0) return false;
-    $order = M('withdrawals')->where("out_no = ".$data['out_no']."")->find();
-    M('withdrawals')->where("out_no = ".$data['out_no']."")->save(array('status'=>1));
+    //开启事务
+    M()->startTrans();
 
     //修改用户余额
     $money=M('users')->where("user_id = ".$data['user_id']."")->getField("user_money");
     $usermoney=$money - $data['money'];
-    M('users')->where("user_id = ".$data['user_id']."")->save(array('user_money'=>$usermoney));
+    $rel1=M('users')->where("user_id = ".$data['user_id']."")->save(array('user_money'=>$usermoney));
 
-    accountLog($order['user_id'],$order['money'],0,'余额提现');
+    //修改状态
+    $count = M('withdrawals')->where("out_no = ".$data['out_no']." and status = 0")->count();   // 看看有没已经处理过这笔订单  支付宝返回不重复处理操作
+    if($count == 0) return false;
+    $order = M('withdrawals')->where("out_no = ".$data['out_no']."")->find();
+    $rel2=M('withdrawals')->where("out_no = ".$data['out_no']."")->save(array('status'=>1));
+
+    //记录日志
+    $rel3=accountLog($order['user_id'],$order['money'],0,'余额提现');
+
+    if($rel1 && $rel2 && $rel3){
+        M()->commit();//提交
+    }else{
+        M()->rollback();//回滚
+    }
 }
 
 
@@ -917,7 +927,8 @@ function shopkeeperOrderCommission($goodsPrice, $userId) {
     $user = M('users')->field('oauth, openid')->find($userId);
     if ($user) {
         // API接口地址与提交的数据
-        $url = "http://media.dilinsat.com/index.php/api/shopkeeper_order_commission";
+        //$url = "http://media.dilinsat.com/index.php/api/shopkeeper_order_commission"; // 测试环境
+        $url = "https://media.sustock.net/index.php/api/shopkeeper_order_commission"; // 正式环境
         $postData = array(
             'oauth' => $user['oauth'],
             'openid' => $user['openid'],
