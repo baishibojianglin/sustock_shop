@@ -10,8 +10,8 @@ namespace Home\Controller;
 use Boris\Config;
 include_once './ThinkPHP/Library/Vendor/Alipay/pagepay/service/AlipayTradeService.php';
 include_once './ThinkPHP/Library/Vendor/Alipay/pagepay/buildermodel/AlipayTradePagePayContentBuilder.php';
-include_once './ThinkPHP/Library/Vendor/Alipay/aop/transfer/AopClient.php';
-include_once './ThinkPHP/Library/Vendor/Alipay/aop/request/AlipayFundTransUniTransferRequest.php';
+include_once './ThinkPHP/Library/Vendor/Alipay/aop/AopClient.php';
+include_once './ThinkPHP/Library/Vendor/Alipay/aop/request/AlipayFundTransToaccountTransferRequest.php';
 
 class AlipayController extends BaseController
 {
@@ -219,30 +219,26 @@ class AlipayController extends BaseController
         $aop->signType = 'RSA2';
         $aop->postCharset='UTF-8';
         $aop->format='json';
-        $request = new \AlipayFundTransUniTransferRequest ();
+
+        $request = new \AlipayFundTransToaccountTransferRequest ();
         $request->setBizContent("{" .
-            "\"out_biz_no\":\"".$data['out_no']."\"," .    //商户生成订单号
-            "\"trans_amount\":".$data['money']."," .     //总金额
-            "\"product_code\":\"TRANS_ACCOUNT_NO_PWD\"," .
-            "\"biz_scene\":\"DIRECT_TRANSFER\"," .
-            "\"order_title\":\"余额提现\"," .
-            "\"payee_info\":{" .
-            "\"identity\":\"".$data['account_bank']."\"," .     //唯一标识（手机号）
-            "\"identity_type\":\"ALIPAY_LOGON_ID\"," .
-            "\"name\":\"".$data['account_name']."\"" .      //真实姓名
-            "    }," .
-            "\"remark\":\"余额提现\"," .
-            "\"business_params\":\"{\\\"sub_biz_scene\\\":\\\"REDPACKET\\\"}\"" .
+            "\"out_biz_no\":\"".$data['out_no']."\"," .
+            "\"payee_type\":\"ALIPAY_LOGONID\"," .
+            "\"payee_account\":\"".$data['account_bank']."\"," .
+            "\"amount\":\"".$data['money']."\"," .
+            "\"payer_show_name\":\"慧谷购物\"," .
+            "\"payee_real_name\":\"".$data['account_name']."\"," .
+            "\"remark\":\"余额提现\"" .
             "  }");
+
         $result = $aop->execute ( $request);
-         file_put_contents('./Result.txt',$result);
 
         $responseNode = str_replace(".", "_", $request->getApiMethodName()) . "_response";
         $resultCode = $result->$responseNode->code;
         if(!empty($resultCode)&&$resultCode == 10000){
             return true;
         } else {
-            return false;
+            return $result->$responseNode->sub_msg;
         }
     }
 }

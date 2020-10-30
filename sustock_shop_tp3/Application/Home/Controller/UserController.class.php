@@ -1142,17 +1142,16 @@ class UserController extends BaseController {
                  
     		if(M('withdrawals')->add($data)){   //新增一条提现记录
     			//新增提现记录过后，再调用支付接口进行转账
-
-                $config=C('alipay');
-
-                $alipay = new AlipayController();
-                $result=$alipay ->transfer($config,$data);
-                var_dump($result);
-//                if($result){
+                update_paystatus_recharge($data);
+//                $config=C('alipay');
+//
+//                $alipay = new AlipayController();
+//                $result=$alipay ->transfer($config,$data);
+//                if($result == true){
 //                    //支付宝返回成功
 //                    update_paystatus_recharge($data);
 //                }else{
-////                    $this->error('参数错误');
+//                    $this->error($result);
 //                    exit;
 //                }
 

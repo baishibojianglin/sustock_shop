@@ -555,7 +555,7 @@ function tpCache($config_key,$data = array()){
  * @param   float   distribut_money 分佣金额
  * @return  bool
  */
-function accountLog($user_id, $user_money = 0,$pay_points = 0, $desc = '',$distribut_money = 0,$order_id = 0){
+function accountLog($user_id, $user_money = 0,$pay_points = 0, $desc = '',$order_sn = '',$distribut_money = 0,$order_id = 0){
     /* 插入帐户变动记录 */
     $account_log = array(
         'user_id'       => $user_id,
@@ -563,6 +563,7 @@ function accountLog($user_id, $user_money = 0,$pay_points = 0, $desc = '',$distr
         'pay_points'    => $pay_points,
         'change_time'   => time(),
         'desc'   => $desc,
+        'order_sn' => isset($order_sn) ? $order_sn : '',
         'order_id'   => $order_id
     );
     /* 更新用户信息 */
@@ -850,20 +851,45 @@ function update_pay_status($order_sn,$pay_status = 1)
 	}
 }
 
+/*
+ * 提现成功修改用户余额
+ * */
+function update_money($userid,$money){
+    //开启事务
+    $trans = M();
+    $trans->startTrans();
+
+    //修改用户余额
+    $rel1=M('users')->where("user_id = '$userid'")->setDec(array('user_money'=>$money));
+    file_put_contents('./TEst.txt',M('users')->where("user_id = '$userid'")->find());
+
+    if($rel1){
+        $trans->commit();//提交
+        return true;
+    }else{
+        $trans->rollback();//回滚
+        return false;
+    }
+}
+
 /**
- * 提现完成修改余额
+ * 提现完成修改状态
  * $out_no 订单号
  * $pay_status 默认1 为已支付
  */
 function update_paystatus_recharge($data,$paystatus = 1){
 
     //开启事务
-    M()->startTrans();
+    $trans = M();
+    $trans->startTrans();
 
     //修改用户余额
-    $money=M('users')->where("user_id = ".$data['user_id']."")->getField("user_money");
-    $usermoney=$money - $data['money'];
+    $user=M('users')->where("user_id = ".$data['user_id']."")->find();
+    $usermoney = $user['user_money'] - $data['money'];
     $rel1=M('users')->where("user_id = ".$data['user_id']."")->save(array('user_money'=>$usermoney));
+    file_put_contents('./TEst.txt',M('users')->where("user_id = ".$data['user_id']."")->find());
+
+
 
     //修改状态
     $count = M('withdrawals')->where("out_no = ".$data['out_no']." and status = 0")->count();   // 看看有没已经处理过这笔订单  支付宝返回不重复处理操作
@@ -872,12 +898,11 @@ function update_paystatus_recharge($data,$paystatus = 1){
     $rel2=M('withdrawals')->where("out_no = ".$data['out_no']."")->save(array('status'=>1));
 
     //记录日志
-    $rel3=accountLog($order['user_id'],$order['money'],0,'余额提现');
-
-    if($rel1 && $rel2 && $rel3){
-        M()->commit();//提交
+    $rel3=accountLog($order['user_id'],$order['money'],0,'余额提现',$order['out_no']);
+    if($rel1){
+        $trans->commit();//提交
     }else{
-        M()->rollback();//回滚
+        $trans->rollback();//回滚
     }
 }
 
