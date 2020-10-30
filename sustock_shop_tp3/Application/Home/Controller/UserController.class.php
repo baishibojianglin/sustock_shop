@@ -1147,13 +1147,14 @@ class UserController extends BaseController {
 
                 $alipay = new AlipayController();
                 $result=$alipay ->transfer($config,$data);
-                if($result){
-                    //支付宝返回成功
-                    update_paystatus_recharge($data);
-                }else{
-                    $this->error('参数错误');
-                    exit;
-                }
+                var_dump($result);
+//                if($result){
+//                    //支付宝返回成功
+//                    update_paystatus_recharge($data);
+//                }else{
+////                    $this->error('参数错误');
+//                    exit;
+//                }
 
     		}else{
     			$this->error('提交失败,联系客服!');
@@ -1161,14 +1162,14 @@ class UserController extends BaseController {
     		}
     	}
         
-        $where = " user_id = {$this->user_id}";        
+        $where = " user_id = {$this->user_id}";
         $count = M('withdrawals')->where($where)->count();
         $page = new Page($count,16);
         $show = $page->show();
-        $list = M('withdrawals')->where($where)->order("id desc")->limit("{$page->firstRow},{$page->listRows}")->select();   
+        $list = M('withdrawals')->where($where)->order("id desc")->limit("{$page->firstRow},{$page->listRows}")->select();
         $this->assign('show',$show);// 赋值分页输出
-        $this->assign('list',$list); // 下线      
-        $this->display(); 
+        $this->assign('list',$list); // 下线
+        $this->display();
     }  
 
     /*
