@@ -862,61 +862,6 @@ function update_pay_status($order_sn,$pay_status = 1)
 	}
 }
 
-/*
- * 提现成功修改用户余额
- * */
-function update_money($userid,$money){
-    //开启事务
-    $trans = M();
-    $trans->startTrans();
-
-    //修改用户余额
-    $rel1=M('users')->where("user_id = '$userid'")->setDec(array('user_money'=>$money));
-    file_put_contents('./TEst.txt',M('users')->where("user_id = '$userid'")->find());
-
-    if($rel1){
-        $trans->commit();//提交
-        return true;
-    }else{
-        $trans->rollback();//回滚
-        return false;
-    }
-}
-
-/**
- * 提现完成修改状态
- * $out_no 订单号
- * $pay_status 默认1 为已支付
- */
-function update_paystatus_recharge($data,$paystatus = 1){
-
-    //开启事务
-    $trans = M();
-    $trans->startTrans();
-
-    //修改用户余额
-    $user=M('users')->where("user_id = ".$data['user_id']."")->find();
-    $usermoney = $user['user_money'] - $data['money'];
-    $rel1=M('users')->where("user_id = ".$data['user_id']."")->save(array('user_money'=>$usermoney));
-    file_put_contents('./TEst.txt',M('users')->where("user_id = ".$data['user_id']."")->find());
-
-
-
-    //修改状态
-    $count = M('withdrawals')->where("out_no = ".$data['out_no']." and status = 0")->count();   // 看看有没已经处理过这笔订单  支付宝返回不重复处理操作
-    if($count == 0) return false;
-    $order = M('withdrawals')->where("out_no = ".$data['out_no']."")->find();
-    $rel2=M('withdrawals')->where("out_no = ".$data['out_no']."")->save(array('status'=>1));
-
-    //记录日志
-    $rel3=accountLog($order['user_id'],$order['money'],0,'余额提现',$order['out_no']);
-    if($rel1){
-        $trans->commit();//提交
-    }else{
-        $trans->rollback();//回滚
-    }
-}
-
 
 /**
  * 购买商品用户提成
@@ -954,11 +899,11 @@ function userOrderCommission($orderId, $userId) {
 
 /**
  * 购买商品后media系统广告机安装店家提成
- * @param $orderPrice
+ * @param $goodsPrice
  * @param $userId
  * @return string
  */
-function shopkeeperOrderCommission($orderPrice, $userId) {
+function shopkeeperOrderCommission($goodsPrice, $userId) {
     // 获取订单用户信息
     $user = M('users')->field('oauth, openid')->find($userId);
     if ($user) {
@@ -968,7 +913,7 @@ function shopkeeperOrderCommission($orderPrice, $userId) {
         $postData = array(
             'oauth' => $user['oauth'],
             'openid' => $user['openid'],
-            'commission_money' => $orderPrice * 0.5
+            'commission_money' => $goodsPrice * 0.5
         );
 
         /*cURL请求 s*/
@@ -1022,9 +967,9 @@ function becomeAgent($userId, $orderId) {
  * 代理商提成
  * @param $user
  * @param $userId
- * @param $orderPrice
+ * @param $goodsPrice
  */
-function agentOrderCommission($user, $userId, $orderPrice) {
+function agentOrderCommission($user, $userId, $goodsPrice) {
     // 查询条件
     $agentMap = array(
         'is_agent' => 1,
@@ -1038,8 +983,8 @@ function agentOrderCommission($user, $userId, $orderPrice) {
     // 获取代理商数量
     $agentCount = M('users')->where($agentMap)->count();
     // 每个代理商提成金额
-    $commissionMoney = number_format($orderPrice / $agentCount * 0.5, 2);
-    //file_put_contents('./agentOrderCommission', json_encode(array($orderPrice, $agentCount, $commissionMoney, M()->getLastSql())));
+    $commissionMoney = number_format($goodsPrice / $agentCount * 0.5, 2);
+    //file_put_contents('./agentOrderCommission', json_encode(array($goodsPrice, $agentCount, $commissionMoney, M()->getLastSql())));
     // 获取代理商列表
     $agentList = M('users')->field('user_id, user_money')->where($agentMap)->select();
     foreach ($agentList as $key => $value) {
