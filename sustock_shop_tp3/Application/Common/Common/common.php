@@ -843,67 +843,23 @@ function update_pay_status($order_sn,$pay_status = 1)
 		// 赠送积分
 		order_give($order);// 调用送礼物方法, 给下单这个人赠送相应的礼物
 
-        // 购买商品后用户与广告机店家提成
+        // 购买商品后用户、广告机店家以及代理商提成
         if ($updatePayStatus) {
+            // 用户提成
             userOrderCommission($order['order_id'], $order['user_id']);
+            // 广告机店家提成
             shopkeeperOrderCommission($order['goods_price'], $order['user_id']);
+
+            // 获取当前订单用户信息
+            $user = M('users')->field('is_agent')->find($order['user_id']);
+            // 购买代理商品成为代理商
+            if ($user && $user['is_agent'] != 1) {
+                becomeAgent($order['user_id'], $order['order_id']);
+            }
+            // 代理商提成
+            agentOrderCommission($user, $order['user_id'], $order['goods_price']);
         }
 	}
-}
-
-/*
- * 提现成功修改用户余额
- * */
-function update_money($userid,$money){
-    //开启事务
-    $trans = M();
-    $trans->startTrans();
-
-    //修改用户余额
-    $rel1=M('users')->where("user_id = '$userid'")->setDec(array('user_money'=>$money));
-    file_put_contents('./TEst.txt',M('users')->where("user_id = '$userid'")->find());
-
-    if($rel1){
-        $trans->commit();//提交
-        return true;
-    }else{
-        $trans->rollback();//回滚
-        return false;
-    }
-}
-
-/**
- * 提现完成修改状态
- * $out_no 订单号
- * $pay_status 默认1 为已支付
- */
-function update_paystatus_recharge($data,$paystatus = 1){
-
-    //开启事务
-    $trans = M();
-    $trans->startTrans();
-
-    //修改用户余额
-    $user=M('users')->where("user_id = ".$data['user_id']."")->find();
-    $usermoney = $user['user_money'] - $data['money'];
-    $rel1=M('users')->where("user_id = ".$data['user_id']."")->save(array('user_money'=>$usermoney));
-    file_put_contents('./TEst.txt',M('users')->where("user_id = ".$data['user_id']."")->find());
-
-
-
-    //修改状态
-    $count = M('withdrawals')->where("out_no = ".$data['out_no']." and status = 0")->count();   // 看看有没已经处理过这笔订单  支付宝返回不重复处理操作
-    if($count == 0) return false;
-    $order = M('withdrawals')->where("out_no = ".$data['out_no']."")->find();
-    $rel2=M('withdrawals')->where("out_no = ".$data['out_no']."")->save(array('status'=>1));
-
-    //记录日志
-    $rel3=accountLog($order['user_id'],$order['money'],0,'余额提现',$order['out_no']);
-    if($rel1){
-        $trans->commit();//提交
-    }else{
-        $trans->rollback();//回滚
-    }
 }
 
 
@@ -919,24 +875,24 @@ function userOrderCommission($orderId, $userId) {
     foreach ($orderGoodsList as $key => $value) {
         if ($value['first_leader']) { // 如果有商品分享者，则对该分享者及上级用户提成
             // 对商品分享者提成
-            $changeMoney1 = $value['goods_price'] * 0.5;
-            M('users')->where("user_id = {$value['first_leader']}")->setInc('user_money', $changeMoney1);
+            $commissionMoney1 = $value['goods_price'] * 0.5;
+            M('users')->where("user_id = {$value['first_leader']}")->setInc('user_money', $commissionMoney1);
 
             // 对商品分享者上级提成
             $users1 = M('users')->where("user_id = {$value['first_leader']}")->find(); // 获取商品分享者上级
-            $changeMoney2 = $value['goods_price'] * 0.5;
-            M('users')->where("user_id = {$users1['first_leader']}")->setInc('user_money', $changeMoney2);
+            $commissionMoney2 = $value['goods_price'] * 0.5;
+            M('users')->where("user_id = {$users1['first_leader']}")->setInc('user_money', $commissionMoney2);
         } else { // 如果商品不是分享购买时，对订单用户的上级及上上级提成
             // 获取订单用户信息
             $users2 = M('users')->where("user_id = {$userId}")->find();
 
             // 对订单用户上级提成
-            $changeMoney3 = $value['goods_price'] * 0.5;
-            M('users')->where("user_id = {$users2['first_leader']}")->setInc('user_money', $changeMoney3);
+            $commissionMoney3 = $value['goods_price'] * 0.5;
+            M('users')->where("user_id = {$users2['first_leader']}")->setInc('user_money', $commissionMoney3);
 
             // 对订单用户上上级提成
-            $changeMoney4 = $value['goods_price'] * 0.5;
-            M('users')->where("user_id = {$users2['second_leader']}")->setInc('user_money', $changeMoney4);
+            $commissionMoney4 = $value['goods_price'] * 0.5;
+            M('users')->where("user_id = {$users2['second_leader']}")->setInc('user_money', $commissionMoney4);
         }
     }
 }
@@ -985,6 +941,55 @@ function shopkeeperOrderCommission($goodsPrice, $userId) {
         // 打印获得的数据
         //print_r($output);
         //var_dump($output);
+    }
+}
+
+/**
+ * 购买代理商品成为代理商
+ * @param $userId
+ * @param $orderId
+ */
+function becomeAgent($userId, $orderId) {
+    // 获取该笔订单商品对应的商品是否为代理商品
+    $orderGoodsList = M('orderGoods')->where("order_id = {$orderId}")->select();
+    foreach ($orderGoodsList as $key => $value) {
+        if ($value['goods_id']) {
+            // 获取商品信息
+            $goods = M('goods')->field('is_agent')->find($value['goods_id']);
+            if ($goods && $goods['is_agent'] == 1) { // 是代理商品，该订单用户成为代理商
+                $result = M('users')->where(array('user_id' => $userId))->save(array('is_agent' => 1));
+            }
+        }
+    }
+}
+
+/**
+ * 代理商提成
+ * @param $user
+ * @param $userId
+ * @param $goodsPrice
+ */
+function agentOrderCommission($user, $userId, $goodsPrice) {
+    // 查询条件
+    $agentMap = array(
+        'is_agent' => 1,
+        'is_lock' => 0
+    );
+    // 排除普通用户成为代理商时对自身的提成
+    if ($user && $user['is_agent'] != 1) {
+        $agentMap['user_id'] = array('neq', $userId);
+    }
+
+    // 获取代理商数量
+    $agentCount = M('users')->where($agentMap)->count();
+    // 每个代理商提成金额
+    $commissionMoney = number_format($goodsPrice / $agentCount * 0.5, 2);
+    //file_put_contents('./agentOrderCommission', json_encode(array($goodsPrice, $agentCount, $commissionMoney, M()->getLastSql())));
+    // 获取代理商列表
+    $agentList = M('users')->field('user_id, user_money')->where($agentMap)->select();
+    foreach ($agentList as $key => $value) {
+        // 代理商提成
+        M('users')->where("user_id = {$value['user_id']}")->setInc('user_money', $commissionMoney);
     }
 }
 

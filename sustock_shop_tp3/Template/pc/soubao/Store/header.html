@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>{$store.store_name}</title>
-<meta name="keywords" content="TPshop,狄霖店通," />
-<meta name="description" content="TPshop,狄霖店通," />
+<meta name="keywords" content="狄霖店通," />
+<meta name="description" content="狄霖店通," />
 <link href="__STATIC__/css/store_base.css" rel="stylesheet" type="text/css">
 <link href="__STATIC__/css/store_header.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="__STATIC__/css/common.min.css">
@@ -115,10 +115,10 @@ $(function(){
 	    <if condition="$user.user_id gt 0">
 	                         您好 <span><a href="{:U('User/index')}">{$user.nickname}</a>
 	   		<div class="nc-grade-mini" style="cursor:pointer;" onClick="javascript:go();">V0</div></span> 
-	   		欢迎回来，<a href="{:U('Index/index')}"  title="首页" alt="首页">
+	   		欢迎回来，<a href="{:U('Home/index')}"  title="首页" alt="首页">
 	   		<span>狄霖店通</span></a> <span>[<a href="{:U('User/logout')}">退出</a>] </span>
 	   <else/>
-	    	Hi，欢迎来 <a href="{:U('Index/index')}" title="首页" alt="首页">狄霖店通</a>
+	    	Hi，欢迎来 <a href="{:U('Home/index')}" title="首页" alt="首页">狄霖店通</a>
 	 		<a href="{:U('User/login')}">请登录</a></span> <span><a href="{:U('User/register')}">免费注册</a></span>
 	    </if>
    </div>
@@ -162,22 +162,7 @@ $(function(){
           </ul>
         </dd>
       </dl>
-      <dl>
-        <dt><em class="ico_service"></em>客户服务<i></i></dt>
-        <dd>
-          <ul>
-            <li><a href="{:U('Article/detail',array('article_id'=>1))}">帮助中心</a></li>
-            <li><a href="{:U('Article/detail',array('article_id'=>2))}">售后服务</a></li>
-            <li><a href="{:U('Article/detail',array('article_id'=>3))}">客服中心</a></li>
-          </ul>
-        </dd>
-      </dl>
-      	  <dl class="weixin">
-        <dt>关注我们<i></i></dt>
-        <dd>
-          <h4>扫描二维码<br/>关注商城微信号</h4>
-          <img src="__STATIC__/images/weixin.png" > </dd>
-        </dl>
+      
     </div>
   </div>
 </div>
@@ -283,7 +268,7 @@ $(function() {
 <!-- PublicHeadLayout Begin -->
 <div class="header-wrap">
   <header class="public-head-layout wrapper">
-    <h1 class="site-logo"><a href="{:U('Index/index')}"><img src="__STATIC__/images/newLogo.png" class="pngFix"></a></h1>
+    <h1 class="site-logo"><a href="{:U('Home/index')}"><img src="__STATIC__/images/Logo.jpg" class="pngFix"></a></h1>
 	<div class="heade_store_info">
     	<div class="slogo">
         	<a href="{:U('Store/index',array('store_id'=>$store[store_id]))}" title="狄霖店通" class="store_name">{$store.store_name}</a>

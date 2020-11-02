@@ -1117,7 +1117,7 @@ class UserController extends BaseController {
     }
     
     /**
-     * 申请提现记录
+     * 申请提现
      */
     public function withdrawals(){       
     	//C('TOKEN_ON',true);
@@ -1140,25 +1140,27 @@ class UserController extends BaseController {
                         exit;
                 }     
                  
-    		if(M('withdrawals')->add($data)){   //新增一条提现记录
-    			//新增提现记录过后，再调用支付接口进行转账
-                update_paystatus_recharge($data);
-//                $config=C('alipay');
+//  			$config=C('alipay');
 //
-//                $alipay = new AlipayController();
-//                $result=$alipay ->transfer($config,$data);
-//                if($result == true){
-//                    //支付宝返回成功
-//                    update_paystatus_recharge($data);
-//                }else{
-//                    $this->error($result);
-//                    exit;
-//                }
-
-    		}else{
-    			$this->error('提交失败,联系客服!');
-                        exit;
-    		}
+//              $alipay = new AlipayController();
+//              $result=$alipay ->transfer($config,$data);
+//              if($result == true){
+                	//支付宝返回成功
+                	//修改余额
+	    			$money = $this->user['user_money'] - $data['money'];
+	    			M('users')->where("user_id = ".$data['user_id']."")->save(array('user_money'=> $money));
+					
+					//新增提现记录
+					$data['status'] = 1;
+					M('withdrawals')->add($data);
+					
+					//记录日志
+					accountLog($data['user_id'],$data['money'],0,'余额提现',$data['out_no']);
+//              }else{
+//                  $this->error($result);
+//                  exit;
+//              }
+                  
     	}
         
         $where = " user_id = {$this->user_id}";
