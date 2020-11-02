@@ -97,28 +97,5 @@ wx.ready(function(){
 
 
 <!--微信关注提醒 start-->
-<if condition="$Think.session.subscribe eq 0">
-<button class="guide" onclick="follow_wx()">关注公众号</button>
-<style type="text/css">
-.guide{width:20px;height:100px;text-align: center;border-radius: 8px ;font-size:12px;padding:8px 0;border:1px solid #adadab;color:#000000;background-color: #fff;position: fixed;right: 6px;bottom: 200px;}
-#cover{display:none;position:absolute;left:0;top:0;z-index:18888;background-color:#000000;opacity:0.7;}
-#guide{display:none;position:absolute;top:5px;z-index:19999;}
-#guide img{width: 70%;height: auto;display: block;margin: 0 auto;margin-top: 10px;}
-</style>
-<script type="text/javascript" src="__STATIC__/js/layer.js" ></script>
-<script type="text/javascript">
 
-  // 关注微信公众号二维码	 
-function follow_wx()
-{
-	layer.open({
-		type : 1,  
-		title: '关注公众号',
-		content: '<img src="{$wechat_config['qr']}" width="200">',
-		style: ''
-	});
-}
- 
-</script> 
-</if>
 <!--微信关注提醒  end-->

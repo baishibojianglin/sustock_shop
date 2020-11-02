@@ -1138,28 +1138,52 @@ class UserController extends BaseController {
                 {
                         $this->error("你最多可提现{$this->user['user_money']}账户余额.");
                         exit;
-                }     
-                 
-//  			$config=C('alipay');
-//
-//              $alipay = new AlipayController();
-//              $result=$alipay ->transfer($config,$data);
-//              if($result == true){
-                	//支付宝返回成功
-                	//修改余额
-	    			$money = $this->user['user_money'] - $data['money'];
-	    			M('users')->where("user_id = ".$data['user_id']."")->save(array('user_money'=> $money));
-					
-					//新增提现记录
-					$data['status'] = 1;
-					M('withdrawals')->add($data);
-					
-					//记录日志
-					accountLog($data['user_id'],$data['money'],0,'余额提现',$data['out_no']);
-//              }else{
-//                  $this->error($result);
-//                  exit;
-//              }
+                }
+
+                //新增一条提现记录
+                if(M('withdrawals')->add($data)){
+                    //接入支付宝
+      			    $config=C('alipay');
+
+      			    $alipay = new AlipayController();
+      			    $result=$alipay ->transfer($config,$data);
+      			    if($result == true){
+                            //支付宝返回成功
+                            M() -> startTrans();    //开启事务
+
+                            //修改余额
+                            $money = $this->user['user_money'] - $data['money'];
+                            $res1 = M('users')->where("user_id = ".$data['user_id'])->save(array('user_money'=> $money));
+
+                            //修改提现状态
+                            $res2 = M('withdrawals')->where("out_no = ".$data['out_no'])->save(array('status'=>1));
+
+                            //记录日志
+                            $account_log = array(
+                                'user_id'       => $data['user_id'],
+                                'user_money'    => $data['money'],
+                                'pay_points'    => 0,
+                                'change_time'   => time(),
+                                'desc'   => "余额提现",
+                                'order_sn'   => $data['out_no'],
+                                'order_id'  => 0
+                            );
+                            $res3 = M("account_log")->add($account_log);
+
+                            if($res1 && $res2 && $res3){
+                                M()->commit();  //提交事务
+                            }else{
+                                M()->rollback();  //回滚事务
+                            }
+      			    }else{
+                          $this->error($result);
+                          exit;
+      			    }
+
+                }else{
+                    $this->error('提交失败,联系客服!');
+                    exit;
+                }
                   
     	}
         

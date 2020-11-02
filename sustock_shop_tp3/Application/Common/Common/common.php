@@ -555,7 +555,7 @@ function tpCache($config_key,$data = array()){
  * @param   float   distribut_money 分佣金额
  * @return  bool
  */
-function accountLog($user_id, $user_money = 0,$pay_points = 0, $desc = '',$order_sn = '',$distribut_money = 0,$order_id = 0){
+function accountLog($user_id, $user_money = 0,$pay_points = 0, $desc = '',$distribut_money = 0,$order_id = 0){
     /* 插入帐户变动记录 */
     $account_log = array(
         'user_id'       => $user_id,
@@ -563,7 +563,6 @@ function accountLog($user_id, $user_money = 0,$pay_points = 0, $desc = '',$order
         'pay_points'    => $pay_points,
         'change_time'   => time(),
         'desc'   => $desc,
-        'order_sn' => isset($order_sn) ? $order_sn : '',
         'order_id'   => $order_id
     );
     /* 更新用户信息 */
