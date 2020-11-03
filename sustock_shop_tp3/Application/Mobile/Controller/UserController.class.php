@@ -108,6 +108,28 @@ class UserController extends MobileBaseController
         $this->display();
     }
 
+    /**
+     * 我的团队及返佣
+     */
+    public function team()
+    {
+        $user = session('user');
+        //获取账户资金记录
+        $logic = new UsersLogic();
+        $data = $logic->get_account_log($this->user_id, I('get.type'));
+        $account_log = $data['result'];
+
+        $this->assign('user', $user);
+        $this->assign('account_log', $account_log);
+        $this->assign('page', $data['show']);
+
+        if ($_GET['is_ajax']) {
+            $this->display('ajax_account_list');
+            exit;
+        }
+        $this->display();
+    }
+
     public function coupon()
     {
         //
