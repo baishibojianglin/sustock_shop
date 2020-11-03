@@ -114,7 +114,7 @@
                                                     <input type="radio" onclick="ajax_order_price();" value="1" checked="" name="couponTypeSelect[{$v[store_id]}]" class="radio vam ma-ri-10">
                                                     
                                                      <select onchange="ajax_order_price();" class="vam ou-no" name="coupon_id[{$v[store_id]}]">
-                                                         <option value="0">选择优惠券</option>
+                                                         <option value="0">不使用优惠券</option>
                                                          <foreach name="couponList" item="v3">
 					                                        <if condition="($v3[store_id] eq $v[store_id])">
 		                                                         <option value="{$v3['id']}">{$v3['name']}</option>
@@ -122,9 +122,9 @@
                                                          </foreach>                                                         
                                                      </select>
                                                     &nbsp;&nbsp;&nbsp;
-                                                    <input type="radio" onclick="ajax_order_price();" value="2" name="couponTypeSelect[{$v[store_id]}]" class="radio vam ma-ri-10">
-                                                    <input type="text" placeholder="请输入优惠券代码" class="texter vam span-150 ma-ri-10 he18 li-he-18" name="couponCode[{$v[store_id]}]"> 
-                                                    <input type="button" onclick="ajax_order_price();" value="使用" class="button-style-disabled-4 button-action-use-disabled te-al ou-no vam">
+<!--                                                    <input type="radio" onclick="ajax_order_price();" value="2" name="couponTypeSelect[{$v[store_id]}]" class="radio vam ma-ri-10">-->
+<!--                                                    <input type="text" placeholder="请输入优惠券代码" class="texter vam span-150 ma-ri-10 he18 li-he-18" name="couponCode[{$v[store_id]}]"> -->
+<!--                                                    <input type="button" onclick="ajax_order_price();" value="使用" class="button-style-disabled-4 button-action-use-disabled te-al ou-no vam">-->
 		                                        </td>                                                
                                                  <td rowspan="1" class="tr-subtotal te-al">
 		                                     		   <p>-￥<b id="store_coupon_price_{$v[store_id]}">0</b></p>

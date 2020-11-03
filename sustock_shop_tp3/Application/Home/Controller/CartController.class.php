@@ -54,6 +54,7 @@ class CartController extends BaseController {
         $first_leader = I("first_leader"); // 商品推荐人ID
         
         $result = $this->cartLogic->addCart($goods_id, $goods_num, $goods_spec,$this->session_id,$this->user_id, $first_leader); // 将商品加入购物车
+
         exit(json_encode($result));
     }
     
