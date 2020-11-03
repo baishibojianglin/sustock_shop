@@ -289,25 +289,7 @@
       	<!--<a href="javascript:void(0);" id="collectLink"><i class="collect-ico collect-ico-ok"></i>已收藏<em class="J_FavCount">(20)</em></a>--> 
     </div>
     <!-- 分享商品 -->
-    <div class="share">
-		<div class="jiathis_style">
-			<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt" target="_blank"><img src="http://v3.jiathis.com/code_mini/images/btn/v1/jiathis1.gif" border="0" /></a>
-		</div>
-		<script>
-         var jiathis_config = {
-                                url:"http://{$_SERVER[HTTP_HOST]}/index.php?m=Home&c=Goods&a=goodsInfo&id={$_GET[id]}",
-                                pic:"http://{$_SERVER[HTTP_HOST]}{$goods[goods_id]|goods_thum_images=400,400}", 
-                            }
-        var is_distribut = getCookie('is_distribut');
-        var user_id = getCookie('user_id');
-        // 如果已经登录了, 并且是分销商
-        if(parseInt(is_distribut) == 1 && parseInt(user_id) > 0)
-        {									
-            jiathis_config.url = jiathis_config.url + "&first_leader="+user_id;									
-        }
-        </script>        
-		<script type="text/javascript" src="http://v3.jiathis.com/code_mini/jia.js" charset="utf-8"></script> 
-	 </div>
+
   </div>
   <!-- 商品大图&小图展示  end ]]--> 
 </div>

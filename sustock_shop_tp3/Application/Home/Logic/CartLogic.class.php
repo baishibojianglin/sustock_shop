@@ -30,7 +30,7 @@ class CartLogic extends RelationModel
      * @param int $first_leader 商品推荐人id
      * @return array
      */
-    function addCart($goods_id,$goods_num,$goods_spec,$session_id,$user_id = 0, $first_leader)
+    function addCart($goods_id,$goods_num,$goods_spec,$session_id,$user_id = 0,$first_leader)
     {       
         
         $goods = M('Goods')->where("goods_id = $goods_id")->find(); // 找出这个商品
@@ -91,7 +91,7 @@ class CartLogic extends RelationModel
         else
             $where .= " and  session_id = '$session_id' ";
 
-        if (isset($first_leader) /*&& $first_leader*/) { // 商品推荐人id，添加该条件既根据商品推荐人id生成购物车商品
+        if(isset($first_leader) /*&& $first_leader*/) { // 商品推荐人id，添加该条件既根据商品推荐人id生成购物车商品
             $where .= " and first_leader = $first_leader";
         }
 
@@ -124,7 +124,7 @@ class CartLogic extends RelationModel
                     'prom_type'       => $goods['prom_type'],   // 0 普通订单,1 限时抢购, 2 团购 , 3 促销优惠
                     'prom_id'         => $goods['prom_id'],   // 活动id
                     'store_id'        => $goods['store_id'],   // 店铺id
-                    'first_leader'    => $first_leader ? $first_leader : 0, // 商品推荐人id
+                    'first_leader'    => isset($first_leader) && $first_leader ? $first_leader : 0, // 商品推荐人id
         );                
 
        // 如果商品购物车已经存在 

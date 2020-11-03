@@ -31,7 +31,7 @@
 			<dl style="border-bottom:1px solid #eeeeee">
 			<dt style=" position:absolute;" class="dingdan_2"></dt>
 			<dd style=" margin-left:30px;"><span class="zhif">所选支付方式&nbsp;:&nbsp;{$order_info.pay_name}</span>
-				<span class="zhif">应付款金额&nbsp;:&nbsp;￥{$order_info.total_fee}元</span>			 			 
+				<span class="zhif">应付款金额&nbsp;:&nbsp;￥{$order_info.total_fee}元</span>
                 <if condition="$order_info.pay_btn eq 1">
 	                <a href="{:U('Mobile/Cart/cart4',array('order_id'=>$order_info['order_id']))}" class="zhifu" style=" color:#fff; font-size:16px;">去支付</a>
                 </if>			    
@@ -104,13 +104,13 @@
 	</volist>
 	<!-- end 商品列表-->										       
 			<div class="jiage">
-				<p>商品总价&nbsp;:&nbsp;<span class="price">￥{$order_info.order_amount}元</span></p>				
+				<p>商品总价&nbsp;:&nbsp;<span class="price">￥{$order_info.total_fee}元</span></p>
 				<p>配送费用&nbsp;:&nbsp;<span class="price">￥{$order_info.shipping_price}元</span></p>
                                 <p>优惠券&nbsp;:&nbsp;<span class="price">￥{$order_info.coupon_price}元</span></p>
 				<p>积分&nbsp;:&nbsp;<span class="price">￥{$order_info.integral_money}元</span></p>	
                                 <p>余额&nbsp;:&nbsp;<span class="price">￥{$order_info.user_money}元</span></p>	
                                 <p>活动优惠&nbsp;:&nbsp;<span class="price">￥{$order_info.order_prom_amount}元</span></p>                                
-				<p>应付款金额&nbsp;:&nbsp;<span class="price1">￥{$order_info.total_fee}元</span></p>						
+				<p>应付款金额&nbsp;:&nbsp;<span class="price1">￥{$order_info.order_amount}元</span></p>
 			</div>
 		</div>
 		  
