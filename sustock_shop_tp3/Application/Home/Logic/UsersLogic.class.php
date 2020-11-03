@@ -127,8 +127,8 @@ class UsersLogic extends RelationModel
             // 成为分销商条件  
             //$distribut_condition = tpCache('distribut.condition'); 
             //if($distribut_condition == 0)  // 直接成为分销商, 每个人都可以做分销        
-            $map['is_distribut']  = 1;        
-            
+            $map['is_distribut']  = 1;
+
             $row_id = M('users')->add($map);
 			// 会员注册送优惠券
 			$coupon = M('coupon')->where("send_end_time > ".time()." and ((createnum - send_num) > 0 or createnum = 0) and type = 2")->select();

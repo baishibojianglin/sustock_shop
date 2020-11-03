@@ -30,7 +30,7 @@ class CartLogic extends RelationModel
      * @param int $first_leader 商品推荐人id
      * @return array
      */
-    function addCart($goods_id,$goods_num,$goods_spec,$session_id,$user_id = 0, $first_leader)
+    function addCart($goods_id,$goods_num,$goods_spec,$session_id,$user_id = 0,$first_leader)
     {       
         
         $goods = M('Goods')->where("goods_id = $goods_id")->find(); // 找出这个商品
@@ -91,7 +91,7 @@ class CartLogic extends RelationModel
         else
             $where .= " and  session_id = '$session_id' ";
 
-        if (isset($first_leader) /*&& $first_leader*/) { // 商品推荐人id，添加该条件既根据商品推荐人id生成购物车商品
+        if(isset($first_leader) /*&& $first_leader*/) { // 商品推荐人id，添加该条件既根据商品推荐人id生成购物车商品
             $where .= " and first_leader = $first_leader";
         }
 
@@ -124,8 +124,14 @@ class CartLogic extends RelationModel
                     'prom_type'       => $goods['prom_type'],   // 0 普通订单,1 限时抢购, 2 团购 , 3 促销优惠
                     'prom_id'         => $goods['prom_id'],   // 活动id
                     'store_id'        => $goods['store_id'],   // 店铺id
-                    'first_leader'    => $first_leader ? $first_leader : 0, // 商品推荐人id
-        );                
+                    'first_leader'    => isset($first_leader) && $first_leader ? $first_leader : 0, // 商品推荐人id
+        );
+
+        // 获取代理商品分享者用户信息
+        $first_agent_leader = M('users')->find($first_leader);
+        if ($goods['is_agent'] == 1 && !empty($first_agent_leader) && $first_agent_leader['is_agent'] == 1) {
+            $data['first_agent_leader'] = isset($first_leader) && $first_leader ? $first_leader : 0; // 代理商品推荐人id
+        }
 
        // 如果商品购物车已经存在 
        if($catr_goods) 
@@ -384,6 +390,7 @@ function cart_freight2($shipping_code,$province,$city,$district,$weight,$store_i
                    $data2['distribut']          = $goods['distribut']; // 三级分销金额
                    $data2['commission']         = M('goods_category')->where("id = {$goods['cat_id3']}")->getField('commission'); // 商品抽成比例
                    $data2['first_leader']       = $val['first_leader'] ? $val['first_leader'] : 0; // 商品推荐人id
+                   $data2['first_agent_leader'] = $val['first_agent_leader'] ? $val['first_agent_leader'] : 0; // 代理商品推荐人id
                    $order_goods_id              = M("OrderGoods")->data($data2)->add();
                    // 扣除商品库存  扣除库存移到 付完款后扣除
                    //M('Goods')->where("goods_id = ".$val['goods_id'])->setDec('store_count',$val['goods_num']); // 商品减少库存

@@ -844,10 +844,11 @@ function update_pay_status($order_sn,$pay_status = 1)
 
         // 购买商品后用户、广告机店家以及代理商提成
         if ($updatePayStatus) {
+            /*购买所有商品的提成 s*/
             // 用户提成
             userOrderCommission($order['order_id'], $order['user_id']);
             // 广告机店家提成
-            shopkeeperOrderCommission($order['goods_price'], $order['user_id']);
+            shopkeeperOrderCommission($order['goods_price'], $order['user_id'], $order['order_id']);
 
             // 获取当前订单用户信息
             $user = M('users')->field('is_agent')->find($order['user_id']);
@@ -856,7 +857,14 @@ function update_pay_status($order_sn,$pay_status = 1)
                 becomeAgent($order['user_id'], $order['order_id']);
             }
             // 代理商提成
-            agentOrderCommission($user, $order['user_id'], $order['goods_price']);
+            agentOrderCommission($user, $order['user_id'], $order['order_id'], $order['goods_price']);
+            /*购买所有商品的提成 e*/
+
+
+            /*购买代理商品的提成 s*/
+            // 购买代理商品成为代理商后对上级及上上级代理商提成
+            agentGoodsOrderCommission($order['user_id'], $order['order_id']);
+            /*购买代理商品的提成 e*/
         }
 	}
 }
@@ -872,26 +880,34 @@ function userOrderCommission($orderId, $userId) {
     // 获取该笔订单商品对应的商品分享者id
     $orderGoodsList = M('orderGoods')->where("order_id = {$orderId}")->select();
     foreach ($orderGoodsList as $key => $value) {
-        if ($value['first_leader']) { // 如果有商品分享者，则对该分享者及上级用户提成
-            // 对商品分享者提成
-            $commissionMoney1 = $value['goods_price'] * 0.5;
-            M('users')->where("user_id = {$value['first_leader']}")->setInc('user_money', $commissionMoney1);
+        // 可以用于提成的金额
+        $commissionMoney = $value['goods_price'] - $value['cost_price'];
+        if ($commissionMoney > 0) {
+            if ($value['first_leader']) { // 如果有商品分享者，则对该分享者及上级用户提成
+                // 对商品分享者提成
+                $commissionMoney1 = $commissionMoney * 0.5;
+                M('users')->where("user_id = {$value['first_leader']}")->setInc('user_money', $commissionMoney1);
+                M('users')->where("user_id = {$value['first_leader']}")->setInc('distribut_money', $commissionMoney1);
 
-            // 对商品分享者上级提成
-            $users1 = M('users')->where("user_id = {$value['first_leader']}")->find(); // 获取商品分享者上级
-            $commissionMoney2 = $value['goods_price'] * 0.5;
-            M('users')->where("user_id = {$users1['first_leader']}")->setInc('user_money', $commissionMoney2);
-        } else { // 如果商品不是分享购买时，对订单用户的上级及上上级提成
-            // 获取订单用户信息
-            $users2 = M('users')->where("user_id = {$userId}")->find();
+                // 对商品分享者上级提成
+                $users1 = M('users')->where("user_id = {$value['first_leader']}")->find(); // 获取商品分享者上级
+                $commissionMoney2 = $commissionMoney * 0.5;
+                M('users')->where("user_id = {$users1['first_leader']}")->setInc('user_money', $commissionMoney2);
+                M('users')->where("user_id = {$users1['first_leader']}")->setInc('distribut_money', $commissionMoney2);
+            } else { // 如果商品不是分享购买时，对订单用户的上级及上上级提成
+                // 获取订单用户信息
+                $users2 = M('users')->where("user_id = {$userId}")->find();
 
-            // 对订单用户上级提成
-            $commissionMoney3 = $value['goods_price'] * 0.5;
-            M('users')->where("user_id = {$users2['first_leader']}")->setInc('user_money', $commissionMoney3);
+                // 对订单用户上级提成
+                $commissionMoney3 = $commissionMoney * 0.5;
+                M('users')->where("user_id = {$users2['first_leader']}")->setInc('user_money', $commissionMoney3);
+                M('users')->where("user_id = {$users2['first_leader']}")->setInc('distribut_money', $commissionMoney3);
 
-            // 对订单用户上上级提成
-            $commissionMoney4 = $value['goods_price'] * 0.5;
-            M('users')->where("user_id = {$users2['second_leader']}")->setInc('user_money', $commissionMoney4);
+                // 对订单用户上上级提成
+                $commissionMoney4 = $commissionMoney * 0.5;
+                M('users')->where("user_id = {$users2['second_leader']}")->setInc('user_money', $commissionMoney4);
+                M('users')->where("user_id = {$users2['second_leader']}")->setInc('distribut_money', $commissionMoney4);
+            }
         }
     }
 }
@@ -900,46 +916,53 @@ function userOrderCommission($orderId, $userId) {
  * 购买商品后media系统广告机安装店家提成
  * @param $goodsPrice
  * @param $userId
+ * @param $orderId
  * @return string
  */
-function shopkeeperOrderCommission($goodsPrice, $userId) {
-    // 获取订单用户信息
-    $user = M('users')->field('oauth, openid')->find($userId);
-    if ($user) {
-        // API接口地址与提交的数据
-        //$url = "http://media.dilinsat.com/index.php/api/shopkeeper_order_commission"; // 测试环境
-        $url = "https://media.sustock.net/index.php/api/shopkeeper_order_commission"; // 正式环境
-        $postData = array(
-            'oauth' => $user['oauth'],
-            'openid' => $user['openid'],
-            'commission_money' => $goodsPrice * 0.5
-        );
+function shopkeeperOrderCommission($goodsPrice, $userId, $orderId) {
+    // 获取订单商品总成本价
+    $costPriceSum = M('orderGoods')->where("order_id = {$orderId}")->sum('cost_price');
+    // 可以用于提成的金额
+    $commissionMoney = $goodsPrice - $costPriceSum;
+    if ($commissionMoney > 0) {
+        // 获取订单用户信息
+        $user = M('users')->field('oauth, openid')->find($userId);
+        if ($user) {
+            // API接口地址与提交的数据
+            //$url = "http://media.dilinsat.com/index.php/api/shopkeeper_order_commission"; // 测试环境
+            $url = "https://media.sustock.net/index.php/api/shopkeeper_order_commission"; // 正式环境
+            $postData = array(
+                'oauth' => $user['oauth'],
+                'openid' => $user['openid'],
+                'commission_money' => $commissionMoney * 0.5
+            );
 
-        /*cURL请求 s*/
-        // 1.初始化curl（创建一个cURL资源）
-        $ch = curl_init();
+            /*cURL请求 s*/
+            // 1.初始化curl（创建一个cURL资源）
+            $ch = curl_init();
 
-        // 2.设置curl的参数（设置URL和相应的选项）
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POST, 1); // post数据
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData); // post的变量
+            // 2.设置curl的参数（设置URL和相应的选项）
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_POST, 1); // post数据
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $postData); // post的变量
 
-        // 3.采集（抓取URL并把它传递给浏览器）
-        $result = curl_exec($ch);
-        $output = json_decode($result, true);
+            // 3.采集（抓取URL并把它传递给浏览器）
+            $result = curl_exec($ch);
+            $output = json_decode($result, true);
 
-        // 先判断cURL是否错误，再关闭cURL资源
-        if (curl_errno($ch)) {
-            return curl_error($ch);
+            // 先判断cURL是否错误，再关闭cURL资源
+            if (curl_errno($ch)) {
+                return curl_error($ch);
+            }
+            // 4.关闭cURL资源，并且释放系统资源
+            curl_close($ch);
+            /*cURL请求 e*/
+
+            // 打印获得的数据
+            //print_r($output);
+            //var_dump($output);
         }
-        // 4.关闭cURL资源，并且释放系统资源
-        curl_close($ch);
-        /*cURL请求 e*/
-
-        // 打印获得的数据
-        //print_r($output);
-        //var_dump($output);
     }
 }
 
@@ -949,14 +972,25 @@ function shopkeeperOrderCommission($goodsPrice, $userId) {
  * @param $orderId
  */
 function becomeAgent($userId, $orderId) {
-    // 获取该笔订单商品对应的商品是否为代理商品
-    $orderGoodsList = M('orderGoods')->where("order_id = {$orderId}")->select();
-    foreach ($orderGoodsList as $key => $value) {
-        if ($value['goods_id']) {
-            // 获取商品信息
-            $goods = M('goods')->field('is_agent')->find($value['goods_id']);
-            if ($goods && $goods['is_agent'] == 1) { // 是代理商品，该订单用户成为代理商
-                $result = M('users')->where(array('user_id' => $userId))->save(array('is_agent' => 1));
+    // 获取订单用户信息
+    $user = M('users')->find($userId);
+    if (!empty($user) && $user['is_agent'] == 0) { // 订单用户不是代理商
+        // 获取该笔订单商品对应的商品是否为代理商品
+        $orderGoodsList = M('orderGoods')->where("order_id = {$orderId}")->select();
+        foreach ($orderGoodsList as $key => $value) {
+            if ($value['goods_id']) {
+                // 获取商品信息
+                $goods = M('goods')->field('is_agent')->find($value['goods_id']);
+                if ($goods && $goods['is_agent'] == 1) { // 是代理商品，该订单用户成为代理商
+                    $data = array('is_agent' => 1);
+                    // 获取分享代理商品的代理商信息
+                    $first_agent_leader = M('users')->find($value['first_agent_leader']);
+                    if ($first_agent_leader['is_agent'] == 1) {
+                        $data['first_agent_leader'] = $value['first_agent_leader'];
+                        $data['second_agent_leader'] = $first_agent_leader['first_agent_leader'];
+                    }
+                    $result = M('users')->where(array('user_id' => $userId))->save($data);
+                }
             }
         }
     }
@@ -966,9 +1000,10 @@ function becomeAgent($userId, $orderId) {
  * 代理商提成
  * @param $user
  * @param $userId
+ * @param $orderId
  * @param $goodsPrice
  */
-function agentOrderCommission($user, $userId, $goodsPrice) {
+function agentOrderCommission($user, $userId, $orderId, $goodsPrice) {
     // 查询条件
     $agentMap = array(
         'is_agent' => 1,
@@ -979,16 +1014,63 @@ function agentOrderCommission($user, $userId, $goodsPrice) {
         $agentMap['user_id'] = array('neq', $userId);
     }
 
-    // 获取代理商数量
-    $agentCount = M('users')->where($agentMap)->count();
-    // 每个代理商提成金额
-    $commissionMoney = number_format($goodsPrice / $agentCount * 0.5, 2);
-    //file_put_contents('./agentOrderCommission', json_encode(array($goodsPrice, $agentCount, $commissionMoney, M()->getLastSql())));
-    // 获取代理商列表
-    $agentList = M('users')->field('user_id, user_money')->where($agentMap)->select();
-    foreach ($agentList as $key => $value) {
-        // 代理商提成
-        M('users')->where("user_id = {$value['user_id']}")->setInc('user_money', $commissionMoney);
+    // 获取订单商品总成本价
+    $costPriceSum = M('orderGoods')->where("order_id = {$orderId}")->sum('cost_price');
+    // 可以用于提成的金额
+    $commissionMoney = $goodsPrice - $costPriceSum;
+    if ($commissionMoney > 0) {
+        // 获取代理商数量
+        $agentCount = M('users')->where($agentMap)->count();
+        // 每个代理商提成金额
+        $commissionMoney = number_format($commissionMoney / $agentCount * 0.5, 2);
+        //file_put_contents('./agentOrderCommission', json_encode(array($goodsPrice, $agentCount, $commissionMoney, M()->getLastSql())));
+        // 获取代理商列表
+        $agentList = M('users')->field('user_id, user_money')->where($agentMap)->select();
+        foreach ($agentList as $key => $value) {
+            // 代理商提成
+            M('users')->where("user_id = {$value['user_id']}")->setInc('user_money', $commissionMoney);
+            M('users')->where("user_id = {$value['user_id']}")->setInc('distribut_money', $commissionMoney);
+        }
+    }
+}
+
+/**
+ * 购买代理商品成为代理商后对上级及上上级代理商（向上两级）提成
+ * @param $userId
+ * @param $orderId
+ */
+function agentGoodsOrderCommission($userId, $orderId) {
+    // 获取订单用户信息
+    $user = M('users')->find($userId);
+    if (!empty($user) && $user['is_agent'] == 1) { // 订单用户是代理商
+        // 获取订单商品
+        $orderGoodsList = M('orderGoods')->where("order_id = {$orderId}")->select();
+        foreach ($orderGoodsList as $key => $value) {
+            if ($value['goods_id']) {
+                // 获取商品信息
+                $goods = M('goods')->find($value['goods_id']);
+                if ($goods['is_agent'] == 1) { // 是代理商品
+                    // 可以用于提成的金额
+                    $commissionMoney = $value['goods_price'] - $value['cost_price'];
+                    if ($commissionMoney > 0) {
+                        // TODO：事务处理
+                        // 上级提成
+                        if ($user['first_agent_leader']) {
+                            $commissionMoney = $commissionMoney * 0.5; // TODO：配置提成比例
+                            $firstAgentLeaderCommission1 = M('users')->where(array('is_agent' => 1, 'user_id' => $user['first_agent_leader']))->setInc('user_money', $commissionMoney);
+                            $firstAgentLeaderCommission2 = M('users')->where(array('is_agent' => 1, 'user_id' => $user['first_agent_leader']))->setInc('agent_money', $commissionMoney);
+                        }
+
+                        // 上上级提成
+                        if ($user['second_agent_leader']) {
+                            $commissionMoney = $commissionMoney * 0.5; // TODO：配置提成比例
+                            $secondAgentLeaderCommission1 = M('users')->where(array('is_agent' => 1, 'user_id' => $user['second_agent_leader']))->setInc('user_money', $commissionMoney);
+                            $secondAgentLeaderCommission2 = M('users')->where(array('is_agent' => 1, 'user_id' => $user['second_agent_leader']))->setInc('agent_money', $commissionMoney);
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

@@ -85,29 +85,29 @@ var t2=new TouchSlider({id:'sliderlist', speed:600, timeout:6000, before:functio
       <div class="product_info">
         <div class="info_dottm">
           <h3 class="name">{$goods.goods_name}</h3>
-          <div class="right">
+          <div class="right" style="display: none">
 
-<!-- JiaThis Button BEGIN -->          
+<!-- JiaThis Button BEGIN -->
           <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt" target="_blank">
             <div id="pro_share" class="share"></div>
-          </a>         
+          </a>
 <script>
  var jiathis_config = {
 						url:"http://{$_SERVER[HTTP_HOST]}/index.php?m=Mobile&c=Goods&a=goodsInfo&id={$_GET[id]}",
-						pic:"http://{$_SERVER[HTTP_HOST]}{$goods[goods_id]|goods_thum_images=400,400}", 
+						pic:"http://{$_SERVER[HTTP_HOST]}{$goods[goods_id]|goods_thum_images=400,400}",
 					}
 var is_distribut = getCookie('is_distribut');
 var user_id = getCookie('user_id');
 // 如果已经登录了, 并且是分销商
 if(parseInt(is_distribut) == 1 && parseInt(user_id) > 0)
-{									
-	jiathis_config.url = jiathis_config.url + "&first_leader="+user_id;									
-}										
+{
+	jiathis_config.url = jiathis_config.url + "&first_leader="+user_id;
+}
 //alert(jiathis_config.url);
-</script>           
+</script>
 <script type="text/javascript" src="http://v3.jiathis.com/code_mini/jia.js" charset="utf-8"></script>
-<!-- JiaThis Button END -->          
-          
+<!-- JiaThis Button END -->
+
           </div>
         </div>
         <dl class="goods_price">
