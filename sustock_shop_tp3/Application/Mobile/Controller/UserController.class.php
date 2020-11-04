@@ -109,30 +109,43 @@ class UserController extends MobileBaseController
     }
 
     /**
-     * 我的团队及返佣
+     * 我的代理团队（或指定下级的代理团队）及返佣
      */
     public function team()
     {
+        $user_id = I('user_id');
+        if (isset($user_id) && $user_id) { // 指定下级
+            $user_id = I('user_id');
+            $tpl = 'team2';
+        } else { // 当前登录用户
+            $user_id = $this->user_id;
+            $tpl = 'team';
+        }
+
         $user = session('user');
-        //获取账户资金记录
+        // 获取下级代理列表
         $logic = new UsersLogic();
-        $data = $logic->get_account_log($this->user_id, I('get.type'));
-        $account_log = $data['result'];
+        $data = $logic->getSubAgentUsers($user_id);
+        $team_users = $data['result'];
 
         $this->assign('user', $user);
-        $this->assign('account_log', $account_log);
+        $this->assign('count', $data['count']);
+        $this->assign('team_users', $team_users);
         $this->assign('page', $data['show']);
 
         if ($_GET['is_ajax']) {
-            $this->display('ajax_account_list');
+            $this->display('ajax_team_list');
             exit;
         }
-        $this->display();
+        $this->display($tpl);
     }
 
+    /**
+     * 优惠券
+     */
     public function coupon()
     {
-        //
+        // 获取优惠券
         $logic = new UsersLogic();
         $data = $logic->get_coupon($this->user_id, $_REQUEST['type']);
         $coupon_list = $data['result'];

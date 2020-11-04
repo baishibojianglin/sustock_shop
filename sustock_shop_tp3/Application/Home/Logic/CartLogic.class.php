@@ -125,7 +125,13 @@ class CartLogic extends RelationModel
                     'prom_id'         => $goods['prom_id'],   // 活动id
                     'store_id'        => $goods['store_id'],   // 店铺id
                     'first_leader'    => isset($first_leader) && $first_leader ? $first_leader : 0, // 商品推荐人id
-        );                
+        );
+
+        // 获取代理商品分享者用户信息
+        $first_agent_leader = M('users')->find($first_leader);
+        if ($goods['is_agent'] == 1 && !empty($first_agent_leader) && $first_agent_leader['is_agent'] == 1) {
+            $data['first_agent_leader'] = isset($first_leader) && $first_leader ? $first_leader : 0; // 代理商品推荐人id
+        }
 
        // 如果商品购物车已经存在 
        if($catr_goods) 
@@ -384,6 +390,7 @@ function cart_freight2($shipping_code,$province,$city,$district,$weight,$store_i
                    $data2['distribut']          = $goods['distribut']; // 三级分销金额
                    $data2['commission']         = M('goods_category')->where("id = {$goods['cat_id3']}")->getField('commission'); // 商品抽成比例
                    $data2['first_leader']       = $val['first_leader'] ? $val['first_leader'] : 0; // 商品推荐人id
+                   $data2['first_agent_leader'] = $val['first_agent_leader'] ? $val['first_agent_leader'] : 0; // 代理商品推荐人id
                    $order_goods_id              = M("OrderGoods")->data($data2)->add();
                    // 扣除商品库存  扣除库存移到 付完款后扣除
                    //M('Goods')->where("goods_id = ".$val['goods_id'])->setDec('store_count',$val['goods_num']); // 商品减少库存
