@@ -289,6 +289,33 @@ class UsersLogic extends RelationModel
 
         return $return;
     }
+
+    /**
+     * 获取下级代理列表
+     * @param $user_id
+     * @return mixed
+     */
+    public function getSubAgentUsers($user_id){
+        //查询条件
+        $where = 'u.first_agent_leader = ' . $user_id;
+
+        $count = M('Users')->alias('u')->where($where)->count();
+        $Page = new Page($count,16);
+        $users = M('Users')->alias('u')
+            ->field('u.*, count(s.user_id) second_count')
+            ->join('__USERS__ s ON s.first_agent_leader = u.user_id', 'LEFT')
+            ->where($where)->group('u.user_id')->order('second_count desc')->limit($Page->firstRow.','.$Page->listRows)->select();
+        //file_put_contents('./agentsql.txt', M()->getLastSql());
+
+        $return['status'] = 1;
+        $return['msg'] = '';
+        $return['count'] = $count;
+        $return['result'] = $users;
+        $return['show'] = $Page->show();
+
+        return $return;
+    }
+
     /*
      * 获取优惠券
      */
