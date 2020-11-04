@@ -1,5 +1,6 @@
 *.sql
 /Application/Common/Conf/constant.php
 /Application/Common/Conf/db.php
+/Application/Common/Conf/commission.php
 /Application/Runtime
 /plugins/payment/weixin/cert

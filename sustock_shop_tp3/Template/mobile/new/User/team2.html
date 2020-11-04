@@ -4,7 +4,7 @@
 <div class="tab_nav">
   <div class="header">
     <div class="h-left"><a class="sb-back" href="javascript:history.back(-1)" title="返回"></a></div>
-    <div class="h-mid">下级团队</div>
+    <div class="h-mid">二级团队</div>
     <div class="h-right">
       <aside class="top_bar">
         <div onClick="show_menu();$('#close_btn').addClass('hid');" id="show_more"><a href="javascript:;"></a> </div>
@@ -14,9 +14,9 @@
 </div>
 </header>
 <include file="Public/menu"/>
-<div id="tbh5v0">			
+<div id="tbh5v0">
 <div style="background:#fff;">
-<div class="user_login_title"><h2><em>团队人数</em><span>{$count}<!--或{$team_users|count}--></span></h2></div>
+<div class="user_login_title"><h2><em>{$_GET['user_name']}</em>&nbsp;<em>团队人数</em><span>{$count}<!--或{$team_users|count}--></span></h2></div>
 <empty name="team_users">
 <p class="font12">您还没有团队！</p>
 <else/>
