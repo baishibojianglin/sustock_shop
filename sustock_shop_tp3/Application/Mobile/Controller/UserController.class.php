@@ -115,12 +115,12 @@ class UserController extends MobileBaseController
     {
         $user = session('user');
         //获取账户资金记录
-        $logic = new UsersLogic();
-        $data = $logic->get_account_log($this->user_id, I('get.type'));
-        $account_log = $data['result'];
+        $data = $this->_get_team_users($this->user_id);
+        $team_users = $data['result'];
 
         $this->assign('user', $user);
-        $this->assign('account_log', $account_log);
+        $this->assign('count', $data['count']);
+        $this->assign('team_users', $team_users);
         $this->assign('page', $data['show']);
 
         if ($_GET['is_ajax']) {
@@ -128,6 +128,27 @@ class UserController extends MobileBaseController
             exit;
         }
         $this->display();
+    }
+
+    private function _get_team_users($user_id){
+        //查询条件
+        $where = 'u.first_agent_leader = ' . $user_id;
+
+        $count = M('Users')->alias('u')->where($where)->count();
+        $Page = new Page($count,16);
+        $users = M('Users')->alias('u')
+            ->field('u.*, count(s.user_id) second_count')
+            ->join('__USERS__ s ON s.first_agent_leader = u.user_id', 'LEFT')
+            ->where($where)->group('u.user_id')->order('second_count desc')->limit($Page->firstRow.','.$Page->listRows)->select();
+        //file_put_contents('./agentsql.txt', M()->getLastSql());
+
+        $return['status'] = 1;
+        $return['msg'] = '';
+        $return['count'] = $count;
+        $return['result'] = $users;
+        $return['show'] = $Page->show();
+
+        return $return;
     }
 
     public function coupon()
