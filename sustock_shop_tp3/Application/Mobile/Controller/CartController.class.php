@@ -20,7 +20,7 @@ class CartController extends MobileBaseController {
      */
     public function  __construct() {   
         parent::__construct();                
-        $this->cartLogic = new \Home\Logic\CartLogic();                 
+        $this->cartLogic = new \Home\Logic\CartLogic();
         if(session('?user'))
         {
         	$user = session('user');
