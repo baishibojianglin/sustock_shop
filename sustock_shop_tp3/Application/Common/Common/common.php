@@ -49,7 +49,6 @@ function get_user_info($user_id_or_name,$type = 0,$oauth=''){
     	$map['oauth'] = $oauth;
     }
     $user = M('users')->where($map)->find();
-    //file_put_contents('./test.txt', json_encode($user));
     return $user;
 }
 
