@@ -11,6 +11,66 @@
 <link rel="stylesheet" href="__STATIC__/css/public.css">
 <link rel="stylesheet" href="__STATIC__/css/user.css">
 
+<style>
+    .addressmone ul li span {
+        display:block;
+        float: none;
+        width: 30%;
+        font-size: 14px;
+        line-height: 45px;
+        color: #666;
+    }
+    .addressmone ul li select {
+        display: block;
+        float:none;
+        background: transparent;
+        height: 20px;
+        border: 0px;
+        font-size: 16px;
+        color: #333;
+        line-height: 20px;
+        padding-right: 10px;
+        -webkit-appearance: none;
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        flex: 1;
+        border-radius: 0;
+        border:none;
+        -webkit-rtl-ordering: logical;
+        -webkit-user-select: text;
+    }
+    .dotm_btn {
+        width: 100%;
+        height: 50px;
+        background: #fff;
+        position:static;
+        margin: 0px auto 30px auto;
+        text-align: center;
+        min-width: 320px;
+        max-width: 640px;
+        text-align: center;
+    }
+
+    .dotm_btn1 {
+        display: inline-block;
+        float: left;
+        width: 30%;
+        height: 40px;
+        background: #FF3300;
+        font-size: 14px;
+        line-height: 40px;
+        color: #FFF;
+        border: 0;
+        margin-top: 5px;
+        border-radius: 3px;
+        margin-left: 35%;
+        font-family: "微软雅黑";
+    }
+
+
+    select:focus { outline: none; }
+</style>
+
 <script src="__PUBLIC__/js/jquery-1.8.2.min.js"></script>
 <script type="text/javascript" src="__STATIC__/js/layer.js" ></script>
 <script src="__PUBLIC__/js/global.js"></script>
@@ -37,38 +97,46 @@
   <form action="{:U('Mobile/User/add_address')}" method="post" onSubmit="return checkForm()">
 	<ul>
        <li>
-    	<span>收货人姓名</span>  
-        <input name="consignee" id="consignee" type="text" value="{$address.consignee}" maxlength="12" placeholder="收货人姓名"/>
+    	<span>收货人姓名</span>
+        <input name="consignee" id="consignee" type="text" value="{$address.consignee}" maxlength="12" placeholder="填写姓名"/>
 		</li>          
        <li>
-          <span>地区</span>       
-          <input name='country' value='1' type="hidden">
-	             <select class="province_select"  name="province" id="province" onChange="get_city(this)">
-                      <option value="0">请选择</option>
+
+              <span>地区</span>
+
+
+
+                 <input name='country' value='1' type="hidden">
+                 <select style="margin-top: 10px;" class="province_select"  name="province" id="province" onChange="get_city(this)">
+                      <option value="0">选择省份</option>
                         <volist name="province" id="p">
                             <option <if condition="$address['province'] eq $p['id']">selected</if>  value="{$p.id}">{$p.name}</option>
                         </volist>
                  </select>
+                <br/>
                 <select name="city" id="city" onChange="get_area(this)">
-                    <option  value="0">请选择</option>
+                    <option  value="0">选择城市</option>
                     <volist name="city" id="p">
                         <option <if condition="$address['city'] eq $p['id']">selected</if>  value="{$p.id}">{$p.name}</option>
                     </volist>
                 </select>
+                <br/>
                 <select name="district" id="district" onChange="get_twon(this)">
-                    <option  value="0">请选择</option>
+                    <option  value="0">选择区县</option>
                     <volist name="district" id="p">
                         <option <if condition="$address['district'] eq $p['id']">selected</if>  value="{$p.id}">{$p.name}</option>
                     </volist>
-                </select>                 
+                </select>
+                <br/>
                 <select class="di-bl fl seauii" name="twon" id="twon" <if condition="$address['twon'] gt 0 ">style="display:block;"<else/>style="display:none;"</if>>
                     <volist name="twon" id="p">
                         <option <if condition="$address['twon'] eq $p['id']">selected</if>  value="{$p.id}">{$p.name}</option>
                     </volist>
-                </select>          
+                </select>
+
         	</li>
            <li>
-    		 <span>详细地址</span> <input type="text"  name="address" id="address" placeholder="详细地址" maxlength="100" value="{$address.address}"/>
+    		 <span>详细地址</span> <input type="text"  name="address" id="address" placeholder="填写地址" maxlength="100" value="{$address.address}"/>
 	       </li>
            <li>
 			<span>手机</span> 
@@ -76,7 +144,7 @@
 	        </li>
             <li>
 	    		<span>邮政编码</span> 
-                <input type="text" name="zipcode" value="{$address.zipcode}" onpaste="this.value=this.value.replace(/[^\d]/g,'')" onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" maxlength="10"  placeholder="邮政编码"/>
+                <input type="text" name="zipcode" value="{$address.zipcode}" onpaste="this.value=this.value.replace(/[^\d]/g,'')" onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" maxlength="10"  placeholder="填写邮政编码"/>
 	        </li>
     	</ul>
             <div style=" height:50px"></div>
