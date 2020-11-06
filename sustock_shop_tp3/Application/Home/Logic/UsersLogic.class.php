@@ -138,7 +138,7 @@ class UsersLogic extends RelationModel
 				M('coupon_list')->add(array('cid'=>$val['id'],'type'=>$val['type'],'uid'=>$row_id,'send_time'=>time()));
 				M('Coupon')->where("id = {$val['id']}")->setInc('send_num'); // 优惠券领取数量加一            
 			}
-            $user = M('users')->find();
+            $user = M('users')->find($row_id);
         }else
         {
             $user['token'] = md5(time().mt_rand(1,999999999));
