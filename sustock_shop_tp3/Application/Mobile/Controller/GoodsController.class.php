@@ -166,7 +166,8 @@ class GoodsController extends MobileBaseController {
         //M('Goods')->where("goods_id=$goods_id")->save(array('click_count'=>$goods['click_count']+1 )); //统计点击数
         $commentStatistics = $goodsLogic->commentStatistics($goods_id);// 获取某个商品的评论统计
         $this->assign('spec_goods_price', json_encode($spec_goods_price,true)); // 规格 对应 价格 库存表
-      	$goods['sale_num'] = M('order_goods')->where("goods_id=$goods_id and is_send=1")->count();
+      	//$goods['sale_num'] = M('order_goods')->where("goods_id=$goods_id and is_send=1")->count();
+      	$goods['sale_num'] = M('order_goods')->alias('og')->join('__ORDER__ o ON o.order_id = og.order_id')->where("og.goods_id=$goods_id and o.pay_status = 1")->count();
         //商品促销
         if($goods['prom_type'] == 1)
         {

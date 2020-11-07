@@ -244,7 +244,8 @@ class UserController extends MobileBaseController
         $where = ' user_id=' . $this->user_id;
         //条件搜索 
         if (in_array(strtoupper(I('type')), array('WAITCCOMMENT', 'COMMENTED'))) {
-            $where .= " AND order_status in(1,4) "; //代评价 和 已评价
+            //$where .= " AND order_status in(1,4) "; //代评价 和 已评价
+            $where .= " AND order_status in(2,4) "; //待收货
         } elseif (I('type')) {
             $where .= C(strtoupper(I('type')));
         }
@@ -263,7 +264,7 @@ class UserController extends MobileBaseController
             $data = $model->get_order_goods($v['order_id']);
             $order_list[$k]['goods_list'] = $data['result'];
         }
-        $storeList = M('store')->getField('store_id,store_name,store_qq'); // 找出所有商品对应的店铺id
+        $storeList = M('store')->getField('store_id,store_name,store_qq,store_phone'); // 找出所有商品对应的店铺id
         $this->assign('storeList', $storeList); // 店铺列表
         $this->assign('order_status', C('ORDER_STATUS'));
         $this->assign('shipping_status', C('SHIPPING_STATUS'));

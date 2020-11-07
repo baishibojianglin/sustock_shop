@@ -31,7 +31,7 @@
 			<dl style="border-bottom:1px solid #eeeeee">
 			<dt style=" position:absolute;" class="dingdan_2"></dt>
 			<dd style=" margin-left:30px;"><span class="zhif">所选支付方式&nbsp;:&nbsp;{$order_info.pay_name}</span>
-				<span class="zhif">应付款金额&nbsp;:&nbsp;￥{$order_info.total_fee}元</span>
+				<span class="zhif">应付款金额&nbsp;:&nbsp;￥{$order_info.total_fee}元</span>			 			 
                 <if condition="$order_info.pay_btn eq 1">
 	                <a href="{:U('Mobile/Cart/cart4',array('order_id'=>$order_info['order_id']))}" class="zhifu" style=" color:#fff; font-size:16px;">去支付</a>
                 </if>			    
@@ -52,7 +52,7 @@
 			</dd>
 			</dl>
             
-			<dl style="border-top:1px solid #eeeeee; margin-top:10px; height:140px; padding-bottom:0px;">
+			<dl style="border-top:1px solid #eeeeee; margin-top:10px; height:100px; padding-bottom:0px;"><!--height:140px;-->
 			<dd>
              
 			<h3>店铺名称:{$store['store_name']}</h3>
@@ -63,14 +63,14 @@
                   {$store['store_address']}
             </h3>
 			<h3>
-                联系电话：{$store['store_phone']} 
+                联系电话：<a href="tel:{$store['store_phone']}">{$store['store_phone']}</a>
             </h3>
-            <h3>
+            <!--<h3>
                 联系卖家：
                 <a href="mqqwpa://im/chat?chat_type=wpa&uin={$store['store_qq']}&version=1&src_type=web&web_src=oicqzone.com" target="_blank">
                     <img src="__PUBLIC__/images/qq.gif">
                 </a>
-            </h3>
+            </h3>-->
 			</dd>
 			</dl>
                         
@@ -131,7 +131,10 @@
                 <if condition="$order_info.pay_btn eq 1"><a href="{:U('Mobile/Cart/cart4',array('order_id'=>$order_info['order_id']))}" class="on_comment">立即付款</a></if>
                 <if condition="$order_info.receive_btn eq 1"><a href="{:U('Mobile/User/order_confirm',array('id'=>$order_info['order_id']))}" class="on_comment">收货确认</a></if>    
                 <if condition="$order_info.shipping_btn eq 1"><a href="http://www.kuaidi100.com/" target="_blank" class="on_comment">查看物流</a></if>        
-                <if condition="$order_info.return_btn eq 1"><a href="mqqwpa://im/chat?chat_type=wpa&uin={$store['store_qq']}&version=1&src_type=web&web_src=oicqzone.com" target="_blank" class="on_comment">联系客服</a></if>            
+                <if condition="$order_info.return_btn eq 1">
+					<!--<a href="mqqwpa://im/chat?chat_type=wpa&uin={$store['store_qq']}&version=1&src_type=web&web_src=oicqzone.com" target="_blank" class="on_comment">联系客服</a>-->
+					<a href="tel:{$store['store_phone']}">联系客服</a>
+				</if>            
 			</div> 
 		</div>
 	</div>		
