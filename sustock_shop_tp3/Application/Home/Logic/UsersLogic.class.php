@@ -404,7 +404,7 @@ class UsersLogic extends RelationModel
             $page = new Page($count1,3);
             $sql =" select o.add_time,o.order_sn,og.order_id,og.goods_id,og.goods_name,o.store_id from __PREFIX__order_goods as og
             left join __PREFIX__order as o on o.order_id = og.order_id  where o.user_id = $user_id and og.is_send = 1
-            $where order by o.order_id desc  LIMIT {$page->firstRow},{$page->listRows}";
+            $where and o.order_status = 2 order by o.order_id desc  LIMIT {$page->firstRow},{$page->listRows}";
         }
         $show = $page->show();
         $comment_list = M()->query($sql);
