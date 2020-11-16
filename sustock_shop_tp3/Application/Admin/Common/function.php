@@ -132,6 +132,7 @@ function getAllMenu(){
             array('name'=>'会员充值','act'=>'recharge','control'=>'User'),
             array('name'=>'入驻申请','act'=>'ruzhu','control'=>'User'),
             //array('name'=>'会员整合','act'=>'integrate','control'=>'User'),
+            array('name'=>'运营代理','act'=>'index','control'=>'UserAgent'),
         )),
         'goods' => array('name' => '商品管理', 'icon'=>'fa-tasks', 'sub_menu' => array(
             array('name' => '商品分类', 'act'=>'categoryList', 'control'=>'Goods'),
