@@ -119,19 +119,19 @@ function submitMsg() {
 	var msg_content = frm.elements['msg_content'].value;
 	var msg = '';
 	if (msg_title.length == 0) {
-		alert('留言标题不能为空');
+		layer.msg('留言标题不能为空');
 		return false
 	}
 	if (msg_content.length == 0) {
-		alert('留言内容不能为空');
+        layer.msg('留言内容不能为空');
 		return false
 	}
 	if (msg_title.length > 100) {
-		alert('标题不能超过100字符');
+        layer.msg('标题不能超过100字符');
 		return false
 	}
 	if ($.trim($('#verify_code').val()).length == 0) {
-		alert('验证码不能为空');
+        layer.msg('验证码不能为空');
 		return false
 	}
 	

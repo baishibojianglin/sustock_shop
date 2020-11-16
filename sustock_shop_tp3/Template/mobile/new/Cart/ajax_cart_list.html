@@ -143,13 +143,27 @@ function chkAll_onclick()
 
 function del_cart_goods(goods_id)
 {
-    if(!confirm('确定要删除吗?'))
-        return false;
-    var chk_value = [];
-    chk_value.push(goods_id);
-    // ajax调用删除
-    if(chk_value.length > 0)
-        ajax_del_cart(chk_value.join(','));
+    layer.confirm('确定要删除吗',{btn:['确定','取消'],title:"八七兔商城"},function () {
+        var chk_value = [];
+        chk_value.push(goods_id);
+        // ajax调用删除
+        if(chk_value.length > 0){
+            var ids= chk_value.join(',');
+            $.ajax({
+                type : "POST",
+                url:"{:U('Mobile/Cart/ajaxDelCart')}",
+                data:{ids:ids},
+                dataType:'json',
+                success: function(data){
+                    if(data.status == 1)
+                    {
+                        ajax_cart_list(); //ajax 请求获取购物车列表
+                        layer.close(layer.index);
+                    }
+                }
+            });
+        }
+    });
 }
 
 
@@ -164,8 +178,8 @@ function selcart_submit()
 		  window.location.href="{:U('Mobile/Cart/cart2')}"
      }
      else
-     {   
-	     alert('请选择要结算的商品！');
+     {
+         layer.msg('请选择要结算的商品！');
 	     return false;
     }
 }

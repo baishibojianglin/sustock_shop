@@ -1128,12 +1128,12 @@ class UserController extends BaseController {
     		$data['out_no'] = $this->get_out_no();
     		$data['user_id'] = $this->user_id;    		    		
     		$data['create_time'] = time();                
-//                $distribut_min = tpCache('distribut.min'); // 最少提现额度
-//                if($data['money'] < $distribut_min)
-//                {
-//                        $this->error('每次最少提现额度'.$distribut_min);
-//                        exit;
-//                }
+                $distribut_min = tpCache('distribut.min'); // 最少提现额度
+                if($data['money'] < $distribut_min)
+                {
+                        $this->error('每次最少提现额度'.$distribut_min);
+                        exit;
+                }
                 if($data['money'] > $this->user['user_money'])
                 {
                         $this->error("你最多可提现{$this->user['user_money']}账户余额.");

@@ -12,6 +12,7 @@
 <script src="__PUBLIC__/js/global.js"></script>
 <script type="text/javascript" src="__STATIC__/js/layer.js" ></script>
 <script type="text/javascript" src="__STATIC__/js/jquery.js"></script>
+<script src="__PUBLIC__/js/layer/layer.js"></script>
 </head>
 <body style=" background:#F5F5F5">
 <header>
@@ -93,9 +94,9 @@
 //收藏店铺
 $('#favoriteStore').click(function () {
   if (getCookie('user_id') == '') {
-	  if(confirm('请先登录')){
-		  window.location.href = "{:U('Mobile/User/login')}"; 
-	  }                     	
+	  layer.confirm('请先登录',{btn:['确定','取消'],title:"八七兔商城"},function () {
+		  window.location.href = "{:U('Mobile/User/login')}";
+	  });
   } else {
     $.ajax({
       type: 'post',

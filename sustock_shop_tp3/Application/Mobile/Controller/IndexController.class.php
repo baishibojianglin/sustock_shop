@@ -67,7 +67,7 @@ class IndexController extends MobileBaseController {
     
     public function ajaxGetMore(){
     	$p = I('p',1);
-    	$favourite_goods = M('goods')->where("is_recommend=1 and is_on_sale=1  and goods_state = 1 ")->order('sort DESC')->page($p,10)->cache(true,TPSHOP_CACHE_TIME)->select();//首页推荐商品
+    	$favourite_goods = M('goods')->where("is_agent = 0 and is_on_sale=1  and goods_state = 1 ")->order('on_time DESC')->page($p,10)->cache(true,TPSHOP_CACHE_TIME)->select();//首页推荐商品
     	$this->assign('favourite_goods',$favourite_goods);
     	$this->display();
     }

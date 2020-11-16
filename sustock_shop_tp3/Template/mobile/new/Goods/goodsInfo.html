@@ -18,6 +18,7 @@
 <script src="__PUBLIC__/js/global.js"></script>
 <script src="__PUBLIC__/js/mobile_common.js"></script>
 <script src="__STATIC__/js/common.js"></script>
+<script src="__PUBLIC__/js/layer/layer.js"></script>
 </head>
 <body>
 <script type="text/javascript">
@@ -84,7 +85,7 @@ var t2=new TouchSlider({id:'sliderlist', speed:600, timeout:6000, before:functio
 	  <form name="buy_goods_form" method="post" id="buy_goods_form" >
       <div class="product_info">
         <div class="info_dottm">
-          <h3 class="name">{$goods.goods_name}</h3>
+          <h3 class="name" style="width: 100%;">{$goods.goods_name}</h3>
           <div class="right" style="display: none">
 
 <!-- JiaThis Button BEGIN -->
@@ -395,7 +396,7 @@ function get_goods_price()
 	if(goods_num > store_count)
 	{
 	   goods_num = store_count;
-	   alert('库存仅剩 '+store_count+' 件');
+	   layer.msg('库存仅剩 '+store_count+' 件');
 	   $("#goods_num").val(goods_num);
 	}
     var flash_sale_price = parseFloat("{$goods['flash_sale']['price']}");

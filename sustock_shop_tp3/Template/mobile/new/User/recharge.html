@@ -168,7 +168,7 @@ function recharge_submit(){
 	}
 	var account = $('#add_money').val();
 	if(isNaN(account) || parseInt(account)<=0 || account==''){
-		alert('请输入正确的充值金额');
+		layer.msg('请输入正确的充值金额');
 		return false;
 	}
 	$('#recharge_form').submit();

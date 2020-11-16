@@ -162,7 +162,7 @@ function validate_comment(){
 	}
 	
 	if(error.length>0){
-	   alert(error);
+	   layer.msg(error);
 	   return false;
 	}else{
 	  return true;
@@ -201,7 +201,7 @@ $(document).ready(function(){
                 $(this).parent('.tag-define').siblings('.tag-item').each(function(){
                     var a_text = $(this).text();
                     if(ce == a_text){
-                        alert('已有该标签');
+                        layer.msg('已有该标签');
                         ce = '';
                         $('.define-input').val('');
                     }

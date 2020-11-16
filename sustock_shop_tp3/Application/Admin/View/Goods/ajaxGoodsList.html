@@ -29,7 +29,10 @@
                 </td>   
                 <td class="text-center">
                     <a href="javascript:sort('is_hot');">热卖</a>
-                </td>                
+                </td>
+                <td class="text-center">
+                    <a href="javascript:sort('is_agent');">代理</a>
+                </td>
                 <td class="text-left">
                     <a href="javascript:void(0);">库存</a>
                 </td>
@@ -61,7 +64,10 @@
                     </td>
                     <td class="text-center">
                         <img width="20" height="20" src="__PUBLIC__/images/<if condition='$list[is_hot] eq 1'>yes.png<else />cancel.png</if>" onclick="changeTableVal('goods','goods_id','{$list.goods_id}','is_hot',this)"/>
-                    </td>                                                           
+                    </td>
+                    <td class="text-center">
+                        <img width="20" height="20" src="__PUBLIC__/images/<if condition='$list[is_agent] eq 1'>yes.png<else />cancel.png</if>" onclick="changeTableVal('goods','goods_id','{$list.goods_id}','is_agent',this)"/>
+                    </td>
                     <td class="text-left">{$list.store_count}</td>
                     <td class="text-left">
                         <if condition="$list[is_on_sale] eq 0">下架</if>
