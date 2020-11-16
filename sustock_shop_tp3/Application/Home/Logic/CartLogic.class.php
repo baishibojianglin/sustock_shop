@@ -70,7 +70,7 @@ class CartLogic extends RelationModel
                 }                        
                 // 如果剩余数量 不足 限购数量, 就只能买剩余数量
                 if(($flash_sale['goods_num'] - $flash_sale['buy_num']) < $flash_sale['buy_limit'])
-                    return array('status'=>-4,'msg'=>"库存不够,你只能买".($flash_sale['goods_num'] - $flash_sale['buy_num'])."件了.",'result'=>'');                    
+                    return array('status'=>-4,'msg'=>"库存不够，你只能买".($flash_sale['goods_num'] - $flash_sale['buy_num'])."件了",'result'=>'');
             }
         }                
         
@@ -444,7 +444,7 @@ function cart_freight2($shipping_code,$province,$city,$district,$weight,$store_i
 					$wx_user = M('wx_user')->find();
 					$jssdk = new \Mobile\Logic\Jssdk($wx_user['appid'],$wx_user['appsecret']);
 					$wx_content = "你刚刚下了一笔订单:{$order['order_sn']} 尽快支付,过期失效!";
-					$jssdk->push_msg($user['openid'],$wx_content);
+					//$jssdk->push_msg($user['openid'],$wx_content);
 				}	 
            }                
         return array('status'=>1,'msg'=>'提交订单成功','result'=>$master_order_sn); // 返回新增的订单id
