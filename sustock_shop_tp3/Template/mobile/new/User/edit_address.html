@@ -14,6 +14,7 @@
 <script src="__PUBLIC__/js/jquery-1.8.2.min.js"></script>
 <script type="text/javascript" src="__STATIC__/js/layer.js" ></script>
 <script src="__PUBLIC__/js/common.js"></script>
+<script src="__PUBLIC__/js/layer/layer.js"></script>
 </head>
 <body>
       <header>
@@ -84,7 +85,7 @@
                      <input type="submit" value="保存并使用该地址" class="dotm_btn1" />
 	                 <input type="hidden" name="source" value="{$_GET[source]}" />
                 <else/>                
-                     <a href="javascript:void(0);" onClick="if (confirm('你确认要删除该收货地址吗？'))location.href='{:U('/Mobile/User/del_address',array('id'=>$address[address_id]))}'" class="dotm_btn2" style="color:#666;">删除</a>
+                     <a href="javascript:void(0);" onClick="delAddress();" class="dotm_btn2" style="color:#666;">删除</a>
                      <a href="{:U('/Mobile/User/set_default',array('id'=>$address[address_id]))}" class="dotm_btn3" style=" color:#FFF;font-size:14px;">设置为默认地址</a>
                      <input type="submit" value="保存" class="dotm_btn1" />
                 </if>
@@ -96,6 +97,11 @@
 </div>        </div>
 <script src="__PUBLIC__/js/validate2.js"></script>
 <script>
+    function delAddress() {
+        layer.confirm('你确定要删除该收货地址吗？',{btn:['确定','取消'],title:"八七兔商城"},function () {
+            location.href="{:U('/Mobile/User/del_address',array('id'=>$address[address_id]))}";
+        });
+    }
     function checkForm(){
         var consignee = $('input[name="consignee"]').val();
         var province = $('select[name="province"]').find('option:selected').val();

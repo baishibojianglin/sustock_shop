@@ -136,9 +136,9 @@ function goTop(){
 //收藏店铺
 $('#favoriteStore').click(function () {
   if (getCookie('user_id') == '') {
-	  if(confirm('请先登录')){
-		  window.location.href = "{:U('Mobile/User/login')}"; 
-	  }                     	
+	  layer.confirm('请先登录',{btn:['确定','取消'],title:"八七兔商城"},function () {
+		  window.location.href = "{:U('Mobile/User/login')}";
+	  });
   } else {
     $.ajax({
       type: 'post',

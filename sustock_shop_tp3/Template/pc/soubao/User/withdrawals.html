@@ -144,8 +144,8 @@ function checkSubmit(){
 	}
 	if(money < 100 || money > {$user['user_money']})
 	{
-		//alert("每次最少提现额度{$tpshop_config['distribut_min']},你的账户余额{$user['user_money']}");
-		//return false;
+		alert("每次最少提现额度{$tpshop_config['distribut_min']},你的账户余额{$user['user_money']}");
+		return false;
 	}
 			
 	if(bank_name == '')

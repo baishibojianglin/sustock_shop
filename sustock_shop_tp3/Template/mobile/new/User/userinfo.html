@@ -162,7 +162,7 @@
         }
 
         if (msg.length > 0) {
-            alert(msg);
+            layer.msg(msg);
             return false;
         } else {
             return true;
@@ -173,12 +173,12 @@
         var nickname = $('#nickname').val();
         var email = $('#email_ep').val();
         if (nickname == '') {
-            alert("昵称不能为空");
+            layer.msg("昵称不能为空");
             return false;
         }
 
         if (!checkEmail(email)) {
-            alert("邮箱格式不正确");
+            layer.msg("邮箱格式不正确");
             return false;
         }
         return true;
@@ -189,15 +189,15 @@
         var mobile = $('#mobile_ep').val();
         var mobile_code = $('#mobile_code').val();
         if (!checkMobile(mobile)) {
-            alert("手机格式不正确");
+            layer.msg("手机格式不正确");
             return false;
         }
         if (mobile_code == '') {
-            alert("请填写手机验证码");
+            layer.msg("请填写手机验证码");
             return false;
         }
 //        if (!mobile_flag) {
-//            alert("请先获取手机验证码");
+//            layer.msg("请先获取手机验证码");
 //            return false;
 //        }
         return true;
@@ -208,7 +208,7 @@
     function sendcode(o) {
         var mobile = $('#mobile_ep').val();
         if (!checkMobile(mobile)) {
-            alert("手机格式不正确");
+            layer.msg("手机格式不正确");
         } else {
             $.ajax({
                 url: '/index.php?m=Mobile&c=User&a=send_validate_code&t=' + Math.random(),

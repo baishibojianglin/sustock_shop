@@ -142,7 +142,7 @@
     <h2 class="rehottit">推荐热卖</h2>
     <div class="rehotcon" id="rehotcon">
      
-    <tpshop sql="select * from `__PREFIX__goods` where  is_recommend = 1 limit 5" item="v" key="k">
+    <tpshop sql="select * from `__PREFIX__goods` where  is_recommend = 1 and is_on_sale = 1 order by on_time desc limit 5" item="v" key="k">
       <div class="hotitem">
         <div class="itemin">
              <a class="proname"  href="{:U('/Home/Goods/goodsInfo',array('id'=>$v[goods_id]))}">

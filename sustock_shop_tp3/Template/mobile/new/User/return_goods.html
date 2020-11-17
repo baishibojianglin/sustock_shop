@@ -81,7 +81,7 @@
 	  var return_imgs= $.trim($('#return_imgs').val());
 	  if(reason == '')
 	  {
-		  alert('请输入退换货原因');// alert('请输入退换货原因!');
+		  layer.msg('请输入退换货原因');// alert('请输入退换货原因!');
 		  return false;
 	  }
 
@@ -89,10 +89,9 @@
 
 	  if((ff[0].value.length + ff[1].value.length + ff[2].value.length + ff[3].value.length) == 0)
 	  {
-		  if(!confirm('确定不传照片吗?'))
-		  {
-			  return false;
-		  }
+		  layer.confirm('确定不传照片吗?',{btn:['确定','取消'],title:"八七兔商城"},function () {
+			  layer.close(layer.index);
+		  });
       }
 	  $('#return_form').submit();
   } 

@@ -66,33 +66,33 @@ function checkSubmit(){
 	var verify_code = $.trim($('#verify_code').val());
 	if(money == '')
 	{
-		alert('提现金额必填');
+        layer.msg('提现金额必填');
 		return false;
 	}
 	if(money < {$tpshop_config['basic_min']} || money > {$user['user_money']})
 	{
-		//alert("每次最少提现额度{$tpshop_config['distribut_min']},你的账户余额{$user['user_money']}");
-		//return false;
+		layer.msg("每次最少提现额度{$tpshop_config['distribut_min']},你的账户余额{$user['user_money']}");
+		return false;
 	}
 			
 	if(bank_name == '')
 	{
-		alert('银行名称必填');
+        layer.msg('银行名称必填');
 		return false;
 	}
 	if(account_bank == '')
 	{
-		alert('收款账号必填');
+        layer.msg('收款账号必填');
 		return false;
 	}
 	if(account_name == '')
 	{
-		alert('开户名必填');
+        layer.msg('开户名必填');
 		return false;
 	}
 	if(verify_code == '')
 	{
-		alert('验证码必填');
+        layer.msg('验证码必填');
 		return false;
 	}
 	$('#distribut_form').submit();

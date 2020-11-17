@@ -13,6 +13,7 @@
 <script type="text/javascript" src="__STATIC__/js/layer.js" ></script>
 <script src="__PUBLIC__/js/global.js"></script>
 <script src="__PUBLIC__/js/mobile_common.js"></script>
+<script src="__PUBLIC__/js/layer/layer.js"></script>
 </head>
 <body>
 <section class="_pre" >
@@ -202,7 +203,7 @@ var  page = 1;
                 <span class="mix_submit" onClick="if($.trim($('#q').val()) != '') $('#sourch_form').submit();"></span>
                 <a href="javascript:void(0)" class="clear_input" id="clear_input" style="display: block;"></a>
             </div>       
-               <input type="button" onClick="if($.trim($('#q').val()) != '') $('#sourch_form').submit(); else alert('输入搜索词');" value="搜索" class="mix_filtrate">      
+               <input type="button" onClick="if($.trim($('#q').val()) != '') $('#sourch_form').submit(); else layer.msg('输入搜索词');" value="搜索" class="mix_filtrate">
         </form>
     </section>
     <section class="mix_search_list"></section>
@@ -430,7 +431,7 @@ function checkSearchForm()
     }
     else
     {
-		alert("请输入关键词！");
+		layer.msg("请输入关键词！");
         return false;
     }
 }

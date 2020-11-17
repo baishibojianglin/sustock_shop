@@ -15,6 +15,7 @@
 <script src="__PUBLIC__/js/global.js"></script>
 <script src="__PUBLIC__/js/mobile_common.js"></script>
 <script src="__STATIC__/js/common.js"></script>
+<script src="__PUBLIC__/js/layer/layer.js"></script>
 </head>
 <body style="background: rgb(235, 236, 237);position:relative;">
 <div class="tab_nav">
@@ -239,7 +240,7 @@ function ajax_order_price()
 
             if(data.status != 1)
             {
-                alert(data.msg);
+                layer.msg(data.msg);
                 // 登录超时
                 if(data.status == -100)
                     location.href ="{:U('Mobile/User/login')}";
@@ -275,7 +276,7 @@ function submit_order()
 
             if(data.status != '1')
             {
-                alert(data.msg); //执行有误
+                layer.msg(data.msg);//执行有误
                 // 登录超时
                 if(data.status == -100)
                     location.href ="{:U('Mobile/User/login')}";
@@ -290,9 +291,11 @@ function submit_order()
             $("#balance").text(data.result.balance);// 余额
             $("#pointsFee").text(data.result.pointsFee);// 积分支付
             $("#payables").text(data.result.payables);// 应付
-			$("#order_prom_amount").text(data.result.order_prom_amount);// 订单 优惠活动 									
-            alert('订单提交成功，跳转支付页面!');
-		    location.href = "/index.php?m=Mobile&c=Cart&a=cart4&master_order_sn="+data.result; // 跳转到结算页			
+			$("#order_prom_amount").text(data.result.order_prom_amount);// 订单 优惠活动
+            layer.confirm('订单提交成功，跳转支付页面!',{btn:['确定'],title:"八七兔商城"},function () {
+                location.href = "/index.php?m=Mobile&c=Cart&a=cart4&master_order_sn="+data.result; // 跳转到结算页
+            });
+
         }
     });
 }
