@@ -108,18 +108,18 @@
                 </table>
               </div>
             </li>      
-			<li class="flow_youhui_no">
+			<li class="flow_youhui_no" style="display: none">
        			<label id="Bonus_span_0">
-       			   选择物流： 
-                         <select onChange="ajax_order_price();" class="vam ou-no" name="shipping_code[{$v[store_id]}]">                                                                                                     
+       			   选择物流：
+                         <select onChange="ajax_order_price();" class="vam ou-no" name="shipping_code[{$v[store_id]}]">
                             <foreach name="shippingList" item="v4"  key="k4">
                                  <if condition="$v4['store_id'] eq $v['store_id']">
                                      <option value="{$v4.shipping_code}">{$v4.name}</option>
                                  </if>
                             </foreach>
-                         </select>                   
+                         </select>
                  </label>
-            </li>   
+            </li>
 			<li class="flow_youhui_no">
        			<label id="Bonus_span_0">
        			   给卖家留言：
