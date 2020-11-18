@@ -1,8 +1,0 @@
-.idea
-composer.lock
-*.log
-thinkphp
-/application/database.php
-/application/route.php
-/application/common/lib/Aes.php
-/application/extra/app.php

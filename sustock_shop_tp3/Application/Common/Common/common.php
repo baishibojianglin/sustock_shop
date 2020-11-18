@@ -1602,5 +1602,3 @@ function get_goods_category_tree(){
 	}
 	return $result;
 }
-
-
