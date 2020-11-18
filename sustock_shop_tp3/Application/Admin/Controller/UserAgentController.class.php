@@ -40,12 +40,11 @@ class UserAgentController extends BaseController {
         $user_id_arr = get_arr_column($userList, 'user_id');
         if(!empty($user_id_arr))
         {
-            /*$userAllList = $model->where($condition)->select();
+            // 统计下级代理总数
+            $allAgentList = $model->where(array('is_agent' => 1))->select();
             foreach ($userList as $key => $value) {
-                //$userList[$key]['total_agent_leader'] = count(array_unique($this->getTree($userAllList, $value['first_agent_leader'])));
-                $userList[$key]['total_agent_leader'] = $this->getTree($userAllList, $value['first_agent_leader']);
+                $userList[$key]['total_agent_leader_count'] = count(array_unique($this->getTree($allAgentList, $value['user_id'], true, 'user_id', 'first_agent_leader')));
             }
-            file_put_contents('./test3.txt', json_encode($userList));*/
 
             $first_agent_leader = M('users')->query("select first_agent_leader,count(1) as count  from __PREFIX__users where first_agent_leader in(".  implode(',', $user_id_arr).")  group by first_agent_leader");
             $first_agent_leader = convert_arr_key($first_agent_leader, 'first_agent_leader');
@@ -66,21 +65,22 @@ class UserAgentController extends BaseController {
     /**
      * PHP递归获取所有下级：无层次，仅返回id
      * @param $data
-     * @param int $parent_id
+     * @param int $parent_id 指定主键，作为$data二维数组中第二层主键的上级ID
      * @param bool|true $is_first_time
+     * @param string $pk $data中第二层主键字段
+     * @param string $parent_id_key $data中第二层上级ID字段
      * @return array
      */
-    public function getTree($data, $parent_id = 0, $is_first_time = true)
+    public function getTree($data, $parent_id = 0, $is_first_time = true, $pk = 'user_id', $parent_id_key = 'first_agent_leader')
     {
-        //static $arr = [];
-        $arr = [];
+        static $arr = [];
         if ($is_first_time) {
             $arr = [];
         }
         foreach ($data as $key => $val) {
-            if ($val['first_agent_leader'] == $parent_id) {
-                $arr[] = $val['user_id'];
-                $this->getTree($data, $val['user_id'], false);
+            if ($val[$parent_id_key] == $parent_id) {
+                $arr[] = $val[$pk];
+                $this->getTree($data, $val[$pk], false);
             }
         }
         return $arr;

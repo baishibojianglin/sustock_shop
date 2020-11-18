@@ -16,9 +16,12 @@
                                         <a href="javascript:sort('total_amount');">累计消费</a>
                                     </td>
                                     
-                                    <!--<td class="text-left">
+                                    <td class="text-left">
+                                        <a href="javascript:void(0);">上级ID</a>
+                                    </td>
+                                    <td class="text-left">
                                         <a href="javascript:void(0);">下级代理总数</a>
-                                    </td>-->
+                                    </td>
                                     <td class="text-left">
                                         <a href="javascript:void(0);">一级代理数</a>
                                     </td>
@@ -37,7 +40,7 @@
                                     <td class="text-left">
                                         <a href="javascript:sort('agent_money');">代理分佣</a>
                                     </td>
-                                    <td class="text-right">操作</td>
+                                    <!--<td class="text-right">操作</td>-->
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -50,7 +53,8 @@
                                         <td class="text-right">{$list.user_id}</td>
                                         <td class="text-left">{$list.nickname}</td>
                                         <td class="text-left">{$list.total_amount}</td>
-                                        <!--<td class="text-left">{$first_agent_leader[$list[user_id]]['count']|default="0"}</td>-->
+                                        <td class="text-left">{$list.first_agent_leader}</td>
+                                        <td class="text-left">{$list.total_agent_leader_count}</td>
                                         <td class="text-left">{$first_agent_leader[$list[user_id]]['count']|default="0"}</td>
                                         <td class="text-left">{$second_agent_leader[$list[user_id]]['count']|default="0"}</td>
                                         <td class="text-left">{$list.mobile}
@@ -61,10 +65,10 @@
                                         <td class="text-left">{$list.user_money}</td>
                                         <td class="text-left">{$list.distribut_money}</td>
                                         <td class="text-left">{$list.agent_money}</td>
-                                        <td class="text-right">
+                                        <!--<td class="text-right">
                                             <a href="{:U('Admin/user/detail',array('id'=>$list['user_id']))}" data-toggle="tooltip" title="查看详情" class="btn btn-info" data-original-title="查看详情"><i class="fa fa-eye"></i></a>
                                             <a href="{:U('Admin/user/account_log',array('id'=>$list['user_id']))}" data-toggle="tooltip" title="账户" class="btn btn-info" data-original-title="账户"><i class="glyphicon glyphicon-yen"></i></a>
-                                        </td>
+                                        </td>-->
                                     </tr>
                                 </volist>
                                 </tbody>
