@@ -19,7 +19,7 @@ function AjaxAddCart(goods_id,num,to_catr)
 				// 加入购物车后再跳转到 购物车页面
 			    if(data.status < 0)
 				{
-					layer.open({content: data.msg,time: 2});
+					layer.msg(data.msg);
 					return false;
 				}
 			   if(to_catr == 1)  //直接购买
@@ -27,17 +27,15 @@ function AjaxAddCart(goods_id,num,to_catr)
 				   location.href = "/index.php?m=Mobile&c=Cart&a=cart";   
 			   }
 			    cart_num = parseInt($('#tp_cart_info').html())+parseInt($('#number').val());
-			    $('#tp_cart_info').html(cart_num)
-			    layer.open({
-			        content: '添加成功！',
-			        btn: ['再逛逛', '去购物车'],
-			        shadeClose: false,
-			        yes: function(){
-			            layer.closeAll();
-			        }, no: function(){
-			        	location.href = "/index.php?m=Mobile&c=Cart&a=cart";
-			        }
-			    });
+			    $('#tp_cart_info').html(cart_num);
+				layer.confirm('添加成功(*^▽^*)！', {
+					btn: ['再逛逛','去购物车'],//按钮
+					title:"八七兔商城"
+				}, function(){
+					layer.close(layer.index);
+				}, function(){
+					location.href = "/index.php?m=Mobile&c=Cart&a=cart";
+				});
             }
         });     
     }else{ //否则可能是商品列表页 、收藏页商品点击加入购物车
@@ -50,19 +48,19 @@ function AjaxAddCart(goods_id,num,to_catr)
 				  
 				   if(data.status == -1)
 				   {
-					    //layer.open({content: data.msg,time: 2});
+
 						location.href = "/index.php?m=Mobile&c=Goods&a=goodsInfo&id="+goods_id;   
 				   }
 				   else
 				   {  
 					    if(data.status < 0)
 						{
-							layer.open({content:data.msg, time:2});
+							layer.msg(data.msg);
 							return false;
 						}
 					    cart_num = parseInt($('#tp_cart_info').html())+parseInt(num);
 					    $('#tp_cart_info').html(cart_num)
-				    	layer.open({content: data.msg,time: 1});
+					   layer.msg(data.msg);
 						return false;
 				   }							   							   
             }

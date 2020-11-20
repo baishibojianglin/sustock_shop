@@ -22,7 +22,7 @@ function AjaxAddCart(goods_id,num,to_catr, first_leader)
             	
 			    if(data.status < 0)
 				{
-					layer.open({content: data.msg,time: 1});
+					layer.msg(data.msg);
 					return false;
 				}
 			    cart_num = parseInt($('#tp_cart_info').html())+parseInt($('#number').val());
@@ -32,15 +32,13 @@ function AjaxAddCart(goods_id,num,to_catr, first_leader)
                 {
                     location.href = "/index.php?m=Mobile&c=Cart&a=cart";
                 } else {
-                    layer.open({
-                        content: '添加成功(*^▽^*)！',
-                        btn: ['再逛逛', '去购物车'],
-                        shadeClose: false,
-                        yes: function(){
-                            layer.closeAll();
-                        }, no: function(){
-                            location.href = "/index.php?m=Mobile&c=Cart&a=cart";
-                        }
+                    layer.confirm('添加成功(*^▽^*)！', {
+                        btn: ['再逛逛','去购物车'],//按钮
+                        title:"八七兔商城"
+                    }, function(){
+                        layer.close(layer.index);
+                    }, function(){
+                        location.href = "/index.php?m=Mobile&c=Cart&a=cart";
                     });
                 }
             }
@@ -55,12 +53,12 @@ function AjaxAddCart(goods_id,num,to_catr, first_leader)
 				  
 				   if(data.status == -1)
 				   {
-					    //layer.open({content: data.msg,time: 2});
+
 						location.href = "/index.php?m=Mobile&c=Goods&a=goodsInfo&id="+goods_id;   
 				   }
 				   else
-				   {  
-				    	layer.open({content: data.msg,time: 1});
+				   {
+                       layer.msg(data.msg);
 						return false;
 				   }							   							   
             }
