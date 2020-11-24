@@ -247,6 +247,22 @@ class OrderLogic extends RelationModel
                 
         M('order')->where("order_id ={$data['order_id']} and store_id = $store_id")->save($updata);//改变订单状态
 	    $seller_id = session('seller_id');
+
+        // 如果有微信公众号 则推送一条消息到微信
+        $user = M('users')->where("user_id = ".$order['user_id'])->find();
+        if($user['oauth']== 'weixin')
+        {
+            $orderid = $data['order_id'];
+            $wx_user = M('wx_user')->find();
+            $jssdk = new \Mobile\Logic\Jssdk($wx_user['appid'],$wx_user['appsecret']);
+ //           $wx_content = "您的订单:{$order['order_sn']} 已发货，运单号为：{$order['shipping_name']}-{$data['invoice_no']} 请注意查收。";
+//            $wx_content = "您的订单：<a href='http://dt.dilinsat.com/index.php/Mobile/User/order_detail/id/{$orderid}'>{$order['order_sn']}</a> 已发货，运单号为：{$order['shipping_name']}-<a href='http://www.kuaidi100.com/'>{$data['invoice_no']}</a> 请注意查收。";
+
+            $wx_content = "您的订单：<a href=\"http://dt.dilinsat.com/index.php/Mobile/User/order_detail/id/{$orderid}\">{$order['order_sn']}</a> 已发货，运单号为：{$order['shipping_name']}-<a href=\"http://www.kuaidi100.com/\">{$data['invoice_no']}</a> 请注意查收。";
+            $jssdk->push_msg($user['openid'],$wx_content);
+
+        }
+
 		return $this->orderActionLog($order,'订单发货',$data['note'],$seller_id,1);//操作日志
     }
 
