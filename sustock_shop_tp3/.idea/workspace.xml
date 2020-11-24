@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="926dca1a-72b0-4d8e-b645-03cccee2673e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/Application/Home/Logic/UsersLogic.class.php" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Home/Logic/UsersLogic.class.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/Mobile/Controller/UserController.class.php" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Mobile/Controller/UserController.class.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Template/mobile/new/Cart/ajax_cart_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/Template/mobile/new/Cart/ajax_cart_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Template/mobile/new/User/order_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/Template/mobile/new/User/order_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Template/mobile/new/User/order_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/Template/mobile/new/User/order_list.html" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="1iZjW3cJW9xQ0O8Ncuy8Lek2Ttt" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../shopmedia/shopmedia_admin_test" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="F:\官网\sustock_website\public\static\layui_home\img" />
+      <recent name="F:\sustock_shop\sustock_shop_code\sustock_shop_tp3\Template\pc\soubao\Article" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\sustock_shop\sustock_shop_code\sustock_shop_tp3\Template\mobile\new\Static\js" />
+      <recent name="F:\sustock_shop\sustock_shop_code\sustock_shop_tp3\plugins\payment\weixin" />
+      <recent name="F:\shopmedia\shopmedia_admin\application\api\controller" />
+      <recent name="F:\sustock_shop\sustock_shop_code\sustock_shop_tp3\Public\images" />
+      <recent name="F:\sustock_shop\sustock_shop_code\sustock_shop_tp3\Template\pc\soubao\Static\images" />
+    </key>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="926dca1a-72b0-4d8e-b645-03cccee2673e" name="Default Changelist" comment="" />
+      <created>1602122036701</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1602122036701</updated>
+      <workItem from="1602122038333" duration="15076000" />
+      <workItem from="1602205892901" duration="19260000" />
+      <workItem from="1602293156036" duration="14844000" />
+      <workItem from="1602482915490" duration="6559000" />
+      <workItem from="1602551101888" duration="19226000" />
+      <workItem from="1602637781163" duration="20651000" />
+      <workItem from="1602724427396" duration="22633000" />
+      <workItem from="1602810920406" duration="16078000" />
+      <workItem from="1602836778203" duration="5899000" />
+      <workItem from="1603069361708" duration="15018000" />
+      <workItem from="1603100136657" duration="4743000" />
+      <workItem from="1603157914838" duration="22639000" />
+      <workItem from="1603242600174" duration="28519000" />
+      <workItem from="1603329037452" duration="3093000" />
+      <workItem from="1603333248231" duration="21190000" />
+      <workItem from="1603416069394" duration="21581000" />
+      <workItem from="1603520794729" duration="1618000" />
+      <workItem from="1603522853177" duration="2000" />
+      <workItem from="1603587944212" duration="22233000" />
+      <workItem from="1603674757208" duration="4371000" />
+      <workItem from="1603848010658" duration="21746000" />
+      <workItem from="1603934002322" duration="18579000" />
+      <workItem from="1604020711359" duration="25788000" />
+      <workItem from="1604279685942" duration="20650000" />
+      <workItem from="1604366302994" duration="20838000" />
+      <workItem from="1604453140994" duration="18765000" />
+      <workItem from="1604539077279" duration="22274000" />
+      <workItem from="1604572055225" duration="7236000" />
+      <workItem from="1604581061533" duration="19889000" />
+      <workItem from="1604884596581" duration="10019000" />
+      <workItem from="1604970851493" duration="647000" />
+      <workItem from="1604972728513" duration="22558000" />
+      <workItem from="1605056383615" duration="24732000" />
+      <workItem from="1605144100557" duration="18403000" />
+      <workItem from="1605231034724" duration="18911000" />
+      <workItem from="1605489583411" duration="16664000" />
+      <workItem from="1605575993804" duration="8788000" />
+      <workItem from="1605662112498" duration="9846000" />
+      <workItem from="1605754845088" duration="10144000" />
+      <workItem from="1605835989927" duration="21801000" />
+      <workItem from="1605867272887" duration="327000" />
+      <workItem from="1606180231651" duration="637000" />
+      <workItem from="1606181448097" duration="16283000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="665" y="319" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1603437907334">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="665" y="319" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1603437907334" />
+    <state x="690" y="265" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1602839242447">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="690" y="265" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1602839242447" />
+    <state x="690" y="274" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1605090784899">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="690" y="274" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1605090784899" />
+    <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1606181526077">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1606181526077" />
+    <state x="800" y="245" key="NewPhpClassDialog" timestamp="1604993787151">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="800" y="245" key="NewPhpClassDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1604993787151" />
+    <state x="1102" y="95" width="684" height="798" key="find.popup" timestamp="1606188120860">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="1102" y="95" width="684" height="798" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1606188120860" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1605859295471">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1605859295471" />
+  </component>
+</project>

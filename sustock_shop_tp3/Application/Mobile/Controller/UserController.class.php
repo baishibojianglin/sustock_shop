@@ -262,8 +262,12 @@ class UserController extends MobileBaseController
             $order_list[$k] = set_btn_order_status($v);  // 添加属性  包括按钮显示属性 和 订单状态显示属性
             //$order_list[$k]['total_fee'] = $v['goods_amount'] + $v['shipping_fee'] - $v['integral_money'] -$v['bonus'] - $v['discount']; //订单总额
             $data = $model->get_order_goods($v['order_id']);
+            $invoice = $model->get_order_invoice($v['order_id']);
+
             $order_list[$k]['goods_list'] = $data['result'];
+            $order_list[$k]['invoice_no'] = $invoice[0]['invoice_no'];
         }
+
         $storeList = M('store')->getField('store_id,store_name,store_qq,store_phone'); // 找出所有商品对应的店铺id
         $this->assign('storeList', $storeList); // 店铺列表
         $this->assign('order_status', C('ORDER_STATUS'));

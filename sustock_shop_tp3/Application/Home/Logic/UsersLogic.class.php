@@ -264,6 +264,16 @@ class UsersLogic extends RelationModel
     }
 
     /*
+     *  获取运单号
+     */
+    public function get_order_invoice($order_id){
+        $sql = "select invoice_no from ty_delivery_doc where order_id =".$order_id;
+        $invoice = $this->query($sql);
+
+        return $invoice;
+    }
+
+    /*
      * 获取账户资金记录
      */
     public function get_account_log($user_id,$type=0){
