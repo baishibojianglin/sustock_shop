@@ -412,7 +412,7 @@ class UsersLogic extends RelationModel
         	$comment = M()->query($countsql);
         	$count1 = $comment[0][comment_count]; // 待评价
             $page = new Page($count1,3);
-            $sql =" select o.add_time,o.order_sn,og.order_id,og.goods_id,og.goods_name,o.store_id from __PREFIX__order_goods as og
+            $sql =" select o.add_time,o.order_sn,og.order_id,og.goods_id,og.goods_name,og.goods_price,o.store_id from __PREFIX__order_goods as og
             left join __PREFIX__order as o on o.order_id = og.order_id  where o.user_id = $user_id and og.is_send = 1
             $where and o.order_status = 2 order by o.order_id desc  LIMIT {$page->firstRow},{$page->listRows}";
         }

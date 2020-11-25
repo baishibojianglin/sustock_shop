@@ -20,11 +20,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="926dca1a-72b0-4d8e-b645-03cccee2673e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Application/Home/Logic/UsersLogic.class.php" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Home/Logic/UsersLogic.class.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Mobile/Controller/UserController.class.php" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Mobile/Controller/UserController.class.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Template/mobile/new/Cart/ajax_cart_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/Template/mobile/new/Cart/ajax_cart_list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Template/mobile/new/User/order_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/Template/mobile/new/User/order_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Template/mobile/new/User/order_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/Template/mobile/new/User/order_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Template/mobile/new/User/comment.html" beforeDir="false" afterPath="$PROJECT_DIR$/Template/mobile/new/User/comment.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,7 +112,7 @@
       <workItem from="1605835989927" duration="21801000" />
       <workItem from="1605867272887" duration="327000" />
       <workItem from="1606180231651" duration="637000" />
-      <workItem from="1606181448097" duration="16283000" />
+      <workItem from="1606181448097" duration="21456000" />
     </task>
     <servers />
   </component>
@@ -154,10 +152,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="800" y="245" key="NewPhpClassDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1604993787151" />
-    <state x="1102" y="95" width="684" height="798" key="find.popup" timestamp="1606188120860">
+    <state x="1102" y="95" width="684" height="798" key="find.popup" timestamp="1606208110637">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="1102" y="95" width="684" height="798" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1606188120860" />
+    <state x="1102" y="95" width="684" height="798" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1606208110637" />
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1605859295471">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

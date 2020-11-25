@@ -26,7 +26,12 @@
 	<div class="Emain" id="user_goods_ka_1" style="display:block;">
     <foreach name="comment_list" item="vo" key="k"> 
     <div class="pingjia">
-          <h2>购买时间：{$vo.add_time}</h2>
+			<if condition="$vo[is_comment] eq 0">
+				<h2>购买时间：{$vo.add_time|date="Y-m-d",###}</h2>
+			<else/>
+				<h2>评价时间：{$vo.add_time|date="Y-m-d",###}</h2>
+			</if>
+
           <dl>
           <dt><img src="{$vo.goods_id|goods_thum_images=200,200}"></dt>
           <dd><span>{$vo.goods_name}</span><strong>￥{$vo.goods_price}</strong></dd>
