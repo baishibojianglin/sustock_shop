@@ -190,6 +190,20 @@ class GoodsController extends MobileBaseController {
         	$store = M('store')->where(array('store_id'=>$goods['store_id']))->find();
         	$this->assign('store',$store);
         }
+
+        // 商品分享/推荐人ID
+        $firstLeader = I("get.first_leader");
+        if (isset($firstLeader) && $firstLeader) {
+            setcookie('first_leader'); // 先清空cookie，再重新赋值
+            setcookie('first_leader', $firstLeader, null, '/');
+            $this->assign('first_leader', $firstLeader);
+        } else {
+            $firstLeaderCookie = cookie('first_leader');
+            if (isset($firstLeaderCookie) && $firstLeaderCookie) {
+                $this->assign('first_leader', $firstLeaderCookie);
+            }
+        }
+
         $this->display();
     }
 
