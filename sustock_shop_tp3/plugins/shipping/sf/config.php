@@ -1,10 +1,10 @@
 <?php
 
 return array(
-    'code'=> 'shunfeng',
+    'code'=> 'sf',
     'name' => '顺丰物流',
     'version' => '1.0',
-    'author' => 'shunfeng',
+    'author' => '管理员',
     'desc' => '顺丰物流插件 ',
     'icon' => 'logo.jpg',
 );

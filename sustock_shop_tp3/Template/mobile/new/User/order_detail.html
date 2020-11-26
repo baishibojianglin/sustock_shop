@@ -48,7 +48,7 @@
 			<dl style="border-top:1px solid #eeeeee; margin-top:10px; height:70px; padding-bottom:0px;">
 			<dt class="dingdan_4"><img src="__STATIC__/images/wuliuimg.png" width="30" height="70"></dt>
 			<dd><h3>快递单号:</h3>
-			<p>{$order_info.invoice_no}<a href="http://m.kuaidi.com/all/{$order_info.shipping_code}/{$order_info.invoice_no}.html" target="_blank">查看物流</a></p>
+			<p>{$order_info.invoice_no}<a href="{:U('Mobile/Express/express',array('shippingcode'=>$order_info['shipping_code'],'invoiceno'=>$order_info['invoice_no']))}">查看物流</a></p>
 			</dd>
 			</dl>
             
@@ -130,7 +130,7 @@
                 <if condition="$order_info.cancel_btn eq 1"><a onClick="cancel_order({$order_info.order_id})" class="on_comment">取消订单</a></if>
                 <if condition="$order_info.pay_btn eq 1"><a href="{:U('Mobile/Cart/cart4',array('order_id'=>$order_info['order_id']))}" class="on_comment">立即付款</a></if>
                 <if condition="$order_info.receive_btn eq 1"><a href="{:U('Mobile/User/order_confirm',array('id'=>$order_info['order_id']))}" class="on_comment">收货确认</a></if>    
-                <if condition="$order_info.shipping_btn eq 1"><a href="http://m.kuaidi.com/all/{$order_info.shipping_code}/{$order_info.invoice_no}.html" target="_blank" class="on_comment">查看物流</a></if>
+                <if condition="$order_info.shipping_btn eq 1"><a href="{:U('Mobile/Express/express',array('shippingcode'=>$order_info['shipping_code'],'invoiceno'=>$order_info['invoice_no']))}" class="on_comment">查看物流</a></if>
                 <if condition="$order_info.return_btn eq 1">
 					<!--<a href="mqqwpa://im/chat?chat_type=wpa&uin={$store['store_qq']}&version=1&src_type=web&web_src=oicqzone.com" target="_blank" class="on_comment">联系客服</a>-->
 					<a href="tel:{$store['store_phone']}">联系客服</a>

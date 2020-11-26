@@ -1,10 +1,10 @@
 <?php
 
 return array(
-    'code'=> 'yuantong',
+    'code'=> 'yto',
     'name' => '圆通物流',
     'version' => '1.0',
-    'author' => 'yuantong',
+    'author' => '管理员',
     'desc' => '圆通物流插件 ',
     'icon' => 'logo.jpg',
 );

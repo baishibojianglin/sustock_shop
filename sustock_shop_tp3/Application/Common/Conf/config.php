@@ -9,7 +9,7 @@ return array(
     //'URL_CASE_INSENSITIVE' => false, //URL大小写不敏感
     //'LOAD_EXT_CONFIG'=>'db,route', // 加载数据库配置文件
     //'LOAD_EXT_CONFIG'=>'db', // 加载数据库配置文件
-    'LOAD_EXT_CONFIG' => array('db', 'commission'), // 加载数据库配置文件、提成配置文件
+    'LOAD_EXT_CONFIG' => array('db', 'commission','alipay','express'), // 加载数据库配置文件、提成配置文件
     /*
      * RBAC认证配置信息
      */
@@ -131,40 +131,4 @@ return array(
     'SPHINX_HOST'         =>      '127.0.0.1',
     'SPHINX_PORT'         =>      '9312',
 
-
-    /*
-     * 支付配置
-     * */
-    'alipay' => array(
-        //应用ID,您的APPID。
-        'app_id' => "2021001197696663",
-
-        //商户私钥
-        'merchant_private_key' => "MIIEpQIBAAKCAQEAoF+pR5Dm4I9bUvB6rQrGtzYX1vMs0Vt5wocRzmAF1B1zYl+9MvSvHTNL5mPW/53AVIfg5N1ZA3gCdYSAgRhL/rC0BXW5WC0LxZCvTr7SE7Ml2F+sezQ42KI34rWo3+ncewzTiWI2vy8pUR9eMdmkpRABLQzEHM/nyzEu2PVDYqdNabpbrR0IshfH3/lfZ5CMIGP8KPM47Tk4mzKLfYiCztJHr1pD5Qpvy7FfM3zxWBSXd7eqDZJrJ1QueCoDEhfiH7WR5YyeNxn0wukqQp3W3CgKLHpzB0BW9oxBMqwK3Eyw1+TcVQvWry6qh+r/uZ3nXbUBqUFIwIf1nq/i1VJ6mwIDAQABAoIBAQCaIPXmwtsxDHW/c0DjV4z9fW5R9emn15tgmkFBr0VKw3cmH08NTt2RWcBjTqbNicXTN7erHRQ0Yj0yxkJeT4SR5S9OZALaPIioulHRg1EQ/8aqeeChk+HiSZ0eNGp1sCNm2z/eNFbbTS8POO9lR3+V55jJvBAqhKGHxd/5QVYe04+VFMnvsLQ4W243fpPvUCT8eTmCC+r9akfEck2zlp/O003brvUCfIPo3hDX7c2d2qQNAgCn/sXdTX6ynkuu9t/Srl1NEZX+A9puFv93mtmOqQZJitEgXN/eX7nuSAMaOliaKMLagxws6vzpzL3hS0bTGkmLzLa2u9LkXVUDw9lhAoGBAPlHB/MfLK63z5DKbEXmbrqPqEIlmHxAVHj/EovcIKjjsUYSN+Xmnnh9bGUWF7iY9l/7bh1v4d/KnznLfiaqxIPGzG6KzM/BmxTqBYoLIzTE1bGwil7W94+hDMFZckDid4ByQVyWmbplcxNwOfNjyiBwp0dgRhBOtzRoytW9vtjLAoGBAKSy2olo2zAtsuzb/LAIOe6M8szUmFy5bFWEMXNkDBk4eaMfkEJbltcla/XeE5z8U+eSTu6W/E+AHnkji2vYcP2+uo0kehrU8Bij4PURZ+x+NxTacKz3hBciczgtAsAknAC2/MM6ptcKrROi9z0XpgTVlLbAseMttIIc80JKmjtxAoGBANd6gjGz8gD53Q/xGtT1kyPriGvdacmGJj8NZq/FUeoMILJMj0tJJhVLfgaHqWultdtUUWRa0WqNEUR5VgwAs6yhjRfFHbQ9TFwwyyb/56f2ui5GR+YhdpAOjCMaubvCx8Adg8iQWkSY63eTHFT7Hr8aAk+dthLkqFNCfoty4OUvAoGAETMMV2U33qQnF00x6kAxrJPTl0hsUOKcSaHweBhumwOm0D4vln5yFi22RIrYiYBgUsKYs5nY54R9qjDoEm8b/aO5X5v7lGnAWRJkH7Odorjbj7XwJmACz1etqKQqsV4hXIG/i7PIUJSw1mgiYaLil4ambR9adFsFisDzNm0MBkECgYEAz9dzZgx2F/9JMmOLh59clXSr2Y4YPJPH20++sRPqQiXEQhitmOuIIEOkt4nw+e6Dh/CqN7nnw2DTNdStjqNPDv4B+4mBBhhz58GRYdpdi4/xZ2VqD4lrUlQToxKU27laNCMXO8bJMnb4KbnRZo6iWx/jeRbAuYjVRK9cDt5SXbU=",
-
-        //异步通知地址
-        'notify_url' => "http://dt.dilinsat.com/index.php/Home/Alipay/notifyUrl",
-
-        //同步跳转
-        'return_url' => "http://dt.dilinsat.com/index.php/Home/Alipay/returnUrl",
-
-        //编码格式
-        'charset' => "UTF-8",
-
-        //签名方式
-        'sign_type'=>"RSA2",
-
-        //支付宝网关
-        'gatewayUrl' => "https://openapi.alipay.com/gateway.do",
-
-        //支付宝公钥,查看地址：https://openhome.alipay.com/platform/keyManage.htm 对应APPID下的支付宝公钥。
-        'alipay_public_key' => "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjEY6WlZ1v0XCoYIOzhHyDYQuh9VNrSsH+V7yTP1TTduLFlPGF85PtN73U01MOvchXyoPDaKoYhG3azrPMB/I1l3ghiUIgejIRiE5yhYe+98nGd8Iwcj8yEXuOOAA/VRcWF6X3rzbTInmn6zTE7sZ7yOLSNVBub05rYEK6EX4QB263duVu9c0bFqTXe7IY4eXZNCvfCmOuyBNLvc3xtvy+xmicxM+yJS66c3SVEx1GwTiOYIPO3u1Xdy4sl90leyAJ9bdiGCeROLiibeFDylh3kTGql086wJlt+TqUjDuDxsz3Zd7VYasg4ecvndKQMYhy5q6uH/xBcJfniSbbPSDbQIDAQAB"
-    ),
-    'alipaymobile' =>array(
-        //异步通知地址
-        'notify_url' => "http://dt.dilinsat.com/index.php/Mobile/AlipayMobile/notifyUrl",
-
-        //同步跳转
-        'return_url' => "http://dt.dilinsat.com/index.php/Mobile/AlipayMobile/returnUrl"
-    ),
 );

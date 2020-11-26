@@ -2,5 +2,7 @@
 /Application/Common/Conf/constant.php
 /Application/Common/Conf/db.php
 /Application/Common/Conf/commission.php
+/Application/Common/Conf/alipay.php
+/Application/Common/Conf/express.php
 /Application/Runtime
 /plugins/payment/weixin/cert
