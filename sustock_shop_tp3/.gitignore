@@ -6,3 +6,4 @@
 /Application/Common/Conf/express.php
 /Application/Runtime
 /plugins/payment/weixin/cert
+/Public/upload
