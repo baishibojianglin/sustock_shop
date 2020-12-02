@@ -20,14 +20,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="926dca1a-72b0-4d8e-b645-03cccee2673e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sustock_shop_tp3.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sustock_shop_tp3.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Home/Controller/UserController.class.php" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Home/Controller/UserController.class.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Mobile/Controller/IndexController.class.php" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Mobile/Controller/IndexController.class.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Mobile/Controller/UserController.class.php" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Mobile/Controller/UserController.class.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Template/mobile/new/Index/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/Template/mobile/new/Index/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Template/mobile/new/User/withdrawals.html" beforeDir="false" afterPath="$PROJECT_DIR$/Template/mobile/new/User/withdrawals.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/Seller/Logic/OrderLogic.class.php" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Seller/Logic/OrderLogic.class.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -132,7 +126,7 @@
       <workItem from="1606353339035" duration="23895000" />
       <workItem from="1606440083899" duration="18030000" />
       <workItem from="1606785267541" duration="20056000" />
-      <workItem from="1606872459371" duration="8195000" />
+      <workItem from="1606872459371" duration="11493000" />
     </task>
     <servers />
   </component>
@@ -172,10 +166,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="800" y="245" key="NewPhpClassDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1606291272280" />
-    <state x="1102" y="95" width="684" height="798" key="find.popup" timestamp="1606873651103">
+    <state x="1102" y="95" width="684" height="798" key="find.popup" timestamp="1606893442102">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="1102" y="95" width="684" height="798" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1606873651103" />
+    <state x="1102" y="95" width="684" height="798" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1606893442102" />
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1605859295471">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
