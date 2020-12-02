@@ -20,20 +20,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="926dca1a-72b0-4d8e-b645-03cccee2673e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sustock_shop_tp3.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sustock_shop_tp3.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Common/Conf/config.php" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Common/Conf/config.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Template/mobile/new/User/order_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/Template/mobile/new/User/order_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Template/mobile/new/User/order_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/Template/mobile/new/User/order_list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/shipping/shentong/config.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/shipping/shentong/logo.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/shipping/shentong/template.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/shipping/shunfeng/config.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/shipping/shunfeng/logo.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/shipping/shunfeng/template.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/shipping/yuantong/config.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/shipping/yuantong/logo.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/shipping/yuantong/template.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/Home/Controller/UserController.class.php" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Home/Controller/UserController.class.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/Mobile/Controller/IndexController.class.php" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Mobile/Controller/IndexController.class.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/Mobile/Controller/UserController.class.php" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Mobile/Controller/UserController.class.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Template/mobile/new/Index/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/Template/mobile/new/Index/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Template/mobile/new/User/withdrawals.html" beforeDir="false" afterPath="$PROJECT_DIR$/Template/mobile/new/User/withdrawals.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,7 +59,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/Template/mobile/new/Static/images" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Application/Mobile/Controller" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
   </component>
   <component name="RecentsManager">
@@ -74,11 +68,11 @@
       <recent name="F:\sustock_shop\sustock_shop_code\sustock_shop_tp3\Template\pc\soubao\Article" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\sustock_shop\sustock_shop_code\sustock_shop_tp3\Application\Mobile\Controller" />
+      <recent name="F:\官网\sustock_website\public\static" />
+      <recent name="F:\官网\sustock_website\public\static\umeditor\umeditor1_2_2-utf8-php" />
       <recent name="F:\sustock_shop\sustock_shop_code\sustock_shop_tp3\Template\mobile\new\Static\images" />
       <recent name="F:\sustock_shop\sustock_shop_code\sustock_shop_tp3\Template\mobile\new\Static\express" />
-      <recent name="F:\sustock_shop\sustock_shop_code\sustock_shop_tp3\Application\Common\Conf" />
-      <recent name="F:\sustock_shop\sustock_shop_code\sustock_shop_tp3\Template\mobile\new\Static" />
-      <recent name="F:\sustock_shop\sustock_shop_code\sustock_shop_tp3\Template\mobile\new\Static\js" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -135,7 +129,10 @@
       <workItem from="1606180231651" duration="637000" />
       <workItem from="1606181448097" duration="21456000" />
       <workItem from="1606266491010" duration="13897000" />
-      <workItem from="1606353339035" duration="22184000" />
+      <workItem from="1606353339035" duration="23895000" />
+      <workItem from="1606440083899" duration="18030000" />
+      <workItem from="1606785267541" duration="20056000" />
+      <workItem from="1606872459371" duration="8195000" />
     </task>
     <servers />
   </component>
@@ -167,18 +164,18 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="690" y="274" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1605090784899" />
-    <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1606181526077">
+    <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1606441946996">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1606181526077" />
+    <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1606441946996" />
     <state x="800" y="245" key="NewPhpClassDialog" timestamp="1606291272280">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="800" y="245" key="NewPhpClassDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1606291272280" />
-    <state x="1102" y="95" width="684" height="798" key="find.popup" timestamp="1606208110637">
+    <state x="1102" y="95" width="684" height="798" key="find.popup" timestamp="1606873651103">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="1102" y="95" width="684" height="798" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1606208110637" />
+    <state x="1102" y="95" width="684" height="798" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1606873651103" />
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1605859295471">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

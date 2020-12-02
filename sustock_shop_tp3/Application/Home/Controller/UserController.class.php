@@ -1147,6 +1147,16 @@ class UserController extends BaseController {
 
       			    $alipay = new AlipayController();
       			    $result=$alipay ->transfer($config,$data);
+
+                    $account_log = array(
+                        'user_id'       => $data['user_id'],
+                        'user_money'    => $data['money'],
+                        'pay_points'    => 0,
+                        'change_time'   => time(),
+                        'order_sn'   => $data['out_no'],
+                        'order_id'  => 0
+                    );
+
       			    if($result == true){
                             //支付宝返回成功
                             M() -> startTrans();    //开启事务
@@ -1159,15 +1169,7 @@ class UserController extends BaseController {
                             $res2 = M('withdrawals')->where("out_no = ".$data['out_no'])->save(array('status'=>1));
 
                             //记录日志
-                            $account_log = array(
-                                'user_id'       => $data['user_id'],
-                                'user_money'    => $data['money'],
-                                'pay_points'    => 0,
-                                'change_time'   => time(),
-                                'desc'   => "余额提现",
-                                'order_sn'   => $data['out_no'],
-                                'order_id'  => 0
-                            );
+                            $account_log['desc'] = "余额提现成功";
                             $res3 = M("account_log")->add($account_log);
 
                             if($res1 && $res2 && $res3){
@@ -1176,6 +1178,21 @@ class UserController extends BaseController {
                                 M()->rollback();  //回滚事务
                             }
       			    }else{
+                        M() -> startTrans();    //开启事务
+
+                        //修改提现状态
+                        $res2 = M('withdrawals')->where("out_no = ".$data['out_no'])->save(array('status'=>2,'remark'=>$result));
+
+                        //记录日志
+                        $account_log['desc'] = "余额提现失败";
+                        $res3 = M("account_log")->add($account_log);
+
+                        if($res2 && $res3){
+                            M()->commit();  //提交事务
+                        }else{
+                            M()->rollback();  //回滚事务
+                        }
+
                           $this->error($result);
                           exit;
       			    }
