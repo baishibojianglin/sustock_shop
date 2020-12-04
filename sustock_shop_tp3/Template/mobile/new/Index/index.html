@@ -14,10 +14,10 @@
 <script type="text/javascript" src="__STATIC__/js/TouchSlide.1.1.js"></script>
 <script type="text/javascript" src="__STATIC__/js/jquery.json.js"></script>
 <script type="text/javascript" src="__STATIC__/js/touchslider.dev.js"></script>
-<script type="text/javascript" src="__STATIC__/js/layer.js" ></script>
+
 <script src="__PUBLIC__/js/global.js"></script>
 <script src="__PUBLIC__/js/mobile_common.js"></script>
-
+<script src="__PUBLIC__/js/layer/layer.js"></script>
 </head>
 <body>
 <div id="page" class="showpage">
@@ -278,49 +278,6 @@ function clock(key)
            </adv>
     </strong>
 </div>
-    <section class="index_floor">
-        <div class="floor_body1" >
-            <h2><em></em>店主专区
-                <!--<div class="geng"><a href="{:U('Goods/search',array('q'=>'热销'))}" >更多</a> <span></span></div>-->
-            </h2>
-            <div id="scroll_agent" class="scroll_hot">
-                <div class="bd">
-                    <ul>
-                        <assign name="fl" value="1"/>
-                        <tpshop sql="select * from __PREFIX__goods where is_agent=1 and is_on_sale = 1 and goods_state = 1 order by sort desc limit 9" item="v" key="k">
-                            <li>
-                                <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$v[goods_id]))}" title="{$v.goods_name}">
-                                    <div class="index_pro">
-                                        <div class="products_kuang">
-                                            <img src="{$v.goods_id|goods_thum_images=400,400}"></div>
-                                        <div class="goods_name">{$v.goods_name}</div>
-                                        <div class="price">
-                                            <a href="javascript:AjaxAddCart({$v[goods_id]},1,0);" class="btns">
-                                                <img src="__STATIC__/images/index_flow.png">
-                                            </a>
-                                            <span href="{:U('Mobile/Goods/goodsInfo',array('id'=>$v[goods_id]))}" class="price_pro">￥{$v.shop_price}元</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <if condition="($fl++%3 eq 0) && ($fl lt 9)"></ul><ul></if>
-                    </tpshop></ul>
-                </div>
-                <div class="hd">
-                    <ul></ul>
-                </div>
-            </div>
-        </div>
-    </section>
-    <script type="text/javascript">
-        TouchSlide({
-            slideCell:"#scroll_agent",
-            titCell:".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
-            effect:"leftLoop",
-            autoPage:true, //自动分页
-            //switchLoad:"_src" //切换加载，真实图片路径为"_src"
-        });
-    </script>
 
     <section class="index_floor">
   <div class="floor_body1">
@@ -422,7 +379,7 @@ function clock(key)
                 <div class="bd">
                     <ul>
                         <assign name="fl" value="1"/>
-                        <tpshop sql="select * from __PREFIX__goods where is_hot=1 and is_on_sale = 1 and goods_state = 1 order by on_time desc limit 9" item="v" key="k">
+                        <tpshop sql="select * from __PREFIX__goods where is_hot=1 and is_on_sale = 1 and goods_state = 1 order by sort desc limit 9" item="v" key="k">
                             <li>
                                 <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$v[goods_id]))}" title="{$v.goods_name}">
                                     <div class="index_pro">
@@ -456,7 +413,51 @@ function clock(key)
             //switchLoad:"_src" //切换加载，真实图片路径为"_src"
         });
     </script>
- 
+
+    <section class="index_floor">
+        <div class="floor_body1" >
+            <h2><em></em>店主专区
+                <!--<div class="geng"><a href="{:U('Goods/search',array('q'=>'热销'))}" >更多</a> <span></span></div>-->
+            </h2>
+            <div id="scroll_agent" class="scroll_hot">
+                <div class="bd">
+                    <ul>
+                        <assign name="fl" value="1"/>
+                        <tpshop sql="select * from __PREFIX__goods where is_agent=1 and is_on_sale = 1 and goods_state = 1 order by sort desc limit 9" item="v" key="k">
+                            <li>
+                                <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$v[goods_id]))}" title="{$v.goods_name}">
+                                    <div class="index_pro">
+                                        <div class="products_kuang">
+                                            <img src="{$v.goods_id|goods_thum_images=400,400}"></div>
+                                        <div class="goods_name">{$v.goods_name}</div>
+                                        <div class="price">
+                                            <a href="javascript:AjaxAddCart({$v[goods_id]},1,0);" class="btns">
+                                                <img src="__STATIC__/images/index_flow.png">
+                                            </a>
+                                            <span href="{:U('Mobile/Goods/goodsInfo',array('id'=>$v[goods_id]))}" class="price_pro">￥{$v.shop_price}元</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <if condition="($fl++%3 eq 0) && ($fl lt 9)"></ul><ul></if>
+                    </tpshop></ul>
+                </div>
+                <div class="hd">
+                    <ul></ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script type="text/javascript">
+        TouchSlide({
+            slideCell:"#scroll_agent",
+            titCell:".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
+            effect:"leftLoop",
+            autoPage:true, //自动分页
+            //switchLoad:"_src" //切换加载，真实图片路径为"_src"
+        });
+    </script>
+
 <div id="index_banner" class="index_banner">
 	<div class="bd">
 		<ul>

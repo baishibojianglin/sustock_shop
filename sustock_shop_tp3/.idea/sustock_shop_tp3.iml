@@ -6,5 +6,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="shopmedia_admin" />
     <orderEntry type="module" module-name="shopmedia_admin_test" />
+    <orderEntry type="module" module-name="gmys" />
   </component>
 </module>

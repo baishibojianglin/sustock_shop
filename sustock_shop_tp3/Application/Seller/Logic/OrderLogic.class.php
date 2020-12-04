@@ -253,12 +253,14 @@ class OrderLogic extends RelationModel
         if($user['oauth']== 'weixin')
         {
             $orderid = $data['order_id'];
+            $shippingcode = $order['shipping_code'];
+            $invoiceno = $data['invoice_no'];
+
             $wx_user = M('wx_user')->find();
             $jssdk = new \Mobile\Logic\Jssdk($wx_user['appid'],$wx_user['appsecret']);
  //           $wx_content = "您的订单:{$order['order_sn']} 已发货，运单号为：{$order['shipping_name']}-{$data['invoice_no']} 请注意查收。";
-//            $wx_content = "您的订单：<a href='http://dt.dilinsat.com/index.php/Mobile/User/order_detail/id/{$orderid}'>{$order['order_sn']}</a> 已发货，运单号为：{$order['shipping_name']}-<a href='http://www.kuaidi100.com/'>{$data['invoice_no']}</a> 请注意查收。";
 
-            $wx_content = "您的订单：<a href=\"http://dt.dilinsat.com/index.php/Mobile/User/order_detail/id/{$orderid}\">{$order['order_sn']}</a> 已发货，运单号为：{$order['shipping_name']}-<a href=\"http://www.kuaidi100.com/\">{$data['invoice_no']}</a> 请注意查收。";
+            $wx_content = "您的订单：<a href=\"http://dt.dilinsat.com/index.php/Mobile/User/order_detail/id/{$orderid}\">{$order['order_sn']}</a> 已发货，运单号为：{$order['shipping_name']}-<a href=\"http://dt.dilinsat.com/index.php/Mobile/Express/express/shippingcode/{$shippingcode}/invoiceno/{$invoiceno}\">{$data['invoice_no']}</a> 请注意查收。";
             $jssdk->push_msg($user['openid'],$wx_content);
 
         }

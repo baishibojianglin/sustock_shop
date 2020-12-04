@@ -17,6 +17,8 @@ use Mobile\Logic\OrderGoodsLogic;
 use Think\Page;
 use Think\Verify;
 
+include_once './Application/Mobile/Controller/WithdrawController.class.php';
+
 class UserController extends MobileBaseController
 {
 
@@ -1176,13 +1178,18 @@ class UserController extends MobileBaseController
         if(IS_POST)
         {
             $this->verifyHandle('withdrawals');
+
+            $openid = M('users')->field('openid')->where("user_id = $this->user_id")->find();
+
             $data = I('post.');
+            $data['out_no'] = $this->get_out_no();
             $data['user_id'] = $this->user_id;
+            $data['account_bank'] = $openid['openid'];
             $data['create_time'] = time();
-            $distribut_min = tpCache('distribut.min'); // 最少提现额度
-            if($data['money'] < $distribut_min)
+//            $distribut_min = tpCache('distribut.min'); // 最少提现额度
+            if($data['money'] < 1)
             {
-                $this->error('每次最少提现额度'.$distribut_min);
+                $this->error('每次最少提现额度1元');
                 exit;
             }
             if($data['money'] > $this->user['user_money'])
@@ -1191,9 +1198,63 @@ class UserController extends MobileBaseController
                 exit;
             }
 
+            //新增一条提现记录
             if(M('withdrawals')->add($data)){
-                $this->success("已提交申请");
-                exit;
+
+
+                //接入微信提现
+                $withdraw = new WithdrawController($data['out_no'],$openid['openid'],$data['account_name'],$data['money'],'余额提现');
+                $result = $withdraw ->getWithdraw();
+
+                $account_log = array(
+                    'user_id'       => $data['user_id'],
+                    'user_money'    => $data['money'],
+                    'pay_points'    => 0,
+                    'change_time'   => time(),
+                    'order_sn'   => $data['out_no'],
+                    'order_id'  => 0
+                );
+
+                if($result["return_code"] == "SUCCESS" && $result["result_code"] == "SUCCESS"){
+                    //返回成功
+                    M() -> startTrans();    //开启事务
+
+                    //修改余额
+                    $money = $this->user['user_money'] - $data['money'];
+                    $res1 = M('users')->where("user_id = ".$data['user_id'])->save(array('user_money'=> $money));
+
+                    //修改提现状态
+                    $res2 = M('withdrawals')->where("out_no = ".$data['out_no'])->save(array('status'=>1));
+
+                    //记录日志
+                    $account_log['desc'] = "余额提现成功";
+                    $res3 = M("account_log")->add($account_log);
+
+                    if($res1 && $res2 && $res3){
+                        M()->commit();  //提交事务
+                    }else{
+                        M()->rollback();  //回滚事务
+                    }
+                }else{
+                    M() -> startTrans();    //开启事务
+
+                    //修改提现状态
+                    $res2 = M('withdrawals')->where("out_no = ".$data['out_no'])->save(array('status'=>2,'remark'=>$result['err_code_des']));
+
+                    //记录日志
+                    $account_log['desc'] = "余额提现失败";
+                    $res3 = M("account_log")->add($account_log);
+
+                    if($res2 && $res3){
+                        M()->commit();  //提交事务
+                    }else{
+                        M()->rollback();  //回滚事务
+                    }
+
+                    $this->error($result['err_code_des']);
+                    exit;
+                }
+
             }else{
                 $this->error('提交失败,联系客服!');
                 exit;
@@ -1213,5 +1274,20 @@ class UserController extends MobileBaseController
             exit;
         }
         $this->display();
+    }
+
+    /**
+     * 获取商户订单 out_biz_no
+     */
+    public function get_out_no()
+    {
+        // 保证不会有重复订单号存在
+        while(true){
+            $out_no = date('YmdHis').rand(1000,9999); // 订单编号
+            $out_no_count = M('withdrawals')->where("out_no = '$out_no'")->count();
+            if($out_no_count == 0)
+                break;
+        }
+        return $out_no;
     }
 }
