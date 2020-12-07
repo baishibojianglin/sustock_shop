@@ -679,8 +679,9 @@ class OrderController extends BaseController {
 		if(I('order_status')){
 			$where .= " AND order_status = ".I('order_status');
 		}
-		if(I('pay_status')){
-			$where .= " AND pay_status = ".I('pay_status');
+        $payStatus = I('pay_status');
+		if(isset($payStatus)){
+			$where .= " AND pay_status = " . $payStatus;
 		}
 		
 		$timegap = I('timegap');
