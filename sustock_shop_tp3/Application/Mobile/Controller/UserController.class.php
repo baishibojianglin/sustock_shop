@@ -1177,7 +1177,7 @@ class UserController extends MobileBaseController
         C('TOKEN_ON',true);
         if(IS_POST)
         {
-            $this->verifyHandle('withdrawals');
+//            $this->verifyHandle('withdrawals');
 
             $openid = M('users')->field('openid')->where("user_id = $this->user_id")->find();
 
@@ -1185,6 +1185,7 @@ class UserController extends MobileBaseController
             $data['out_no'] = $this->get_out_no();
             $data['user_id'] = $this->user_id;
             $data['account_bank'] = $openid['openid'];
+            $data['account_name'] = $this->user['nickname'];
             $data['create_time'] = time();
 //            $distribut_min = tpCache('distribut.min'); // 最少提现额度
             if($data['money'] < 1)
@@ -1198,12 +1199,14 @@ class UserController extends MobileBaseController
                 exit;
             }
 
+            $returndata = array();
+
             //新增一条提现记录
             if(M('withdrawals')->add($data)){
 
 
                 //接入微信提现
-                $withdraw = new WithdrawController($data['out_no'],$openid['openid'],$data['account_name'],$data['money'],'余额提现');
+                $withdraw = new WithdrawController($data['out_no'],$openid['openid'],$data['money'],'余额提现');
                 $result = $withdraw ->getWithdraw();
 
                 $account_log = array(
@@ -1235,6 +1238,11 @@ class UserController extends MobileBaseController
                     }else{
                         M()->rollback();  //回滚事务
                     }
+
+                    $returndata['status'] = 1;
+                    $returndata['msg'] = '提现成功，请及时到微信零钱查看！';
+
+                    exit(json_encode($returndata));
                 }else{
                     M() -> startTrans();    //开启事务
 
@@ -1251,13 +1259,21 @@ class UserController extends MobileBaseController
                         M()->rollback();  //回滚事务
                     }
 
-                    $this->error($result['err_code_des']);
-                    exit;
+//                    $this->error($result['err_code_des']);
+//                    exit;
+                    $returndata['status'] = 0;
+                    $returndata['msg'] = $result['err_code_des'];
+
+                    exit(json_encode($returndata));
                 }
 
             }else{
-                $this->error('提交失败,联系客服!');
-                exit;
+//                $this->error('提交失败,联系客服!');
+//                exit;
+                $returndata['status'] = 0;
+                $returndata['msg'] = '提交有误，请稍后重试！';
+
+                exit(json_encode($returndata));
             }
         }
 
@@ -1266,6 +1282,8 @@ class UserController extends MobileBaseController
         $page = new Page($count,16);
         $list = M('withdrawals')->where($where)->order("id desc")->limit("{$page->firstRow},{$page->listRows}")->select();
 
+        $usermoney = M('users')->where("user_id = ".$this->user_id)->find();
+        $this->assign('usermoney',$usermoney['user_money']);
         $this->assign('page', $page->show());// 赋值分页输出
         $this->assign('list',$list); // 下线
         if($_GET['is_ajax'])

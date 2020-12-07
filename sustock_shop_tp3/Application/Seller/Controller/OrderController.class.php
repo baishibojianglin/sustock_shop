@@ -679,6 +679,9 @@ class OrderController extends BaseController {
 		if(I('order_status')){
 			$where .= " AND order_status = ".I('order_status');
 		}
+		if(I('pay_status')){
+			$where .= " AND pay_status = ".I('pay_status');
+		}
 		
 		$timegap = I('timegap');
 		if($timegap){
@@ -703,6 +706,7 @@ class OrderController extends BaseController {
     	$strTable .= '<td style="text-align:center;font-size:12px;" width="*">支付方式</td>';
     	$strTable .= '<td style="text-align:center;font-size:12px;" width="*">支付状态</td>';
     	$strTable .= '<td style="text-align:center;font-size:12px;" width="*">发货状态</td>';
+    	$strTable .= '<td style="text-align:center;font-size:12px;" width="*">订单状态</td>';
     	$strTable .= '<td style="text-align:center;font-size:12px;" width="*">商品信息</td>';
     	$strTable .= '</tr>';
     	
@@ -717,7 +721,8 @@ class OrderController extends BaseController {
     		$strTable .= '<td style="text-align:left;font-size:12px;">'.$val['order_amount'].'</td>';
     		$strTable .= '<td style="text-align:left;font-size:12px;">'.$val['pay_name'].'</td>';
     		$strTable .= '<td style="text-align:left;font-size:12px;">'.$this->pay_status[$val['pay_status']].'</td>';
-    		$strTable .= '<td style="text-align:left;font-size:12px;">'.$this->shipping_status[$val['shipping_status']].'</td>';    
+    		$strTable .= '<td style="text-align:left;font-size:12px;">'.$this->shipping_status[$val['shipping_status']].'</td>';
+    		$strTable .= '<td style="text-align:left;font-size:12px;">'.$this->order_status[$val['order_status']].'</td>';
     		$orderGoods = D('order_goods')->where('order_id='.$val['order_id'])->select();
     		$strGoods="";
     		foreach($orderGoods as $goods){

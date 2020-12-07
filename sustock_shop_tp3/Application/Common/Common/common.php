@@ -876,7 +876,7 @@ function update_pay_status($order_sn,$pay_status = 1)
         if ($updatePayStatus) {
             /*购买所有商品的提成 s*/
             // 用户提成
-            userOrderCommission($order['order_id'], $order['user_id']);
+            userOrderCommission($order['order_id'], $order['user_id'], $order_sn);
             // 广告机店家提成
             shopkeeperOrderCommission($order['goods_price'], $order['user_id'], $order['order_id']);
 
@@ -887,13 +887,13 @@ function update_pay_status($order_sn,$pay_status = 1)
                 becomeAgent($order['user_id'], $order['order_id']);
             }
             // 代理商提成
-            agentOrderCommission($user, $order['user_id'], $order['order_id'], $order['goods_price']);
+            agentOrderCommission($user, $order['user_id'], $order['order_id'], $order['goods_price'], $order_sn);
             /*购买所有商品的提成 e*/
 
 
             /*购买代理商品的提成 s*/
             // 购买代理商品成为代理商后对上级及上上级代理商提成
-            agentGoodsOrderCommission($order['user_id'], $order['order_id']);
+            agentGoodsOrderCommission($order['user_id'], $order['order_id'], $order_sn);
             /*购买代理商品的提成 e*/
         }
 	}
@@ -906,7 +906,16 @@ function update_pay_status($order_sn,$pay_status = 1)
  * @param $orderId
  * @param $userId
  */
-function userOrderCommission($orderId, $userId) {
+function userOrderCommission($orderId, $userId, $order_sn) {
+    //定义记录日志的数据
+    $account_log = array(
+        'pay_points'    => 0,
+        'change_time'   => time(),
+        'order_sn'   => $order_sn,
+        'order_id'  => $orderId,
+        'is_commission' => 1,
+    );
+
     // 获取该笔订单商品对应的商品分享者id
     $orderGoodsList = M('orderGoods')->where("order_id = {$orderId}")->select();
     foreach ($orderGoodsList as $key => $value) {
@@ -921,6 +930,13 @@ function userOrderCommission($orderId, $userId) {
                 $commissionMoney1 = $commissionMoney * C('order_goods_commission_ratio.share_first_leader');
                 $res[0] = M('users')->where("user_id = {$value['first_leader']}")->setInc('user_money', $commissionMoney1) === false ? 0 : true;
                 $res[1] = M('users')->where("user_id = {$value['first_leader']}")->setInc('distribut_money', $commissionMoney1) === false ? 0 : true;
+                //记录日志
+                $account_log['user_id'] = $value['first_leader'];
+                $account_log['user_money'] = $commissionMoney1;
+                $account_log['desc'] = '普通商品，分享者提成';
+                $res[11] = M('account_log')->add($account_log);
+
+
 
                 // 对商品分享者上级提成
                 $users1 = M('users')->where("user_id = {$value['first_leader']}")->find(); // 获取商品分享者上级
@@ -928,6 +944,12 @@ function userOrderCommission($orderId, $userId) {
                     $commissionMoney2 = $commissionMoney * C('order_goods_commission_ratio.share_second_leader');
                     $res[2] = M('users')->where("user_id = {$users1['first_leader']}")->setInc('user_money', $commissionMoney2) === false ? 0 : true;
                     $res[3] = M('users')->where("user_id = {$users1['first_leader']}")->setInc('distribut_money', $commissionMoney2) === false ? 0 : true;
+
+                    //记录日志
+                    $account_log['user_id'] = $users1['first_leader'];
+                    $account_log['user_money'] = $commissionMoney2;
+                    $account_log['desc'] = '普通商品，分享者上级提成';
+                    $res[12] = M('account_log')->add($account_log);
                 }
 
                 if(in_array(0, $res)){
@@ -945,12 +967,25 @@ function userOrderCommission($orderId, $userId) {
                 $commissionMoney3 = $commissionMoney * C('order_goods_commission_ratio.first_leader');
                 $res[4] = M('users')->where("user_id = {$users2['first_leader']}")->setInc('user_money', $commissionMoney3) === false ? 0 : true;
                 $res[5] = M('users')->where("user_id = {$users2['first_leader']}")->setInc('distribut_money', $commissionMoney3) === false ? 0 : true;
+                //记录日志
+                $account_log['user_id'] = $users2['first_leader'];
+                $account_log['user_money'] = $commissionMoney3;
+                $account_log['desc'] = '普通商品，订单用户提成';
+                $res[13] = M('account_log')->add($account_log);
+
+
 
                 // 对订单用户上上级提成
                 if ($users2['second_leader']) {
                     $commissionMoney4 = $commissionMoney * C('order_goods_commission_ratio.second_leader');
                     $res[6] = M('users')->where("user_id = {$users2['second_leader']}")->setInc('user_money', $commissionMoney4) === false ? 0 : true;
                     $res[7] = M('users')->where("user_id = {$users2['second_leader']}")->setInc('distribut_money', $commissionMoney4) === false ? 0 : true;
+
+                    //记录日志
+                    $account_log['user_id'] = $users2['second_leader'];
+                    $account_log['user_money'] = $commissionMoney4;
+                    $account_log['desc'] = '普通商品，订单用户上级提成';
+                    $res[14] = M('account_log')->add($account_log);
                 }
 
                 if(in_array(0, $res)){
@@ -1055,7 +1090,7 @@ function becomeAgent($userId, $orderId) {
  * @param $orderId
  * @param $goodsPrice
  */
-function agentOrderCommission($user, $userId, $orderId, $goodsPrice) {
+function agentOrderCommission($user, $userId, $orderId, $goodsPrice, $order_sn) {
     // 查询条件
     $agentMap = array(
         'is_agent' => 1,
@@ -1065,6 +1100,15 @@ function agentOrderCommission($user, $userId, $orderId, $goodsPrice) {
     if ($user && $user['is_agent'] != 1) {
         $agentMap['user_id'] = array('neq', $userId);
     }
+
+    //定义记录日志的数据
+    $account_log = array(
+        'pay_points'    => 0,
+        'change_time'   => time(),
+        'order_sn'   => $order_sn,
+        'order_id'  => $orderId,
+        'is_commission' => 1,
+    );
 
     // 获取订单商品总成本价
     $costPriceSum = M('orderGoods')->where("order_id = {$orderId}")->sum('cost_price');
@@ -1085,6 +1129,11 @@ function agentOrderCommission($user, $userId, $orderId, $goodsPrice) {
             // 代理商提成
             $res[0] = M('users')->where("user_id = {$value['user_id']}")->setInc('user_money', $commissionMoney) === false ? 0 : true;
             $res[1] = M('users')->where("user_id = {$value['user_id']}")->setInc('distribut_money', $commissionMoney) === false ? 0 : true;
+            //记录日志
+            $account_log['user_id'] = $value['user_id'];
+            $account_log['user_money'] = $commissionMoney;
+            $account_log['desc'] = '普通商品，代理商提成';
+            $res[11] = M('account_log')->add($account_log);
 
             if(in_array(0, $res)){
                 M()->rollback(); // 回滚事务
@@ -1100,7 +1149,17 @@ function agentOrderCommission($user, $userId, $orderId, $goodsPrice) {
  * @param $userId
  * @param $orderId
  */
-function agentGoodsOrderCommission($userId, $orderId) {
+function agentGoodsOrderCommission($userId, $orderId, $order_sn) {
+    //定义记录日志的数据
+    $account_log = array(
+        'pay_points'    => 0,
+        'change_time'   => time(),
+        'order_sn'   => $order_sn,
+        'order_id'  => $orderId,
+        'is_commission' => 1,
+        'is_agent' => 1
+    );
+
     // 获取订单用户信息
     $user = M('users')->find($userId);
     if (!empty($user) && $user['is_agent'] == 1) { // 订单用户是代理商
@@ -1123,6 +1182,11 @@ function agentGoodsOrderCommission($userId, $orderId) {
                             $commissionMoney = C('agent_goods_commission_money.agent_first_leader');
                             $res[0] = M('users')->where(array('is_agent' => 1, 'user_id' => $user['first_agent_leader']))->setInc('user_money', $commissionMoney);
                             $res[1] = M('users')->where(array('is_agent' => 1, 'user_id' => $user['first_agent_leader']))->setInc('agent_money', $commissionMoney);
+                            //记录日志
+                            $account_log['user_id'] = $user['first_agent_leader'];
+                            $account_log['user_money'] = $commissionMoney;
+                            $account_log['desc'] = '代理商品，代理商上级提成';
+                            $res[11] = M('account_log')->add($account_log);
                         }
 
                         // 上上级提成
@@ -1130,6 +1194,11 @@ function agentGoodsOrderCommission($userId, $orderId) {
                             $commissionMoney = C('agent_goods_commission_money.agent_second_leader');
                             $res[2] =  M('users')->where(array('is_agent' => 1, 'user_id' => $user['second_agent_leader']))->setInc('user_money', $commissionMoney);
                             $res[3] = M('users')->where(array('is_agent' => 1, 'user_id' => $user['second_agent_leader']))->setInc('agent_money', $commissionMoney);
+                            //记录日志
+                            $account_log['user_id'] = $user['second_agent_leader'];
+                            $account_log['user_money'] = $commissionMoney;
+                            $account_log['desc'] = '代理商品，代理商上上级提成';
+                            $res[12] = M('account_log')->add($account_log);
                         }
 
                         if(in_array(0, $res)){

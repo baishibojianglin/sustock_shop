@@ -14,7 +14,6 @@ class WithdrawController extends MobileBaseController
     protected $nonce_str;//随机字符串
     protected $partner_trade_no;//商户订单号
     protected $openid;//用户openid
-    protected $re_user_name;//收款用户姓名
     protected $amount;//金额（单位为分）
     protected $desc;//企业付款备注
     protected $key;//支付密钥
@@ -24,7 +23,7 @@ class WithdrawController extends MobileBaseController
     /**
      * 析构流函数
      */
-    public function  __construct($partner_trade_no,$openid,$re_user_name,$amount,$desc) {
+    public function  __construct($partner_trade_no,$openid,$amount,$desc) {
         parent::__construct();
         //获取微信配置
         $paymentPlugin = M('Plugin')->where("code='weixin' and  type = 'payment' ")->find(); // 找到微信支付插件的配置
@@ -34,7 +33,6 @@ class WithdrawController extends MobileBaseController
         $this->mchid = $config_value['mchid'];
         $this->partner_trade_no = $partner_trade_no;
         $this->openid = $openid;
-        $this->re_user_name = $re_user_name;
         $this->amount = $amount*100;
         $this->desc = $desc;
         $this->key = $config_value['key'];
@@ -69,8 +67,7 @@ class WithdrawController extends MobileBaseController
             'nonce_str' => $this->getNonceStr(),
             'partner_trade_no' => $this->partner_trade_no,
             'openid' => $this->openid,
-            'check_name'=>'FORCE_CHECK',
-            're_user_name' => $this->re_user_name,
+            'check_name'=>'NO_CHECK',
             'amount' => $this->amount,
             'desc' => $this->desc,
             'spbill_create_ip' => $_SERVER['REMOTE_ADDR']
