@@ -921,7 +921,7 @@ function userOrderCommission($orderId, $userId, $order_sn) {
     foreach ($orderGoodsList as $key => $value) {
         // 可以用于提成的金额
         $commissionMoney = $value['goods_price'] - $value['cost_price'];
-        $commissionMoney = $commissionMoney >= 0 ? $commissionMoney : $value['goods_price'] * C('goods_price_ratio'); // 当商品售价≤成本价时，以商品售价为提成金额的基数，TODO：并乘以一个比例
+        //$commissionMoney = $commissionMoney >= 0 ? $commissionMoney : $value['goods_price'] * C('goods_price_ratio'); // 当商品售价≤成本价时，以商品售价为提成金额的基数，TODO：并乘以一个比例
         if ($commissionMoney > 0) {
             if ($value['first_leader']) { // 如果有商品分享者，则对该分享者及上级用户提成
                 M()->startTrans(); // 开启事务
@@ -1010,7 +1010,7 @@ function shopkeeperOrderCommission($goodsPrice, $userId, $orderId) {
     $costPriceSum = M('orderGoods')->where("order_id = {$orderId}")->sum('cost_price');
     // 可以用于提成的金额
     $commissionMoney = $goodsPrice - $costPriceSum;
-    $commissionMoney = $commissionMoney >= 0 ? $commissionMoney : $goodsPrice * C('goods_price_ratio'); // 当商品售价≤成本价时，以商品售价为提成金额的基数，TODO：并乘以一个比例
+    //$commissionMoney = $commissionMoney >= 0 ? $commissionMoney : $goodsPrice * C('goods_price_ratio'); // 当商品售价≤成本价时，以商品售价为提成金额的基数，TODO：并乘以一个比例
     if ($commissionMoney > 0) {
         // 获取订单用户信息
         $user = M('users')->field('oauth, openid')->find($userId);
@@ -1114,7 +1114,7 @@ function agentOrderCommission($user, $userId, $orderId, $goodsPrice, $order_sn) 
     $costPriceSum = M('orderGoods')->where("order_id = {$orderId}")->sum('cost_price');
     // 可以用于提成的金额
     $commissionMoney = $goodsPrice - $costPriceSum;
-    $commissionMoney = $commissionMoney >= 0 ? $commissionMoney : $goodsPrice * C('goods_price_ratio'); // 当商品售价≤成本价时，以商品售价为提成金额的基数，TODO：并乘以一个比例
+    //$commissionMoney = $commissionMoney >= 0 ? $commissionMoney : $goodsPrice * C('goods_price_ratio'); // 当商品售价≤成本价时，以商品售价为提成金额的基数，TODO：并乘以一个比例
     if ($commissionMoney > 0) {
         // 获取代理商数量
         $agentCount = M('users')->where($agentMap)->count();
