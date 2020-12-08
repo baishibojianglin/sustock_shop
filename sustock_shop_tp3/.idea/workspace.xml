@@ -20,7 +20,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="926dca1a-72b0-4d8e-b645-03cccee2673e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/Application/Seller/Controller/OrderController.class.php" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Seller/Controller/OrderController.class.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Template/mobile/new/User/account.html" beforeDir="false" afterPath="$PROJECT_DIR$/Template/mobile/new/User/account.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Template/mobile/new/User/ajax_account_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/Template/mobile/new/User/ajax_account_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Template/mobile/new/User/points.html" beforeDir="false" afterPath="$PROJECT_DIR$/Template/mobile/new/User/points.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,7 +131,9 @@
       <workItem from="1606872459371" duration="14726000" />
       <workItem from="1607044256429" duration="22580000" />
       <workItem from="1607304068150" duration="4918000" />
-      <workItem from="1607310080444" duration="8205000" />
+      <workItem from="1607310080444" duration="9058000" />
+      <workItem from="1607389823566" duration="7570000" />
+      <workItem from="1607413366182" duration="4846000" />
     </task>
     <servers />
   </component>
@@ -168,10 +173,14 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="800" y="245" key="NewPhpClassDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1606291272280" />
-    <state x="1102" y="95" width="684" height="798" key="find.popup" timestamp="1607333032409">
+    <state x="707" y="239" key="RollbackChangesDialog" timestamp="1607413290092">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="1102" y="95" width="684" height="798" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1607333032409" />
+    <state x="707" y="239" key="RollbackChangesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1607413290092" />
+    <state x="1102" y="95" width="684" height="798" key="find.popup" timestamp="1607412636728">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="1102" y="95" width="684" height="798" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1607412636728" />
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1605859295471">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
