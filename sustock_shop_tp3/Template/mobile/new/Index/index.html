@@ -234,7 +234,12 @@ function clock(key)
                       <a href="javascript:AjaxAddCart({$val[goods_id]},1,0);" class="btns">
 		                  <img src="__STATIC__/images/index_flow.png">
                       </a>
-		                <span class="price_pro">￥{$val.price}元</span>
+                          <if condition="$_SESSION['user']['is_store_agent'] eq 1">
+                              <span class="price_pro">￥{$val.agent_price}元</span>
+                          <else/>
+                              <span class="price_pro">￥{$val.price}元</span>
+                          </if>
+		                
 		              </div>
 				</div>
 	          </li>

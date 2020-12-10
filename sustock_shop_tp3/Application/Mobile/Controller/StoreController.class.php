@@ -46,11 +46,11 @@ class StoreController extends Controller {
 	
 	public function index(){
 		//热门商品排行
-		$hot_goods = M('goods')->field('goods_content',true)->where(array('store_id'=>$this->store['store_id']))->order('sales_sum desc')->limit(10)->select();
+		$hot_goods = M('goods')->field('goods_content',true)->where(array('store_id'=>$this->store['store_id'],'is_on_sale'=>1))->order('sales_sum desc')->limit(10)->select();
 		//新品
-		$new_goods = M('goods')->field('goods_content',true)->where(array('store_id'=>$this->store['store_id'],'is_new'=>1))->order('goods_id desc')->limit(10)->select();
+		$new_goods = M('goods')->field('goods_content',true)->where(array('store_id'=>$this->store['store_id'],'is_new'=>1,'is_on_sale'=>1))->order('goods_id desc')->limit(10)->select();
 		//推荐商品
-		$recomend_goods = M('goods')->field('goods_content',true)->where(array('store_id'=>$this->store['store_id'],'is_recommend'=>1))->order('goods_id desc')->limit(10)->select();
+		$recomend_goods = M('goods')->field('goods_content',true)->where(array('store_id'=>$this->store['store_id'],'is_recommend'=>1,'is_on_sale'=>1))->order('goods_id desc')->limit(10)->select();
 		//所有商品
 		$total_goods = M('goods')->where(array('store_id'=>$this->store['store_id'],'is_on_sale'=>1))->count();
 		

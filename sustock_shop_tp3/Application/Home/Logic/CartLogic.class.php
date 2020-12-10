@@ -97,11 +97,12 @@ class CartLogic extends RelationModel
 
         $catr_goods = M('Cart')->where($where)->find(); // 查找购物车是否已经存在该商品
         $price = $spec_price ? $spec_price : $goods['shop_price']; // 如果商品规格没有指定价格则用商品原始价格
-        
+
+        $user = M('users')->where("user_id = {$user_id}")->find();
         // 商品参与促销
         if($goods['prom_type'] > 0)
         {            
-            $prom = get_goods_promotion($goods_id,$user_id);
+            $prom = get_goods_promotion($goods_id,$user['is_store_agent'],$user_id);
             $price = $prom['price'];
             $goods['prom_type'] = $prom['prom_type'];
             $goods['prom_id']   = $prom['prom_id'];
