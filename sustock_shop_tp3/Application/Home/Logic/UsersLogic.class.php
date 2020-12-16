@@ -142,9 +142,9 @@ class UsersLogic extends RelationModel
         }else
         {
             $user['token'] = md5(time().mt_rand(1,999999999));
-            M('users')->where("user_id = '{$user['user_id']}'")->save(array('token'=>$user['token'],'last_login'=>time()));
+            M('users')->where("user_id = '{$user['user_id']}'")->save(array('token'=>$user['token'],'last_login'=>time(),'head_pic'=>$data['head_pic'],'nickname'=>$data['nickname']));
         }
-		 
+
         return array('status'=>1,'msg'=>'登陆成功','result'=>$user);
     }
 

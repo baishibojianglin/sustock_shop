@@ -248,8 +248,8 @@ class GoodsController extends BaseController {
         );
         $id = I('id',0);
         $field = I('field');
-        $value= I('value');      
-        M($_POST['table'])->where("{$primary[$_POST['table']]} = $id and store_id = ".STORE_ID)->save(array($field =>$value));
+        $value= I('value');
+        M($_POST['table'])->where("{$primary[$_POST['table']]} = $id ")->save(array($field =>$value));
         $return_arr = array(
             'status' => 1,
             'msg'   => '操作成功',                        

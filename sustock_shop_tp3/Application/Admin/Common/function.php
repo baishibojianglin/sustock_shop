@@ -143,6 +143,7 @@ function getAllMenu(){
         )),
         'order' => array('name' => '订单管理', 'icon'=>'fa-money', 'sub_menu' => array(
             array('name' => '订单列表', 'act'=>'index', 'control'=>'Order'),
+            array('name' => '订单商品','act' => 'order_goods','control' => 'Order'),
             array('name' => '发货单', 'act'=>'delivery_list', 'control'=>'Order'),
             // array('name' => '快递单', 'act'=>'express_list', 'control'=>'Order'),
             //array('name' => '退货单', 'act'=>'return_list', 'control'=>'Order'),

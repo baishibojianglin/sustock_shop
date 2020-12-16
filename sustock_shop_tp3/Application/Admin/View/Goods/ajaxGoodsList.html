@@ -37,6 +37,12 @@
                     <a href="javascript:void(0);">库存</a>
                 </td>
                 <td class="text-left">
+                    <a href="javascript:void(0);">销量(已发货)</a>
+                </td>
+                <td class="text-left">
+                    <a href="javascript:void(0);">已结算数量</a>
+                </td>
+                <td class="text-left">
                     <a href="javascript:sort('is_on_sale');">上/下架</a>
                 </td>
                 <td class="text-left">
@@ -69,6 +75,16 @@
                         <img width="20" height="20" src="__PUBLIC__/images/<if condition='$list[is_agent] eq 1'>yes.png<else />cancel.png</if>" onclick="changeTableVal('goods','goods_id','{$list.goods_id}','is_agent',this)"/>
                     </td>
                     <td class="text-left">{$list.store_count}</td>
+                    <td class="text-left">
+                        <php>
+                            $sql = "select sum(goods_num) as sale_num from __PREFIX__order_goods where is_send = 1 and goods_id = ".$list['goods_id'];
+                            $res = M()->cache(true,3600)->query($sql);
+                            echo empty($res[0]['sale_num']) ? 0 : $res[0]['sale_num'];
+                        </php>
+                    </td>
+                    <td class="text-left">
+                        <input type="text" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')"  onchange="ajaxUpdateField2(this);" name="settle_count" size="4" data-table="goods" data-id="{$list.goods_id}" value="{$list.settle_count}"/>
+                    </td>
                     <td class="text-left">
                         <if condition="$list[is_on_sale] eq 0">下架</if>
                         <if condition="$list[is_on_sale] eq 1">上架</if>

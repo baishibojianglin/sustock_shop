@@ -34,6 +34,7 @@ class MobileBaseController extends Controller {
             $this->assign('wechat_config', $this->weixin_config);
             if(is_array($this->weixin_config) && $this->weixin_config['wait_access'] == 1 && empty($_SESSION['openid'])){
                 $wxuser = $this->GetOpenid(); //授权获取openid以及微信用户信息
+
                 session('subscribe', $wxuser['subscribe']);// 当前这个用户是否关注了微信公众号
                 //微信自动登录
                 $logic = new UsersLogic();

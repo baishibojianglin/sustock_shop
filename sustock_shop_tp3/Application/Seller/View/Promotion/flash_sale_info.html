@@ -53,13 +53,13 @@
                                     <td class="col-sm-4">商品抢购价格</td>
                                 </tr>
                                 <tr>
-                                    <td>店主抢购价格：</td>
+                                    <td>代理限时抢购价格：</td>
                                     <td>
                                         <div class="col-xs-4">
                                             <input type="text" class="form-control" id="agent_price" name="agent_price" value="{$info.agent_price}"  onpaste="this.value=this.value.replace(/[^\d.]/g,'')" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')"/>
                                         </div>
                                     </td>
-                                    <td class="col-sm-4">店主代理抢购价格</td>
+                                    <td class="col-sm-4">代理抢购价格</td>
                                 </tr>
                                 <tr>
                                 	<td>参加抢购数量:</td>
@@ -122,7 +122,7 @@ function adsubmit(){
 		layer.msg('抢购价格不能为空');return;
 	}
     if($('#agent_price').val() ==''){
-        layer.msg('店主抢购价格不能为空');return;
+        layer.msg('代理抢购价格不能为空');return;
     }
 	if($('#goods_num').val() ==''){
 		layer.msg('参加抢购数量不能为空');return;

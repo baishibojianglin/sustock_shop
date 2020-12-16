@@ -399,7 +399,7 @@ function get_goods_price()
 	   $("#goods_num").val(goods_num);
 	}
     var flash_sale_price = parseFloat("{$goods['flash_sale']['price']}");
-    (flash_sale_price > 0) && (goods_price = flash_sale_price);
+    (flash_sale_price >= 0) && (goods_price = flash_sale_price);
 	$("#goods_price").html('￥'+goods_price+'元'); // 变动价格显示
 
 }

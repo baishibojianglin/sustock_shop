@@ -68,7 +68,7 @@ class OrderController extends BaseController {
             {
                 $condition['store_id'] = array('in',$store_id_arr);
             }
-        }                
+        }
         I('order_sn') ? $condition['order_sn'] = trim(I('order_sn')) : false;
         I('order_status') != '' ? $condition['order_status'] = I('order_status') : false;
         I('pay_status') != '' ? $condition['pay_status'] = I('pay_status') : false;
@@ -93,6 +93,60 @@ class OrderController extends BaseController {
         $this->display();
     }
 
+    /*
+     * 订单商品列表
+     * */
+    public function order_goods(){
+        $this->display();
+    }
+
+    public function ajaxorder_goods(){
+
+        $orderLogic = new OrderLogic();
+        $timegap = I('timegap');
+        if($timegap){
+            $gap = explode('-', $timegap);
+            $begin = strtotime($gap[0]);
+            $end = strtotime($gap[1]);
+        }
+        // 搜索条件
+        $condition = array();
+//        I('consignee') ? $condition['consignee'] = trim(I('consignee')) : false;
+//        if($begin && $end){
+//            $condition['add_time'] = array('between',"$begin,$end");
+//        }
+//        $store_name = I('store_name','','trim');
+//        if($store_name)
+//        {
+//            $store_id_arr = M('store')->where("store_name like '%$store_name%'")->getField('store_id',true);
+//            if($store_id_arr)
+//            {
+//                $condition['store_id'] = array('in',$store_id_arr);
+//            }
+//        }
+//        I('order_sn') ? $condition['order_sn'] = trim(I('order_sn')) : false;
+//        I('order_status') != '' ? $condition['order_status'] = I('order_status') : false;
+//        I('pay_status') != '' ? $condition['pay_status'] = I('pay_status') : false;
+//        I('pay_code') != '' ? $condition['pay_code'] = I('pay_code') : false;
+//        I('shipping_status') != '' ? $condition['shipping_status'] = I('shipping_status') : false;
+//        I('user_id') ? $condition['user_id'] = trim(I('user_id')) : false;
+
+        $count = M('order_goods')->where($condition)->count();
+        $Page  = new AjaxPage($count,20);
+        //  搜索条件下 分页赋值
+        //  foreach($condition as $key=>$val) {
+        //  $Page->parameter[$key]   =  urlencode($val);
+        //  }
+        $show = $Page->show();
+        //获取订单列表
+        $ordergoodsList = $orderLogic->getOrderGoodsList($condition,$Page->firstRow,$Page->listRows);
+        file_put_contents('./GOODS.txt',json_encode($ordergoodsList));
+        $store_list = M('store')->getField('store_id,store_name');
+        $this->assign('store_list',$store_list);
+        $this->assign('ordergoodsList',$ordergoodsList);
+        $this->assign('page',$show);// 赋值分页输出
+        $this->display();
+    }
     
     /*
      * ajax 发货订单列表

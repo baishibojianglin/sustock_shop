@@ -24,7 +24,7 @@
 	<div class="cash_num bb1">
         <form action="" method="post" enctype="multipart/form-data" name="distribut_form" id="distribut_form">
             <p class="tx_cash"><span>可提余额：</span><span style="text-align: left;">{$usermoney}</span></p>
-            <p class="tx_cash"><span>提现金额：</span><input style="border:1px solid #000; line-height: 30px;" type="text" id="money" name="money" placeholder="最少提现额度1元" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')"/></p>
+            <p class="tx_cash"><span>提现金额：</span><input style="border:1px solid #000; line-height: 30px;" type="text" id="money" name="money" placeholder="最少提现额度0.3元" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')"/></p>
             <p class="tx_cash"><span>到账方式：</span><span style="text-align: left;">微信零钱</span></p>
 <!--            <p class="tx_cash"><span>收款账号：</span><input type="text" id="account_bank" name="account_bank" placeholder="如:支付宝账号,建设银行账号"/></p>-->
 <!--            <p class="tx_cash"><span>真实姓名：</span><input type="text" id="account_name" name="account_name" placeholder="微信实名认证的真实姓名"/></p>-->
@@ -82,9 +82,9 @@ function checkSubmit(){
         layer.msg('提现金额必填');
 		return false;
 	}
-	if(money <1 || money > {$user['user_money']})
+	if(money <0.3 || money > {$user['user_money']})
 	{
-		layer.msg("每次最少提现额度1元,你的账户余额{$user['user_money']}");
+		layer.msg("每次最少提现额度0.3元,你的账户余额{$user['user_money']}");
 		return false;
 	}
 			

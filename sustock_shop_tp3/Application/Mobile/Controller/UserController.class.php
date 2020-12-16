@@ -1188,9 +1188,9 @@ class UserController extends MobileBaseController
             $data['account_name'] = $this->user['nickname'];
             $data['create_time'] = time();
 //            $distribut_min = tpCache('distribut.min'); // 最少提现额度
-            if($data['money'] < 1)
+            if($data['money'] < 0.3)
             {
-                $this->error('每次最少提现额度1元');
+                $this->error('每次最少提现额度0.3元');
                 exit;
             }
             if($data['money'] > $this->user['user_money'])
