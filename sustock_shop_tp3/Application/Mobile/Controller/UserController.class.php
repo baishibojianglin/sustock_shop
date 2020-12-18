@@ -1240,7 +1240,7 @@ class UserController extends MobileBaseController
                     }
 
                     $returndata['status'] = 1;
-                    $returndata['msg'] = '提现成功，请及时到微信零钱查看！';
+                    $returndata['msg'] = '成功提现到微信零钱！';
 
                     exit(json_encode($returndata));
                 }else{

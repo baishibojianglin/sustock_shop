@@ -62,7 +62,7 @@
                             <volist name="list" id="v">
                                 <tr>
                                     <td class="text-left">
-                                        <a href="{:U('editWithdrawals',array('id'=>$v[withdrawals_id]))}">{$v.id}</a>                                        
+                                        {$v.id}
                                     </td>
                                     <td class="text-left">
                                         {$v.user_id}
@@ -108,9 +108,9 @@ $(document).ready(function() {
 		format:"YYYY-MM-DD",
 		singleDatePicker: false,
 		showDropdowns: true,
-		minDate:'2016-01-01',
+		minDate:'2020-11-01',
 		maxDate:'2030-01-01',
-		startDate:'2016-01-01',
+		startDate:'2020-11-01',
 	    locale : {
             applyLabel : '确定',
             cancelLabel : '取消',

@@ -103,49 +103,94 @@ class OrderController extends BaseController {
     public function ajaxorder_goods(){
 
         $orderLogic = new OrderLogic();
-        $timegap = I('timegap');
-        if($timegap){
-            $gap = explode('-', $timegap);
-            $begin = strtotime($gap[0]);
-            $end = strtotime($gap[1]);
-        }
         // 搜索条件
         $condition = array();
-//        I('consignee') ? $condition['consignee'] = trim(I('consignee')) : false;
-//        if($begin && $end){
-//            $condition['add_time'] = array('between',"$begin,$end");
-//        }
-//        $store_name = I('store_name','','trim');
-//        if($store_name)
-//        {
-//            $store_id_arr = M('store')->where("store_name like '%$store_name%'")->getField('store_id',true);
-//            if($store_id_arr)
-//            {
-//                $condition['store_id'] = array('in',$store_id_arr);
-//            }
-//        }
-//        I('order_sn') ? $condition['order_sn'] = trim(I('order_sn')) : false;
-//        I('order_status') != '' ? $condition['order_status'] = I('order_status') : false;
-//        I('pay_status') != '' ? $condition['pay_status'] = I('pay_status') : false;
-//        I('pay_code') != '' ? $condition['pay_code'] = I('pay_code') : false;
-//        I('shipping_status') != '' ? $condition['shipping_status'] = I('shipping_status') : false;
-//        I('user_id') ? $condition['user_id'] = trim(I('user_id')) : false;
+        I('goods_name') ? $condition['goods_name'] = array("LIKE", '%' . trim(I('goods_name')) . '%') : false;
 
-        $count = M('order_goods')->where($condition)->count();
+        $store_name = I('store_name','','trim');
+        if($store_name)
+        {
+            $store_id_arr = M('store')->where("store_name like '%$store_name%'")->getField('store_id',true);
+            if($store_id_arr)
+            {
+                $condition['store_id'] = array('in',$store_id_arr);
+            }
+        }
+        I('is_checkout') != '' ? $condition['g.is_checkout'] = I('is_checkout') : false;
+        $condition['is_send'] = 1;
+
+        $count = M('order_goods')->alias('g')->where($condition)->count();
         $Page  = new AjaxPage($count,20);
-        //  搜索条件下 分页赋值
-        //  foreach($condition as $key=>$val) {
-        //  $Page->parameter[$key]   =  urlencode($val);
-        //  }
+        // 搜索条件下 分页赋值
+//          foreach($condition as $key=>$val) {
+//          $Page->parameter[$key]   =  urlencode($val);
+//          }
         $show = $Page->show();
         //获取订单列表
         $ordergoodsList = $orderLogic->getOrderGoodsList($condition,$Page->firstRow,$Page->listRows);
-        file_put_contents('./GOODS.txt',json_encode($ordergoodsList));
         $store_list = M('store')->getField('store_id,store_name');
         $this->assign('store_list',$store_list);
         $this->assign('ordergoodsList',$ordergoodsList);
         $this->assign('page',$show);// 赋值分页输出
         $this->display();
+    }
+
+    /*
+     * 订单商品导出
+     * */
+    public function export_ordergoods()
+    {
+        //搜索条件
+        $where = 'where 1=1 AND is_send = 1 ';
+        $goods_name = I('goods_name');
+        if($goods_name){
+            $where .= "AND goods_name like '%$goods_name%' ";
+        }
+        if(I('is_checkout')){
+            $where .= "AND g.is_checkout = ".I('is_checkout');
+        }
+
+        $sql = "select `order_sn`,`goods_name`,g.goods_price,g.cost_price,g.goods_num,g.is_checkout,`prom_type`,store_name from __PREFIX__order_goods g 
+ join __PREFIX__order as o ON g.order_id = o.order_id join __PREFIX__store as s ON g.store_id = s.store_id $where ";
+        $ordergoodsList = D()->query($sql);
+        $strTable ='<table width="500" border="1">';
+        $strTable .= '<tr>';
+        $strTable .= '<td style="text-align:center;font-size:12px;width:120px;">订单编号</td>';
+        $strTable .= '<td style="text-align:center;font-size:12px;" width="*">商品名称</td>';
+        $strTable .= '<td style="text-align:center;font-size:12px;" width="*">商品售价</td>';
+        $strTable .= '<td style="text-align:center;font-size:12px;" width="*">商品成本价</td>';
+        $strTable .= '<td style="text-align:center;font-size:12px;" width="*">商品数量</td>';
+        $strTable .= '<td style="text-align:center;font-size:12px;" width="*">活动类型</td>';
+        $strTable .= '<td style="text-align:center;font-size:12px;" width="*">是否结算</td>';
+        $strTable .= '<td style="text-align:center;font-size:12px;" width="*">店铺名</td>';
+        $strTable .= '</tr>';
+
+        foreach($ordergoodsList as $k=>$val){
+            $strTable .= '<tr>';
+            $strTable .= '<td style="text-align:center;font-size:12px;">&nbsp;'.$val['order_sn'].'</td>';
+            $strTable .= '<td style="text-align:left;font-size:12px;">'.$val['goods_name'].'</td>';
+            $strTable .= '<td style="text-align:left;font-size:12px;">'.$val['goods_price'].' </td>';
+            $strTable .= '<td style="text-align:left;font-size:12px;">'.$val['cost_price'].'</td>';
+            $strTable .= '<td style="text-align:left;font-size:12px;">'.$val['goods_num'].'</td>';
+
+            if($val['is_checkout'] == 0){
+                $strTable .= '<td style="text-align:left;font-size:12px;">未结算</td>';
+            }else{
+                $strTable .= '<td style="text-align:left;font-size:12px;">已结算</td>';
+            }
+            if($val['prom_type'] == 0){
+                $strTable .= '<td style="text-align:left;font-size:12px;">普通订单</td>';
+            }else{
+                $strTable .= '<td style="text-align:left;font-size:12px;">活动订单</td>';
+            }
+
+            $strTable .= '<td style="text-align:left;font-size:12px;">'.$val['store_name'].'</td>';
+            $strTable .= '</tr>';
+        }
+        $strTable .='</table>';
+        unset($ordergoodsList);
+        downloadExcel($strTable,'ordergoods');
+        exit();
     }
     
     /*
@@ -722,6 +767,7 @@ class OrderController extends BaseController {
         return;
     }
 
+    //订单导出
     public function export_order()
     {
     	//搜索条件

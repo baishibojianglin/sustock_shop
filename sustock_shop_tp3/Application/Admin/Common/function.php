@@ -201,6 +201,7 @@ function getAllMenu(){
             array('name' => '商家汇款记录', 'act'=>'store_remittance', 'control'=>'Finance'),
             array('name' => '会员提现申请', 'act'=>'withdrawals', 'control'=>'Finance'),
             array('name' => '会员汇款记录', 'act'=>'remittance', 'control'=>'Finance'),
+            array('name' => '订单提成记录', 'act'=>'commission', 'control'=>'Finance'),
             array('name' => '商家结算记录', 'act'=>'order_statis', 'control'=>'Finance'),
         )),
         'count' => array('name' => '统计报表', 'icon'=>'fa-bar-chart-o', 'sub_menu' => array(

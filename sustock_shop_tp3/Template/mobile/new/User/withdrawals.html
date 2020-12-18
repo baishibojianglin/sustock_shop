@@ -116,8 +116,11 @@ function checkSubmit(){
         data:{money:money},
         dataType:'json',
         success: function(data){
-            layer.msg(data.msg);
-            location.href ="{:U('Mobile/User/index')}";
+            layer.msg(data.msg, {
+                time: 3000 //2秒关闭（如果不配置，默认是3秒）
+            }, function(){
+                location.href ="{:U('Mobile/User/index')}";
+            });
         }
     });
 }

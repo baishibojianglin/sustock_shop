@@ -13,6 +13,8 @@
                                     <td class="text-center">商品成本价</td>
                                     <td class="text-center">商品数量</td>
                                     <td class="text-center">活动类型</td>
+                                    <td class="text-center">收货人</td>
+                                    <td class="text-center">收货状态</td>
                                     <td class="text-center">是否结算</td>
                                     <td class="text-center">店铺</td>
                                 </tr>
@@ -36,6 +38,13 @@
                                                 活动订单
                                             </if>
                                         </td>
+                                        <td class="text-center">{$list.consignee}:{$list.mobile}</td>
+                                        <if condition="$list['confirm_time'] eq 0">
+                                            <td class="text-center">暂未收货</td>
+                                        <else/>
+                                            <td class="text-center">{$list.confirm_time|date='Y-m-d H:i',###}</td>
+                                        </if>
+
                                         <td class="text-center">
                                             <img width="20" height="20" src="__PUBLIC__/images/<if condition='$list[is_checkout] eq 1'>yes.png<else />cancel.png</if>" onclick="changeTableVal('order_goods','rec_id','{$list.rec_id}','is_checkout',this)"/>
                                         </td>

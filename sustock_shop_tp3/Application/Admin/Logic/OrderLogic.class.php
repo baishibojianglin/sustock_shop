@@ -30,21 +30,13 @@ class OrderLogic extends RelationModel
 
     /*
      * 获取订单商品列表
-     * ->alias('t')
-     ->field('t.*,o.order_id as ccsid')
-      ->join('left join __ORDER__ as o on t.order_id = o.third_order_id  and t.source = o.source')
-      ->where($map)
-      ->order("create_time DESC")
-      ->limit($page->firstRow . ',' . $page->listRows)
-
      * */
     public function getOrderGoodsList($condition,$start=0,$page_size=20){
         $res = M('order_goods')
                 ->alias('g')
-                ->field('rec_id,order_sn,goods_id,goods_name,g.goods_price,g.cost_price,g.goods_num,g.is_checkout,prom_type,g.store_id')
+                ->field('rec_id,order_sn,goods_id,goods_name,g.goods_price,g.cost_price,g.goods_num,g.is_checkout,prom_type,g.store_id,confirm_time,consignee,mobile')
                 ->join('join ty_order as o ON g.order_id = o.order_id')
-                ->where(array('is_send'=>1))
-                ->where($condition)->limit("$start,$page_size")->select();
+                ->where($condition)->order('order_sn desc')->limit("$start,$page_size")->select();
         return $res;
     }
 
