@@ -95,77 +95,29 @@ class FinanceController extends BaseController {
         $nickname && $where['nickname'] = array("LIKE", '%' . trim($nickname) . '%');
         I('is_agent') != '' ? $where['a.is_agent'] = I('is_agent') : false;
 
-        if(I('method') == 'select' || I('method') == ""){//按条件查询
-            $count = $model->table(C('DB_PREFIX').'account_log a')->join('INNER JOIN __USERS__ u ON u.user_id = a.user_id')->where(array('is_commission'=>1))->where($where)->count();
-            $Page  = new Page($count,10);
-            $list = $model->table(C('DB_PREFIX').'account_log a')->field('log_id,a.user_id,nickname,a.user_money,order_sn,change_time,desc')->join('INNER JOIN __USERS__ u ON u.user_id = a.user_id')->where(array('is_commission'=>1))->where($where)->order("a.log_id desc")->limit($Page->firstRow.','.$Page->listRows)->select();
-            $this->assign('create_time',$create_time2);
-            $show  = $Page->show();
+        $count = $model->table(C('DB_PREFIX').'account_log a')->join('INNER JOIN __USERS__ u ON u.user_id = a.user_id')->where(array('is_commission'=>1))->where($where)->count();
+        $Page  = new Page($count,10);
+        $list = $model->table(C('DB_PREFIX').'account_log a')->field('log_id,a.user_id,nickname,a.user_money,order_sn,change_time,desc')->join('INNER JOIN __USERS__ u ON u.user_id = a.user_id')->where(array('is_commission'=>1))->where($where)->order("a.log_id desc")->limit($Page->firstRow.','.$Page->listRows)->select();
+        $this->assign('create_time',$create_time2);
+        $show  = $Page->show();
 
-            //提成总和查询
-            $sql = "select SUM(user_money) as commission from ty_account_log WHERE is_commission = 1 and is_agent = 0";
-            $commission = M()->query($sql);
-            $sql1 = "select SUM(user_money) as agentcommission from ty_account_log WHERE is_commission = 1 and is_agent = 1";
-            $agentcommission = M()->query($sql1);
+        //提成总和查询
+        $sql = "select SUM(user_money) as commission from ty_account_log WHERE is_commission = 1 and is_agent = 0";
+        $commission = M()->query($sql);
+        $sql1 = "select SUM(user_money) as agentcommission from ty_account_log WHERE is_commission = 1 and is_agent = 1";
+        $agentcommission = M()->query($sql1);
 
-            $this->assign('show',$show);
-            $this->assign('list',$list);
-            $this->assign('nickname',$nickname);
-            $this->assign('amount',number_format($commission[0]['commission']+$agentcommission[0]['agentcommission'],2));
-            $this->assign('commission',$commission[0]['commission']);
-            $this->assign('agentcommission',$agentcommission[0]['agentcommission']);
-            C('TOKEN_ON',false);
-            $this->display();
-        }
-        if(I('method') == 'export'){
-            /*导出表*/
-
-            //搜索条件
-            $where = 'where 1=1 AND is_commission = 1 ';
-
-            if($nickname){
-                $where .= "AND nickname like '%$nickname%' ";
-            }
-            if($create_time){
-                $where .= "AND change_time BETWEEN ".strtotime($create_time3[0])." AND ".strtotime($create_time3[1]);
-            }
-            if(I('is_agent')){
-                $where .= "AND a.is_agent = ".I('is_agent');
-            }
-
-            $sql = "select log_id,a.user_id,nickname,a.user_money,order_sn,change_time,a.desc from ty_account_log a INNER JOIN ty_users u ON a.user_id = u.user_id $where ";
-            $ordercommission = D()->query($sql);
-            $strTable ='<table width="500" border="1">';
-            $strTable .= '<tr>';
-            $strTable .= '<td style="text-align:center;font-size:12px;width:120px;">记录编号</td>';
-            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">用户昵称</td>';
-            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">提成金额</td>';
-            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">订单编号</td>';
-            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">操作时间</td>';
-            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">备注</td>';
-            $strTable .= '</tr>';
-
-            foreach($ordercommission as $k=>$val){
-                $strTable .= '<tr>';
-                $strTable .= '<td style="text-align:center;font-size:12px;">&nbsp;'.$val['log_id'].'</td>';
-                $strTable .= '<td style="text-align:left;font-size:12px;">'.$val['nickname'].'</td>';
-                $strTable .= '<td style="text-align:left;font-size:12px;">'.$val['user_money'].' </td>';
-                $strTable .= '<td style="text-align:left;font-size:12px;">&nbsp;'.$val['order_sn'].'</td>';
-                $strTable .= '<td style="text-align:left;font-size:12px;">'.date("Y-m-d H:i",$val['change_time']).'</td>';
-                $strTable .= '<td style="text-align:left;font-size:12px;">'.$val['desc'].'</td>';
-                $strTable .= '</tr>';
-            }
-            $strTable .='</table>';
-            unset($ordercommission);
-            downloadExcel($strTable,'ordercommission');
-            exit();
-        }
+        $this->assign('show',$show);
+        $this->assign('list',$list);
+        $this->assign('nickname',$nickname);
+        $this->assign('amount',number_format($commission[0]['commission']+$agentcommission[0]['agentcommission'],2));
+        $this->assign('commission',$commission[0]['commission']);
+        $this->assign('agentcommission',$agentcommission[0]['agentcommission']);
+        C('TOKEN_ON',false);
+        $this->display();
 
     }
 
-    /*
-     * 导出表
-     * */
     /*
      * 订单商品导出
      * */
@@ -205,7 +157,7 @@ class FinanceController extends BaseController {
             $strTable .= '<td style="text-align:center;font-size:12px;">&nbsp;'.$val['log_id'].'</td>';
             $strTable .= '<td style="text-align:left;font-size:12px;">'.$val['nickname'].'</td>';
             $strTable .= '<td style="text-align:left;font-size:12px;">'.$val['user_money'].' </td>';
-            $strTable .= '<td style="text-align:left;font-size:12px;">'.$val['order_sn'].'</td>';
+            $strTable .= '<td style="text-align:left;font-size:12px;">&nbsp;'.$val['order_sn'].'</td>';
             $strTable .= '<td style="text-align:left;font-size:12px;">'.date("Y-m-d H:i",$val['change_time']).'</td>';
             $strTable .= '<td style="text-align:left;font-size:12px;">'.$val['desc'].'</td>';
             $strTable .= '</tr>';

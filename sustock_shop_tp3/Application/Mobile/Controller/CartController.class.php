@@ -271,7 +271,8 @@ class CartController extends MobileBaseController {
         $where = " session_id = '$this->session_id' "; // 默认按照 session_id 查询
         $this->user_id && $where = " user_id = ".$this->user_id; // 如果这个用户已经等了则按照用户id查询
 
-        $cartList = M('Cart')->where($where)->getField("id,goods_num,selected,prom_type,prom_id"); 
+        $cartList = M('Cart')->where($where)->getField("id,goods_num,selected,prom_type,prom_id,goods_price");
+        $store_agent = M('users')->where("user_id = {$this->user_id}")->getField("is_store_agent");
 
         if($post_goods_num)
         {
@@ -282,7 +283,12 @@ class CartController extends MobileBaseController {
                 if($cartList[$key]['prom_type'] == 1) //限时抢购 不能超过购买数量
                 {
                     $flash_sale = M('flash_sale')->where("id = {$cartList[$key]['prom_id']}")->find();
-                    $data['goods_num'] = $data['goods_num'] > $flash_sale['buy_limit'] ? $flash_sale['buy_limit'] : $data['goods_num'];
+                    if($store_agent == 1 && $cartList[$key]['goods_price'] == $flash_sale['agent_price']){
+                        $data['goods_num'] = $data['goods_num'] > $flash_sale['agentbuy_limit'] ? $flash_sale['agentbuy_limit'] : $data['goods_num'];
+                    }else{
+                        $data['goods_num'] = $data['goods_num'] > $flash_sale['buy_limit'] ? $flash_sale['buy_limit'] : $data['goods_num'];
+                    }
+
                 }
                 
                 $data['selected'] = $post_cart_select[$key] ? 1 : 0 ;

@@ -34,10 +34,10 @@
                         </select>
                     </div>
                 <div class="form-group">    
-                    <button class="btn btn-primary" id="button-filter search-order" type="submit" name="method" value="select"><i class="fa fa-search"></i> 筛选</button>
+                    <button class="btn btn-primary" id="button-filter search-order" type="submit"><i class="fa fa-search"></i> 筛选</button>
                 </div>
 
-                <button type="submit" name="method" value="export" class="btn btn-default pull-right"><i class="fa fa-file-excel-o"></i>&nbsp;导出excel</button>
+                <button onclick="export_commission();" class="btn btn-default pull-right"><i class="fa fa-file-excel-o"></i>&nbsp;导出excel</button>
                 </form>    
           </div>                        
           <div id="ajax_return">
@@ -121,7 +121,10 @@
 </div>
 <!-- /.content-wrapper --> 
  <script>
- 
+     function export_commission() {
+        $("#search-form2").attr('action',"{:U('export_commission')}");
+        $("#search-form2").submit();
+     }
  
 $(document).ready(function() {
 	$('#change_time').daterangepicker({
@@ -143,6 +146,7 @@ $(document).ready(function() {
         }
 	});
 });
+
 
 </script>
 </body>

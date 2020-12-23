@@ -18,6 +18,10 @@
 <script src="__PUBLIC__/js/global.js"></script>
 <script src="__PUBLIC__/js/mobile_common.js"></script>
 <script src="__PUBLIC__/js/layer/layer.js"></script>
+    <style type="text/css">
+        .layui-layer-msg {
+            left: 10px;}
+    </style>
 </head>
 <body>
 <div id="page" class="showpage">
@@ -234,12 +238,10 @@ function clock(key)
                       <a href="javascript:AjaxAddCart({$val[goods_id]},1,0);" class="btns">
 		                  <img src="__STATIC__/images/index_flow.png">
                       </a>
-                          <if condition="$_SESSION['user']['is_store_agent'] eq 1">
-                              <span class="price_pro">￥{$val.agent_price}元</span>
-                          <else/>
-                              <span class="price_pro">￥{$val.price}元</span>
-                          </if>
-		                
+                          <span class="price_pro">￥<php>
+                                  $goods = get_goods_promotion($val['goods_id'],$_SESSION['user']['is_store_agent'],$_SESSION['user']['user_id']);
+                                  echo $goods['price'];
+                              </php>元</span>
 		              </div>
 				</div>
 	          </li>

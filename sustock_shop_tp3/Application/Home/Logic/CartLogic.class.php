@@ -60,14 +60,33 @@ class CartLogic extends RelationModel
         if($goods['prom_type'] == 1) 
         {
             $flash_sale = M('flash_sale')->where("id = {$goods['prom_id']} and ".time()." > start_time and ".time()." < end_time and goods_num > buy_num")->find(); // 限时抢购活动
+            $store_agent = M('users')->where("user_id = {$user_id}")->getField("is_store_agent");
             if($flash_sale){
-                $cart_goods_num = M('Cart')->where("($where) and goods_id = {$goods['goods_id']}")->getField('goods_num');
-                // 如果购买数量 大于每人限购数量
-                if(($goods_num + $cart_goods_num) > $flash_sale['buy_limit'])
-                {  
-                    $cart_goods_num && $error_msg = "你当前购物车已有 $cart_goods_num 件!";
-                    return array('status'=>-4,'msg'=>"每人限购 {$flash_sale['buy_limit']}件 $error_msg",'result'=>'');
-                }                        
+                if($store_agent == 1){ //店主代理判断
+                    $cart_goods_num = M('Cart')->where("($where) and goods_id = {$goods['goods_id']} and goods_price = {$flash_sale['agent_price']}")->getField('goods_num');
+                    // 如果购买数量 大于店主代理限购数量
+                    if(($goods_num + $cart_goods_num) > $flash_sale['agentbuy_limit'])
+                    {
+                        $cart_goods_num && $error_msg = "你当前购物车已有 $cart_goods_num 件!";
+                        return array('status'=>-4,'msg'=>"店主特价每人限购 {$flash_sale['agentbuy_limit']}件 $error_msg",'result'=>'');
+                    }
+                    $cart_goods_num1 = M('Cart')->where("($where) and goods_id = {$goods['goods_id']} and goods_price = {$flash_sale['price']}")->getField('goods_num');
+                    // 如果购买数量 大于活动限购数量
+                    if(($goods_num + $cart_goods_num1) > $flash_sale['buy_limit'])
+                    {
+                        $cart_goods_num && $error_msg = "你当前购物车已有 $cart_goods_num 件!";
+                        return array('status'=>-4,'msg'=>"每人限购 {$flash_sale['buy_limit']}件 $error_msg",'result'=>'');
+                    }
+                }else{
+                    $cart_goods_num = M('Cart')->where("($where) and goods_id = {$goods['goods_id']}")->getField('goods_num');
+                    // 如果购买数量 大于每人限购数量
+                    if(($goods_num + $cart_goods_num) > $flash_sale['buy_limit'])
+                    {
+                        $cart_goods_num && $error_msg = "你当前购物车已有 $cart_goods_num 件!";
+                        return array('status'=>-4,'msg'=>"每人限购 {$flash_sale['buy_limit']}件 $error_msg",'result'=>'');
+                    }
+                }
+
                 // 如果剩余数量 不足 限购数量, 就只能买剩余数量
                 if(($flash_sale['goods_num'] - $flash_sale['buy_num']) < $flash_sale['buy_limit'])
                     return array('status'=>-4,'msg'=>"库存不够，你只能买".($flash_sale['goods_num'] - $flash_sale['buy_num'])."件了",'result'=>'');

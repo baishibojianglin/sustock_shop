@@ -1322,20 +1322,28 @@ function get_goods_promotion($goods_id,$store_agent=0,$user_id=0){
 			}else{
 				//核查用户购买数量
 				$where = "user_id = $user_id and order_status!=3 and  add_time>".$prominfo['start_time']." and add_time<".$prominfo['end_time'];
-				$order_id_arr = M('order')->where($where)->getField('order_id',true);
+				$order_id_arr = M('order')->where($where)->getField('order_id',true);//所有未取消的订单
 
 				//是否店主代理
                 if($store_agent == 1){
                     if($order_id_arr){
-                        $goods_num = M('order_goods')->where("prom_id={$goods['prom_id']} and prom_type={$goods['prom_type']} and order_id in (".implode(',', $order_id_arr).")")->sum('goods_num');
-                        if($goods_num < $prominfo['buy_limit']){
+                        //以店主限购价格下单的数量
+                        $goods_num = M('order_goods')->where("prom_id={$goods['prom_id']} and prom_type={$goods['prom_type']} and order_id in (".implode(',', $order_id_arr).") and goods_price = {$prominfo['agent_price']}")->sum('goods_num');
+                        if($goods_num < $prominfo['agentbuy_limit']){
                             $prom['price'] = $prominfo['agent_price'];
+                        }else{
+                            //以活动价下单数量
+                            $goods_num = M('order_goods')->where("prom_id={$goods['prom_id']} and prom_type={$goods['prom_type']} and order_id in (".implode(',', $order_id_arr).") and goods_price = {$prominfo['price']}")->sum('goods_num');
+                            if($goods_num < $prominfo['buy_limit']){
+                                $prom['price'] = $prominfo['price'];
+                            }
                         }
                     }else{
                         $prom['price'] = $prominfo['agent_price'];
                     }
                 }else{
                     if($order_id_arr){
+                        //以活动价下单数量
                         $goods_num = M('order_goods')->where("prom_id={$goods['prom_id']} and prom_type={$goods['prom_type']} and order_id in (".implode(',', $order_id_arr).")")->sum('goods_num');
                         if($goods_num < $prominfo['buy_limit']){
                             $prom['price'] = $prominfo['price'];

@@ -176,7 +176,7 @@ class GoodsController extends MobileBaseController {
             $prom_goods = M('prom_goods')->where("id = {$goods['prom_id']} ")->find();
             $this->assign('prom_goods',$prom_goods);// 商品促销
 
-            $goods['flash_sale'] = get_goods_promotion($goods['goods_id'],$user['is_store_agent']);
+            $goods['flash_sale'] = get_goods_promotion($goods['goods_id'],$user['is_store_agent'],$user['user_id']);
             $flash_sale = M('flash_sale')->where("id = {$goods['prom_id']}")->find();
             $this->assign('flash_sale',$flash_sale);
         }

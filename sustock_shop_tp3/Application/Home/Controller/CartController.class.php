@@ -60,7 +60,7 @@ class CartController extends BaseController {
         exit(json_encode($result));
     }
     
-    /**
+    /**z
      * ajax 删除购物车的商品
      */
     public function ajaxDelCart()
