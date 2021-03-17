@@ -33,8 +33,8 @@ class OrderController extends BaseController {
         $this->assign('shipping_status',$this->shipping_status);
     }
 
-    /*
-     *订单首页
+    /**
+     * 订单列表首页
      */
     public function index(){
     	$begin = date('Y/m/d',(time()-30*60*60*24));//30天前
@@ -43,8 +43,8 @@ class OrderController extends BaseController {
         $this->display();
     }
 
-    /*
-     *Ajax首页
+    /**
+     * Ajax获取订单列表首页
      */
     public function ajaxindex(){
         $orderLogic = new OrderLogic();       
@@ -93,19 +93,38 @@ class OrderController extends BaseController {
         $this->display();
     }
 
-    /*
-     * 订单商品列表
-     * */
+    /**
+     * 订单商品列表页
+     */
     public function order_goods(){
+        $begin = date('Y/m/d', (time()-30*60*60*24));//30天前
+        $end = date('Y/m/d', strtotime('+1 days'));
+        $this->assign('timegap', $begin.'-'.$end);
         $this->display();
     }
 
+    /**
+     * Ajax获取订单商品列表
+     */
     public function ajaxorder_goods(){
-
         $orderLogic = new OrderLogic();
+
+        // 支付时间段
+        $timegap = I('timegap');
+        if($timegap){
+            $gap = explode('-', $timegap);
+            $begin = strtotime($gap[0]);
+            $end = strtotime($gap[1]);
+        }
+
         // 搜索条件
         $condition = array();
         I('goods_name') ? $condition['goods_name'] = array("LIKE", '%' . trim(I('goods_name')) . '%') : false;
+        I('goods_sn') ? $condition['goods_sn'] = array("LIKE", '%' . trim(I('goods_sn')) . '%') : false;
+        I('consignee') ? $condition['consignee'] = trim(I('consignee')) : false;
+        if(isset($begin) && $begin && isset($end) && $end){
+            $condition['o.pay_time'] = array('between', "$begin,$end");
+        }
 
         $store_name = I('store_name','','trim');
         if($store_name)
@@ -116,22 +135,45 @@ class OrderController extends BaseController {
                 $condition['store_id'] = array('in',$store_id_arr);
             }
         }
-        I('is_checkout') != '' ? $condition['g.is_checkout'] = I('is_checkout') : false;
-        $condition['is_send'] = 1;
+        I('is_checkout') != '' ? $condition['g.is_checkout'] = I('is_checkout') : false; // 结算状态
+        I('is_send') != '' ? $condition['g.is_send'] = I('is_send') : false; // 发货状态
+        I('pay_status') != '' ? $condition['o.pay_status'] = I('pay_status') : false; // 支付状态
+        I('order_sn') ? $condition['o.order_sn'] = array("LIKE", '%' . trim(I('order_sn')) . '%') : false;
 
-        $count = M('order_goods')->alias('g')->where($condition)->count();
+        $count = M('order_goods')->alias('g')->join('join ty_order as o ON g.order_id = o.order_id')->where($condition)->count();
         $Page  = new AjaxPage($count,20);
         // 搜索条件下 分页赋值
-//          foreach($condition as $key=>$val) {
-//          $Page->parameter[$key]   =  urlencode($val);
-//          }
+        /*foreach($condition as $key=>$val) {
+            $Page->parameter[$key]   =  urlencode($val);
+        }*/
         $show = $Page->show();
-        //获取订单列表
-        $ordergoodsList = $orderLogic->getOrderGoodsList($condition,$Page->firstRow,$Page->listRows);
+
+        // 获取订单商品列表
+        $ordergoodsList = $orderLogic->getOrderGoodsList($condition, $Page->firstRow, $Page->listRows);
+        $isSendMsg = [0 => '未发货', 1 => '已发货', 2 => '已换货', 3 => '已退货']; // 发货状态
+        foreach($ordergoodsList as $key => $value) {
+            $ordergoodsList[$key]['is_send_msg'] = $isSendMsg[$ordergoodsList[$key]['is_send']];
+        }
+
+        // 商品购买数量统计
+        $orderGoodsSum = M('order_goods')->alias('g')->join('join ty_order as o ON g.order_id = o.order_id')->where($condition)->sum('g.goods_num');
+
+        // 通过订单编号查询时，统计处展示订单优惠等金额信息
+        if (I('order_sn')) {
+            $condition['o.order_sn'] = trim(I('order_sn'));
+            $order = M('order')->alias('o')
+                ->field('o.order_sn,o.pay_status,o.pay_time,o.goods_price,o.shipping_price,o.user_money,o.coupon_price,o.integral,o.integral_money,o.order_amount,o.total_amount')
+                ->join('__ORDER_GOODS__ g ON g.order_id = o.order_id')
+                ->where($condition)
+                ->find();
+        }
+
         $store_list = M('store')->getField('store_id,store_name');
-        $this->assign('store_list',$store_list);
-        $this->assign('ordergoodsList',$ordergoodsList);
-        $this->assign('page',$show);// 赋值分页输出
+        $this->assign('store_list', $store_list);
+        $this->assign('ordergoodsList', $ordergoodsList);
+        $this->assign('order_goods_sum', $orderGoodsSum);
+        $this->assign('page', $show);// 赋值分页输出
+        isset($order) ? $this->assign('order', $order) : false;
         $this->display();
     }
 

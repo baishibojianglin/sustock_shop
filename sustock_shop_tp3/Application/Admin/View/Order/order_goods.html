@@ -16,15 +16,40 @@
                     <div class="navbar navbar-default">
                             <form action="{:U('Admin/order/export_ordergoods')}" id="search-form2" class="navbar-form form-inline" method="post">
                                 <div class="form-group">
-                                    <label class="control-label" for="input-order-id">店铺</label>
+                                    <label class="control-label" for="input-store-name">店铺</label>
                                     <div class="input-group">
-                                        <input type="text" name="store_name" placeholder="店铺名称" id="input-store-id" class="input-sm" style="width:100px;">
+                                        <input type="text" name="store_name" placeholder="店铺名称" id="input-store-name" class="input-sm" style="width:120px;">
                                     </div>
-                                </div>                               
+                                </div>
                                 <div class="form-group">
-                                    <label class="control-label" for="input-order-id">商品名称</label>
+                                    <label class="control-label" for="input-goods-name">商品名称</label>
                                     <div class="input-group">
-                                        <input type="text" name="goods_name" placeholder="商品名称" id="input-member-id" class="input-sm" style="width:100px;">
+                                        <input type="text" name="goods_name" placeholder="商品名称" id="input-goods-name" class="input-sm" style="width:120px;">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="input-goods-sn">商品货号</label>
+                                    <div class="input-group">
+                                        <input type="text" name="goods_sn" placeholder="商品货号" id="input-goods-sn" class="input-sm" style="width:120px;">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <select name="pay_status" class="input-sm" style="width:100px;">
+                                        <option value="">支付状态</option>
+                                        <option value="0">未支付</option>
+                                        <option value="1">已支付</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="input-pay-time">支付时间</label>
+                                    <div class="input-group">
+                                        <input type="text" name="timegap" value="{$timegap}" placeholder="支付时间" id="input-pay-time" class="input-sm">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="input-order-sn">订单编号</label>
+                                    <div class="input-group">
+                                        <input type="text" name="order_sn" placeholder="输入完整订单号看明细" id="input-order-sn" class="input-sm" style="width:150px;">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -32,6 +57,15 @@
                                         <option value="">结算状态</option>
                                         <option value="0">未结算</option>
                                         <option value="1">已结算</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <select name="is_send" class="input-sm" style="width:100px;">
+                                        <option value="">发货状态</option>
+                                        <option value="0">未发货</option>
+                                        <option value="1" selected>已发货</option>
+                                        <option value="2">已换货</option>
+                                        <option value="3">已退货</option>
                                     </select>
                                 </div>
 
@@ -60,6 +94,25 @@
 <script>
     $(document).ready(function(){
         ajax_get_table('search-form2',1);
+
+        $('#input-pay-time').daterangepicker({
+            format: "YYYY/MM/DD",
+            singleDatePicker: false,
+            showDropdowns: true,
+            minDate:'2020/01/01',
+            maxDate:'2030/01/01',
+            startDate:'2021/01/01',
+            locale : {
+                applyLabel : '确定',
+                cancelLabel : '取消',
+                fromLabel : '起始时间',
+                toLabel : '结束时间',
+                customRangeLabel : '自定义',
+                daysOfWeek : [ '日', '一', '二', '三', '四', '五', '六' ],
+                monthNames : [ '一月', '二月', '三月', '四月', '五月', '六月','七月', '八月', '九月', '十月', '十一月', '十二月' ],
+                firstDay : 1
+            }
+        });
     });
     
     // ajax 抓取页面

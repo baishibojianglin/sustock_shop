@@ -28,13 +28,17 @@ class OrderLogic extends RelationModel
         return $res;
     }
 
-    /*
-     * 获取订单商品列表
-     * */
+	/**
+	 * 获取订单商品列表
+	 * @param $condition
+	 * @param int $start
+	 * @param int $page_size
+	 * @return mixed
+	 */
     public function getOrderGoodsList($condition,$start=0,$page_size=20){
         $res = M('order_goods')
                 ->alias('g')
-                ->field('rec_id,order_sn,goods_id,goods_name,g.goods_price,g.cost_price,g.goods_num,g.is_checkout,prom_type,g.store_id,confirm_time,consignee,mobile')
+                ->field('rec_id,order_sn,goods_id,goods_name,g.goods_price,g.cost_price,g.goods_num,g.is_checkout,prom_type,g.store_id,confirm_time,consignee,mobile,g.is_send,g.goods_sn,o.pay_status,o.pay_time,o.order_amount')
                 ->join('join ty_order as o ON g.order_id = o.order_id')
                 ->where($condition)->order('order_sn desc')->limit("$start,$page_size")->select();
         return $res;

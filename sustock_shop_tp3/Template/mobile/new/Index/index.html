@@ -81,9 +81,9 @@
 				</a>
 			</li>
 			<li>
-				<a href="{:U('Activity/discount_list')}">
-					<img alt="优惠活动" src="__STATIC__/images/1440439952487090605.png">
-					<span>优惠活动</span>
+				<a href="{:U('AgentService/servicelist')}">
+					<img alt="代理服务" src="__STATIC__/images/1440439952487090605.png">
+					<span>代理服务</span>
 				</a>
 			</li>		 
 			<li>
@@ -421,7 +421,55 @@ function clock(key)
         });
     </script>
 
-    <section class="index_floor">
+    <section class="index_floor" hidden>
+        <div class="floor_body1" >
+            <h2><em></em>VIP专区
+                <div class="geng"><a href="{:U('Goods/search',array('vip'=>'1'))}" >更多</a> <span></span></div>
+            </h2>
+            <div id="scroll_vip" class="scroll_hot">
+                <div class="bd">
+                    <ul>
+                        <assign name="fl" value="1"/>
+                        <tpshop sql="select * from __PREFIX__goods where is_vip = 1 and is_on_sale = 1 and goods_state = 1 order by sort desc limit 9" item="v" key="k">
+                            <li>
+                                <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$v[goods_id]))}" title="{$v.goods_name}">
+                                    <div class="index_pro">
+                                        <div class="products_kuang">
+                                            <img src="{$v.goods_id|goods_thum_images=400,400}"></div>
+                                        <div class="goods_name">{$v.goods_name}</div>
+                                        <div class="price">
+                                            <php>if($_SESSION['user']['is_vip'] == 1){</php>
+                                                <a href="javascript:AjaxAddCart({$v[goods_id]},1,0);" class="btns">
+                                            <php> }else{</php>
+                                                <a href="javascript:novip();" class="btns">
+                                            <php>}</php>
+                                                <img src="__STATIC__/images/index_flow.png">
+                                            </a>
+                                            <span href="{:U('Mobile/Goods/goodsInfo',array('id'=>$v[goods_id]))}" class="price_pro">￥{$v.shop_price}元</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <if condition="($fl++%3 eq 0) && ($fl lt 9)"></ul><ul></if>
+                    </tpshop></ul>
+                </div>
+                <div class="hd">
+                    <ul></ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script type="text/javascript">
+        TouchSlide({
+            slideCell:"#scroll_vip",
+            titCell:".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
+            effect:"leftLoop",
+            autoPage:true, //自动分页
+            //switchLoad:"_src" //切换加载，真实图片路径为"_src"
+        });
+    </script>
+
+    <section class="index_floor" hidden>
         <div class="floor_body1" >
             <h2><em></em>店主专区
                 <!--<div class="geng"><a href="{:U('Goods/search',array('q'=>'热销'))}" >更多</a> <span></span></div>-->
@@ -430,7 +478,7 @@ function clock(key)
                 <div class="bd">
                     <ul>
                         <assign name="fl" value="1"/>
-                        <tpshop sql="select * from __PREFIX__goods where is_agent=1 and is_on_sale = 1 and goods_state = 1 order by sort desc limit 9" item="v" key="k">
+                        <tpshop sql="select * from __PREFIX__goods where is_agent = 1 and is_on_sale = 1 and goods_state = 1 order by sort desc limit 9" item="v" key="k">
                             <li>
                                 <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$v[goods_id]))}" title="{$v.goods_name}">
                                     <div class="index_pro">
@@ -556,33 +604,18 @@ function goTop(){
               <div class="mallSearch-input">
                 <div id="s-combobox-135">
                     <input class="s-combobox-input" name="q" id="q"  placeholder="请输入关键词"  type="text" value="<?php echo I('q'); ?>" />
-                </div>                                                
+                </div>
+                  <input type="hidden" name="vip" value="0" />
                 <input type="button" value="" class="button"  onclick="if($.trim($('#q').val()) != '') $('#sourch_form').submit();" />
               </div>
           </form>
          </div> 
         </div>
- 		<!--
-		<div class="search_body">
-		<div class="search_box">
-		<form action="search.php" method="post" id="searchForm" name="searchForm">
-		<div>
-		<select id='search_type' name="search_type" style="width:15%;">
-			<option value='search'>宝贝</option>
-			<option value='stores'>店铺</option>
-		</select>
-		     <input class="text" type="search" name="keywords" id="keywordBox" autofocus>
-		     <button type="submit" value="搜 索" ></button>
-		</div>
-		</form>
-	    </div>
-		</div>
-       -->              
     	<section class="mix_recently_search"><h3>热门搜索</h3>
 	     <ul>
             <foreach name="tpshop_config.hot_keywords" item="wd" key="k">
                <li><a href="{:U('Goods/search',array('q'=>$wd))}" <if condition="$k eq 0">class="ht"</if>>{$wd}</a></li>
-            </foreach>         
+            </foreach>
 	      </ul>
         </section>
     </div>
@@ -605,6 +638,11 @@ $(function() {
         $("#search_hide").hide();
     })
 });
+
+function novip() {
+    layer.msg('此商品仅供VIP会员购买');
+}
+
 </script>
 <script>
 $('.search-type li').click(function() {

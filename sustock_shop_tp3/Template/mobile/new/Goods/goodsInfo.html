@@ -117,7 +117,17 @@ if(parseInt(is_distribut) == 1 && parseInt(user_id) > 0)
         <ul class="price_dottm">
           <li style=" text-align:left">折扣：{$goods.discount}折</li>
           <li>{$commentStatistics.c0}人评价</li>
-          <li style=" text-align:right">{$goods.sale_num}人已付款</li>
+          <li style=" text-align:right">
+              <if condition="$goods['sale_num'] gt 0">
+                  已售出{$goods.sale_num}件
+              <else/>
+                  <if condition="($goods['goods_id'] eq 97) OR ($goods['goods_id'] eq 98)">
+                      已售出{$goods.sale_num}件
+                      <else/>
+                      已售出{:mt_rand(10,50)}件
+                  </if>
+              </if>
+          </li>
         </ul>
       </div>
 <if condition="($prom_goods neq null) OR ($prom_order neq null)">      
@@ -353,8 +363,13 @@ function goTop(){
     <li><a href="javascript:collect_goods({$goods.goods_id})" id="favorite_add"><em class="goods_nav3"></em><span>收藏</span></a></li>
   </ul>
   <dl>
-    <dd class="flow"><a class="button active_button" href="javascript:void(0);" onClick="AjaxAddCart({$goods.goods_id},1,0, {$first_leader});">加入购物车</a> </dd>
-    <dd class="goumai"><a style="display:block;" href="javascript:void(0);"  onclick="AjaxAddCart({$goods.goods_id},1,1, {$first_leader});">立即购买</a> </dd>
+      <if condition="$_SESSION['user']['is_vip'] eq 0 && $goods['is_vip'] eq 1">
+          <dd class="flow"><a class="button active_button" href="javascript:void(0);" onClick="novip();">加入购物车</a> </dd>
+          <dd class="goumai"><a style="display:block;" href="javascript:void(0);"  onclick="novip();">立即购买</a> </dd>
+      <else/>
+          <dd class="flow"><a class="button active_button" href="javascript:void(0);" onClick="AjaxAddCart({$goods.goods_id},1,0, {$first_leader});">加入购物车</a> </dd>
+          <dd class="goumai"><a style="display:block;" href="javascript:void(0);"  onclick="AjaxAddCart({$goods.goods_id},1,1, {$first_leader});">立即购买</a> </dd>
+      </if>
   </dl>
 </div>
 <script type="text/javascript">
@@ -362,7 +377,9 @@ $(document).ready(function(){
 	// 更新商品价格
 	get_goods_price();
 });
-
+function novip() {
+    layer.msg('此商品仅供VIP会员购买');
+}
 
 function switch_spec(spec)
 {
