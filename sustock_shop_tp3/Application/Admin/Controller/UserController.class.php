@@ -29,8 +29,9 @@ class UserController extends BaseController {
     public function ajaxindex(){
         // 搜索条件
         $condition = array();
-        I('mobile') ? $condition['mobile'] = I('mobile') : false;
-        I('email') ? $condition['email'] = I('email') : false;
+        I('nickname') ? $condition['nickname'] = array('like', '%' . trim(I('nickname')) . '%') : false;
+        I('mobile') ? $condition['mobile'] = trim(I('mobile')) : false;
+        I('email') ? $condition['email'] = trim(I('email')) : false;
         $sort_order = I('order_by').' '.I('sort');
                
         $model = M('users');

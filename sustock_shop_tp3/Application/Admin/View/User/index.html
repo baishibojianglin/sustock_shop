@@ -1,6 +1,6 @@
 <include file="Public/min-header"/>
 <div class="wrapper">
-  <include file="Public/breadcrumb"/>
+    <include file="Public/breadcrumb"/>
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
@@ -10,29 +10,36 @@
                 </div>
                 <div class="panel-body">
                     <div class="navbar navbar-default">
-                            <form action="" id="search-form2" class="navbar-form form-inline" method="post" onsubmit="return false">
-                                <div class="form-group">
-                                    <label class="control-label" for="input-mobile">手机号码</label>
-                                    <div class="input-group">
-                                        <input type="text" name="mobile" value="" placeholder="手机号码" id="input-mobile" class="form-control">
-                                    </div>
+                        <form action="" id="search-form2" class="navbar-form form-inline" method="post" onsubmit="return false">
+                            <div class="form-group">
+                                <label class="control-label" for="input-nickname">会员昵称</label>
+                                <div class="input-group">
+                                    <input type="text" name="nickname" value="" placeholder="会员昵称" id="input-nickname" class="form-control">
                                 </div>
+                            </div>
 
-                                <div class="form-group">
-                                    <label class="control-label" for="input-email">email</label>
-                                    <div class="input-group">
-                                        <input type="text" name="email" value="" placeholder="email" id="input-email" class="form-control">
-                                    </div>
+                            <div class="form-group">
+                                <label class="control-label" for="input-mobile">手机号码</label>
+                                <div class="input-group">
+                                    <input type="text" name="mobile" value="" placeholder="手机号码" id="input-mobile" class="form-control">
                                 </div>
-                                 <div class="form-group">
-                                    <input type="hidden" name="order_by" value="user_id">
-                                	<input type="hidden" name="sort" value="desc">
-                                	<button type="submit" onclick="ajax_get_table('search-form2',1)" id="button-filter search-order" class="btn btn-primary pull-right"><i class="fa fa-search"></i> 筛选</button>
-                                 </div>
-                                <button type="button" onclick="send_message(0);" class="btn btn-primary"><i class="fa"></i> 发送站内信</button>
-                                <button type="button" onclick="send_mail();" class="btn btn-primary"><i class="fa"></i> 发送邮箱</button>
-								 <a href="{:U('User/add_user')}" class="btn btn-info pull-right">添加会员</a>
-                            </form>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label" for="input-email">email</label>
+                                <div class="input-group">
+                                    <input type="text" name="email" value="" placeholder="email" id="input-email" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="hidden" name="order_by" value="user_id">
+                                <input type="hidden" name="sort" value="desc">
+                                <button type="submit" onclick="ajax_get_table('search-form2',1)" id="button-filter search-order" class="btn btn-primary pull-right"><i class="fa fa-search"></i> 筛选</button>
+                            </div>
+                            <button type="button" onclick="send_message(0);" class="btn btn-primary"><i class="fa"></i> 发送站内信</button>
+                            <button type="button" onclick="send_mail();" class="btn btn-primary"><i class="fa"></i> 发送邮箱</button>
+                            <a href="{:U('User/add_user')}" class="btn btn-info pull-right">添加会员</a>
+                        </form>
                     </div>
                     <div id="ajax_return">
 
